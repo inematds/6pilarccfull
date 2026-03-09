@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 3.8 - Workflow: Migracao Multi-arquivo | 6 Pilares CC Full</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span>
+            <span class="font-bold text-lg hidden sm:inline">6 Pilares CC Full</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Atalhos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">CLAUDE.md</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Workflows</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Prompts</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Skills</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">MCPs</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-purple-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-purple-400">Trilha 3</a>
+      <span>/</span>
+      <span class="text-purple-400">Modulo 3.8</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 3.8
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">📦 Workflow: Migracao Multi-arquivo</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Domine o workflow de migracoes e refatoracoes que afetam dezenas de arquivos: planejamento em Plan Mode, execucao em batches, testes intermediarios e uso de /compact para manter o contexto gerenciavel.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">35</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Avancado</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Teoria + Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🗺️ Planejando em Plan Mode</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Migracoes multi-arquivo sao as tarefas mais arriscadas em desenvolvimento. Antes de mudar uma unica linha de codigo, use o <strong class="text-purple-400">Plan Mode</strong> do Claude para mapear o escopo completo: quais arquivos serao afetados, quais dependencias existem e qual a ordem segura de execucao.
+      </p>
+
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O Plan Mode (ativado com <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">Shift+Tab</code> ou configurando o modo para "plan") faz o Claude <strong class="text-white">analisar sem modificar</strong>. Ele le os arquivos, mapeia dependencias e propoe um plano de execucao detalhado antes de tocar em qualquer codigo.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Analise de escopo:</strong> O Claude lista todos os arquivos que precisam mudar e por que. Nenhuma surpresa no meio da migracao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Mapa de dependencias:</strong> Identifica quais arquivos dependem de quais, determinando a ordem segura de modificacao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Estimativa de risco:</strong> O Claude avalia quais mudancas sao mecanicas (rename seguro) versus quais envolvem logica (maior risco)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Batches definidos:</strong> O plano divide a migracao em batches de 3-5 arquivos, cada batch testavel independentemente</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Exemplo no Terminal
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-2">
+          <div class="text-neutral-500"># Ativar Plan Mode e pedir analise</div>
+          <div><span class="text-purple-400">></span> <span class="text-neutral-300">[Plan Mode] Preciso renomear o modelo User para Account em todo o projeto. Analise o escopo completo:</span></div>
+          <div><span class="text-neutral-300">- Quais arquivos serao afetados?</span></div>
+          <div><span class="text-neutral-300">- Quais dependencias existem entre eles?</span></div>
+          <div><span class="text-neutral-300">- Qual a ordem segura de execucao?</span></div>
+          <div><span class="text-neutral-300">- Divida em batches de no maximo 5 arquivos.</span></div>
+          <div><span class="text-neutral-300">NAO modifique nada ainda.</span></div>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Nunca comece uma migracao multi-arquivo sem um plano. O tempo investido no planejamento se paga 10x evitando estados inconsistentes onde metade do codigo usa o nome antigo e metade o novo.
+        </p>
+        <p class="text-neutral-300">
+          Salve o plano do Claude em um arquivo para referencia: <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">"Salve este plano de migracao em MIGRATION_PLAN.md"</code>
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">📋 Identificando arquivos afetados</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O Claude Code pode mapear automaticamente todos os arquivos impactados por uma mudanca, usando <strong class="text-purple-400">grep, analise de imports e arvore de dependencias</strong>. Isso garante que nenhum arquivo seja esquecido durante a migracao.
+      </p>
+
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Identificar impacto vai alem de um simples "find and replace". O Claude analisa <strong class="text-white">imports, exports, tipos, interfaces, testes e documentacao</strong> para montar a lista completa de arquivos afetados, incluindo os que precisam de mudancas indiretas.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Referencias diretas:</strong> Arquivos que importam ou usam diretamente o que esta sendo modificado</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Referencias indiretas:</strong> Arquivos que usam via re-export, heranca ou composicao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Testes relacionados:</strong> Arquivos de teste que verificam o comportamento sendo modificado</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Configuracoes:</strong> package.json, tsconfig.json, .env, docker-compose.yml que podem precisar de ajuste</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Exemplo no Terminal
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-2">
+          <div><span class="text-purple-400">></span> <span class="text-neutral-300">Liste TODOS os arquivos que referenciam "UserService" direta ou indiretamente. Inclua imports, tipos, testes e configuracoes. Classifique cada arquivo como: mudanca direta, mudanca indireta ou teste.</span></div>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Peca ao Claude para criar um checklist markdown com todos os arquivos afetados. Marque cada um conforme for modificado. Isso evita o problema mais comum em migracoes: esquecer um arquivo.
+        </p>
+        <p class="text-neutral-300">
+          Verifique tambem arquivos de configuracao de build (webpack, vite, tsconfig paths) que podem ter aliases ou mapeamentos para o nome antigo.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">⚡ Executando em batches</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Nunca modifique todos os arquivos de uma vez. A execucao em <strong class="text-purple-400">batches de 3-5 arquivos</strong> permite detectar problemas cedo, manter o codigo compilavel entre batches e fazer rollback parcial se necessario.
+      </p>
+
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Batch execution e a abordagem mais segura para migracoes grandes. Cada batch e um conjunto coeso de mudancas que pode ser <strong class="text-white">commitado, testado e revertido independentemente</strong>. Se algo quebra no batch 3, voce so precisa reverter o batch 3, nao os anteriores.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Tamanho do batch:</strong> 3-5 arquivos e o sweet spot. Mais que isso e dificil de revisar. Menos e muito lento</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Coesao do batch:</strong> Agrupe arquivos que dependem entre si no mesmo batch para evitar estados intermediarios quebrados</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Commit por batch:</strong> Faca um commit apos cada batch bem-sucedido. Isso cria pontos de restauracao seguros</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Instrucao ao Claude:</strong> "Execute apenas o batch 1 do plano de migracao. NAO avance para o batch 2 sem minha confirmacao."</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Exemplo no Terminal
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-2">
+          <div class="text-neutral-500"># Executar batch 1</div>
+          <div><span class="text-purple-400">></span> <span class="text-neutral-300">Execute o batch 1 do plano: renomeie User para Account em models/user.ts, types/user.ts e interfaces/user.ts. Depois pare e espere minha confirmacao.</span></div>
+          <div class="text-neutral-500 mt-3"># Apos testar batch 1</div>
+          <div><span class="text-purple-400">></span> <span class="text-neutral-300">Batch 1 OK. Execute o batch 2: atualize os imports em services/auth.ts, services/profile.ts e controllers/user.ts.</span></div>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Comece pelos arquivos mais "internos" (models, types) e avance para os mais "externos" (controllers, routes, views). Isso garante que as dependencias ja estejam atualizadas quando voce chegar nos consumidores.
+        </p>
+        <p class="text-neutral-300">
+          Se o projeto usa TypeScript, mantenha o build rodando entre batches: erros de tipo apontam imediatamente quais referencias voce esqueceu de atualizar.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">✅ Testando apos cada batch</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Testes entre batches sao a <strong class="text-purple-400">rede de seguranca</strong> da migracao. Apos cada batch, rode testes, build e linting para confirmar que o codigo esta num estado consistente antes de prosseguir. Sem isso, voce acumula problemas que se tornam impossíveis de diagnosticar.
+      </p>
+
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O ciclo por batch e: <strong class="text-white">modifica → testa → comita → proximo batch</strong>. Se os testes falham, voce para, corrige no batch atual e so entao avanca. Nunca avance para o proximo batch com testes falhando.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Testes unitarios:</strong> Rode apos cada batch para pegar erros de referencia, imports quebrados e tipos incorretos</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Build/compile:</strong> Para TypeScript, Go, Rust - rode o build para pegar erros de tipo que testes podem nao cobrir</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Linting:</strong> ESLint, Pylint - pegam imports nao utilizados, variaveis mortas e outros problemas pos-rename</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Commit de checkpoint:</strong> Cada batch testado e commitado cria um ponto seguro de retorno</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Exemplo no Terminal
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-2">
+          <div><span class="text-purple-400">></span> <span class="text-neutral-300">Batch 1 concluido. Agora:</span></div>
+          <div><span class="text-neutral-300">1. Rode npm run build para verificar erros de tipo</span></div>
+          <div><span class="text-neutral-300">2. Rode npm test para verificar testes</span></div>
+          <div><span class="text-neutral-300">3. Se tudo passar, faca um commit "refactor: rename User to Account - batch 1/4"</span></div>
+          <div><span class="text-neutral-300">4. Se falhar, corrija antes de continuar</span></div>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Use mensagens de commit numeradas para migracoes: <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">"refactor: rename User → Account (batch 1/4 - models)"</code>. Isso facilita o rollback seletivo e a revisao do PR.
+        </p>
+        <p class="text-neutral-300">
+          Se um batch falhar e o fix nao for obvio, faca <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">git stash</code> e analise o problema com calma antes de continuar.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🔍 Sweep final (verificacao completa)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Apos todos os batches, faca um <strong class="text-purple-400">sweep final</strong>: uma varredura completa para encontrar referencias esquecidas, strings hardcoded, comentarios desatualizados e qualquer resquicio do nome/padrao antigo que tenha escapado dos batches.
+      </p>
+
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O sweep final e a ultima linha de defesa. O Claude faz um <strong class="text-white">grep global</strong> pelo nome/padrao antigo em todo o projeto, incluindo arquivos que nao estavam no plano original - configuracoes, scripts, documentacao, seeds e fixtures.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Grep global:</strong> Busca pelo nome antigo em TODOS os arquivos, incluindo .env, README, comments, strings, fixtures e seeds</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Testes completos:</strong> Rode a suite inteira de testes, nao apenas os unitarios. Integracao e e2e podem revelar problemas que unitarios nao pegam</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Review final:</strong> Peca ao Claude para fazer um /review de todas as mudancas da migracao juntas</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Documentacao:</strong> Atualize README, API docs e qualquer documentacao que referencia o nome/padrao antigo</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Exemplo no Terminal
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-2">
+          <div><span class="text-purple-400">></span> <span class="text-neutral-300">Faca um sweep final da migracao User → Account:</span></div>
+          <div><span class="text-neutral-300">1. Grep por "User" (case-insensitive) em todo o projeto</span></div>
+          <div><span class="text-neutral-300">2. Identifique referencias que deveriam ter sido renomeadas</span></div>
+          <div><span class="text-neutral-300">3. Ignore falsos positivos (ex: "username" nao precisa mudar)</span></div>
+          <div><span class="text-neutral-300">4. Corrija as que faltaram</span></div>
+          <div><span class="text-neutral-300">5. Rode todos os testes novamente</span></div>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          O sweep final frequentemente encontra 5-10% de referencias esquecidas, especialmente em strings de log, mensagens de erro, nomes de tabelas de banco e fixtures de teste. Nunca pule essa etapa.
+        </p>
+        <p class="text-neutral-300">
+          Faca o sweep em um commit separado: <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">"refactor: rename User → Account - final sweep"</code>. Isso deixa claro na historia do git o que foi planejado vs o que foi pego no sweep.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">📦 /compact em migracoes longas</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Migracoes multi-arquivo geram conversas muito longas com o Claude. O contexto cresce a cada batch e o Claude pode perder o foco. O <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">/compact</code> e essencial para <strong class="text-purple-400">manter o contexto gerenciavel</strong> sem perder o progresso da migracao.
+      </p>
+
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Em migracoes longas, o <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">/compact</code> resume a conversa mantendo o <strong class="text-white">plano de migracao, batches ja concluidos e o estado atual</strong>. Isso reduz o consumo de tokens e melhora a qualidade das respostas nos batches seguintes.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Quando compactar:</strong> Apos cada 2-3 batches completos, ou quando sentir que as respostas estao ficando lentas ou imprecisas</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Compact direcionado:</strong> Use <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">/compact mantenha o plano de migracao e o status de cada batch</code> para preservar o essencial</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Plano externo:</strong> Mantenha o plano de migracao em um arquivo .md separado para que o Claude possa rele-lo apos o compact</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Economia real:</strong> Uma migracao de 20 arquivos pode consumir 200k+ tokens sem compact. Com compact a cada 3 batches, cai para 50-80k tokens</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Exemplo no Terminal
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-2">
+          <div class="text-neutral-500"># Apos completar batch 3 de 6</div>
+          <div><span class="text-purple-400">></span> <span class="text-neutral-300">/compact mantenha: 1) plano de migracao completo, 2) batches 1-3 ja concluidos e commitados, 3) batches 4-6 pendentes com lista de arquivos</span></div>
+          <div class="text-neutral-500 mt-3"># Retomar apos compact</div>
+          <div><span class="text-purple-400">></span> <span class="text-neutral-300">Continuando a migracao. Leia MIGRATION_PLAN.md para relembrar o plano. Execute o batch 4.</span></div>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          A estrategia ideal e: <strong class="text-white">plano no arquivo + compact na conversa</strong>. O plano fica persistido em MIGRATION_PLAN.md, e o Claude pode rele-lo a qualquer momento. A conversa fica leve com compact regular.
+        </p>
+        <p class="text-neutral-300">
+          Para migracoes muito grandes (50+ arquivos), considere usar sessoes separadas para cada grupo de batches, em vez de uma unica sessao com compact.
+        </p>
+      </div>
+    </section>
+
+    <!-- EXERCICIO PRATICO -->
+    <section id="exercicio" class="mb-16">
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-2 flex items-center">
+          <span class="mr-3">🏋️</span> Exercicio Pratico
+        </h2>
+        <p class="text-neutral-400 mb-8">Executar rename/refactor em 10+ arquivos com o workflow completo</p>
+
+        <div class="space-y-8">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Planejar a migracao</h4>
+              <p class="text-neutral-300 text-sm mb-3">Escolha um rename real no seu projeto e peca o plano:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <div><span class="text-purple-400">></span> <span class="text-neutral-300">[Plan Mode] Preciso renomear X para Y. Mapeie todos os arquivos afetados e divida em batches.</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Executar batches com testes</h4>
+              <p class="text-neutral-300 text-sm mb-3">Execute cada batch, teste e comite:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <div><span class="text-purple-400">></span> <span class="text-neutral-300">Execute batch 1. Rode testes. Comite se passar.</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Compact e continuar</h4>
+              <p class="text-neutral-300 text-sm mb-3">Apos batch 3, compacte e continue:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <div><span class="text-purple-400">></span> <span class="text-neutral-300">/compact mantenha o plano de migracao e status dos batches</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">4</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Sweep final</h4>
+              <p class="text-neutral-300 text-sm mb-3">Faca a varredura final e confirme que nada foi esquecido:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <div><span class="text-purple-400">></span> <span class="text-neutral-300">Sweep final: grep global pelo nome antigo, corrija o que faltou, rode todos os testes.</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checklist -->
+      <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6 mb-6 mt-8">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-purple-400">☐</span>
+            <span class="text-neutral-300">Planejou em Plan Mode antes de executar</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-purple-400">☐</span>
+            <span class="text-neutral-300">Identificou todos os arquivos afetados</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-purple-400">☐</span>
+            <span class="text-neutral-300">Executou em batches de 3-5 arquivos</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-purple-400">☐</span>
+            <span class="text-neutral-300">Testou apos cada batch</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-purple-400">☐</span>
+            <span class="text-neutral-300">Usou /compact durante a migracao</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-purple-400">☐</span>
+            <span class="text-neutral-300">Fez sweep final e tudo passa</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Plan Mode antes de tudo</strong>
+              <span class="text-neutral-400"> - Mapeie escopo, dependencias e ordem antes de mudar uma unica linha.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Identifique TODOS os arquivos afetados</strong>
+              <span class="text-neutral-400"> - Diretos, indiretos, testes, configs e documentacao.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Execute em batches de 3-5 arquivos</strong>
+              <span class="text-neutral-400"> - Cada batch testavel e commitavel independentemente.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Teste apos cada batch</strong>
+              <span class="text-neutral-400"> - Build, testes e linting entre batches. Nunca avance com falhas.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Sweep final pega o que escapou</strong>
+              <span class="text-neutral-400"> - Grep global, testes completos e review das mudancas totais.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">/compact mantem o contexto gerenciavel</strong>
+              <span class="text-neutral-400"> - Compacte a cada 2-3 batches. Mantenha o plano em arquivo externo.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-purple-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">3.9 - Agent Teams e Loop Agentico (2026)</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-3-7.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Modulo Anterior
+          </a>
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha
+          </a>
+          <a href="modulo-3-9.html" class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>6 Pilares do Claude Code Full - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

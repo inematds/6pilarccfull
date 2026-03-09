@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 3.7 - Workflow: Debug com Logs e Erros | 6 Pilares CC Full</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span>
+            <span class="font-bold text-lg hidden sm:inline">6 Pilares CC Full</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Atalhos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">CLAUDE.md</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Workflows</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Prompts</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Skills</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">MCPs</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-purple-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-purple-400">Trilha 3</a>
+      <span>/</span>
+      <span class="text-purple-400">Modulo 3.7</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 3.7
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🐛 Workflow: Debug com Logs e Erros</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Aprenda a usar o Claude Code como parceiro de debugging: cole stack traces, pipe logs de erro, trace root causes e aplique fixes com verificacao. Transforme horas de debugging em minutos com analise assistida por IA.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">30</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Intermediario</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Teoria + Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">📋 Colando erros diretamente</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A forma mais rapida de debugar com Claude Code e simplesmente <strong class="text-purple-400">colar o stack trace ou mensagem de erro</strong> diretamente na conversa. O Claude le o erro, identifica o arquivo e linha, analisa o contexto e sugere a correcao. Sem precisar explicar nada - o erro fala por si.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O Claude e treinado para interpretar stack traces de praticamente qualquer linguagem: Python tracebacks, Node.js errors, Java exceptions, Go panics, Rust panics e muito mais. Ele extrai automaticamente o <strong class="text-white">arquivo, linha, funcao e tipo de erro</strong> para dar um diagnostico preciso.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Cole e pergunte:</strong> Literalmente copie o erro do terminal e cole no Claude. Ele entende o formato automaticamente</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Contexto automatico:</strong> O Claude le o arquivo mencionado no stack trace para entender o contexto completo, nao apenas a linha do erro</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Diagnostico + fix:</strong> Alem de explicar o erro, o Claude sugere (e pode aplicar) a correcao imediatamente</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Erros de build:</strong> Erros de compilacao, linting, TypeScript, webpack - todos podem ser colados e resolvidos</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Exemplo -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Exemplo no Terminal
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-2">
+          <div class="text-neutral-500"># Simplesmente cole o erro</div>
+          <div><span class="text-purple-400">></span> <span class="text-neutral-300">TypeError: Cannot read properties of undefined (reading 'map')</span></div>
+          <div><span class="text-neutral-300">    at UserList (src/components/UserList.tsx:23:18)</span></div>
+          <div><span class="text-neutral-300">    at renderWithHooks (node_modules/react-dom/...)</span></div>
+          <div class="text-neutral-500 mt-3"># O Claude vai:</div>
+          <div class="text-neutral-300">1. Ler src/components/UserList.tsx</div>
+          <div class="text-neutral-300">2. Identificar que 'users' pode ser undefined na linha 23</div>
+          <div class="text-neutral-300">3. Sugerir: users?.map() ou verificacao de loading state</div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Nao filtre o stack trace - cole ele <strong class="text-white">completo</strong>. Mesmo as linhas de frameworks internos (React, Express, Django) ajudam o Claude a entender o contexto de execucao e dar um diagnostico mais preciso.
+        </p>
+        <p class="text-neutral-300">
+          Se o erro aconteceu apos uma mudanca recente, mencione: "Este erro comecou a aparecer depois que eu modifiquei o arquivo X." Isso ajuda o Claude a focar na causa provavel.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">📥 Pipe de logs (cat error.log | claude)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Para logs grandes ou arquivos de erro, o <strong class="text-purple-400">pipe direto para o Claude</strong> e a abordagem mais eficiente. Em vez de copiar e colar manualmente, voce redireciona o conteudo do arquivo de log diretamente para analise, aproveitando o poder do modo headless.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O pipe de logs combina o poder do Unix com a inteligencia do Claude. Voce pode filtrar, recortar e direcionar logs especificos para analise, sem precisar abrir uma sessao interativa. O Claude recebe o conteudo via stdin e responde com o diagnostico.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Pipe direto:</strong> <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">cat error.log | claude -p "Analise estes erros"</code> - envia o log inteiro para analise</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Filtrado com grep:</strong> <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">grep ERROR app.log | claude -p "Classifique estes erros"</code> - envia apenas as linhas de erro</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Ultimas N linhas:</strong> <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">tail -100 app.log | claude -p "O que aconteceu?"</code> - analisa os ultimos 100 registros</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Logs de Docker:</strong> <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">docker logs container_id 2>&1 | claude -p "Diagnostique"</code> - logs de containers</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Exemplo -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Exemplo no Terminal
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-2">
+          <div class="text-neutral-500"># Log completo</div>
+          <div><span class="text-purple-400">$</span> <span class="text-neutral-300">cat /var/log/app/error.log | claude -p "Identifique os 3 erros mais criticos e sugira fixes"</span></div>
+          <div class="text-neutral-500 mt-3"># Filtrado por horario</div>
+          <div><span class="text-purple-400">$</span> <span class="text-neutral-300">grep "2026-03-09" app.log | grep ERROR | claude -p "O que causou estes erros hoje?"</span></div>
+          <div class="text-neutral-500 mt-3"># Output de teste falhando</div>
+          <div><span class="text-purple-400">$</span> <span class="text-neutral-300">npm test 2>&1 | claude -p "Analise as falhas de teste e sugira correcoes"</span></div>
+          <div class="text-neutral-500 mt-3"># Logs de multiplos servicos</div>
+          <div><span class="text-purple-400">$</span> <span class="text-neutral-300">docker-compose logs --tail=50 2>&1 | claude -p "Identifique problemas de comunicacao entre servicos"</span></div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Para logs muito grandes (>1000 linhas), filtre antes de enviar. O Claude funciona melhor com contexto focado. Use <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">tail -200</code>, <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">grep ERROR</code> ou <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">grep -A5 "Exception"</code> para enviar apenas o relevante.
+        </p>
+        <p class="text-neutral-300">
+          Crie um alias para debugging rapido: <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">alias debug-log='tail -200 | claude -p "Analise estes logs e identifique o problema"'</code>
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🔎 Tracando root cause (analise de arquivos)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Encontrar o erro e so o comeco - o verdadeiro desafio e encontrar a <strong class="text-purple-400">causa raiz</strong>. O Claude Code se destaca nisso porque pode ler multiplos arquivos, tracar a cadeia de chamadas e identificar onde exatamente o problema se origina, mesmo que o erro apareca em outro lugar.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Root cause analysis com Claude segue o principio dos <strong class="text-white">"5 porques"</strong>: o erro aparece na linha X, mas por que? Porque a variavel e nula. Por que e nula? Porque o fetch falhou. Por que falhou? Porque a URL esta errada no config. O Claude faz essa cadeia automaticamente, lendo cada arquivo relevante.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Trace de chamadas:</strong> O Claude segue o stack trace, lendo cada arquivo e funcao na cadeia para encontrar a origem real do problema</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Leitura multi-arquivo:</strong> O Claude le automaticamente os arquivos referenciados no erro, imports, configuracoes e dependencias</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Hipoteses e verificacao:</strong> O Claude formula hipoteses sobre a causa e verifica cada uma lendo o codigo relevante</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Historico git:</strong> Quando relevante, o Claude pode usar <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">git log</code> e <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">git blame</code> para identificar quando e quem introduziu o bug</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Exemplo -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Exemplo no Terminal
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-2">
+          <div class="text-neutral-500"># Pedir analise de root cause</div>
+          <div><span class="text-purple-400">></span> <span class="text-neutral-300">Este erro aparece no UserList.tsx:23 mas acho que a causa real esta em outro lugar. Trace a cadeia de chamadas e encontre a root cause:</span></div>
+          <div><span class="text-neutral-300">TypeError: Cannot read properties of undefined (reading 'map')</span></div>
+          <div class="text-neutral-500 mt-3"># Claude vai ler:</div>
+          <div class="text-neutral-300">1. UserList.tsx → identifica que 'users' vem de useQuery()</div>
+          <div class="text-neutral-300">2. hooks/useUsers.ts → identifica que o fetch usa getApiUrl()</div>
+          <div class="text-neutral-300">3. config/api.ts → encontra URL incorreta no .env</div>
+          <div class="text-neutral-300">Root cause: REACT_APP_API_URL nao definida no .env.local</div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Quando o bug e misterioso, peca ao Claude para trabalhar em <strong class="text-white">Plan Mode</strong> primeiro: "Antes de mudar qualquer coisa, analise o problema e me diga onde voce acha que esta a root cause." Isso evita fixes prematuros que mascariam o problema real.
+        </p>
+        <p class="text-neutral-300">
+          Use <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">git bisect</code> com Claude: "Execute git bisect para encontrar o commit que introduziu este bug" - o Claude pode automatizar o processo inteiro.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🔧 Aplicando o fix (correcao + verificacao)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Com a root cause identificada, e hora de <strong class="text-purple-400">aplicar a correcao e verificar</strong> que funciona. O Claude Code nao apenas sugere o fix - ele edita o arquivo, roda os testes e confirma que o erro foi resolvido. O ciclo completo de debug acontece em uma unica sessao.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O ciclo de fix e: <strong class="text-white">diagnostico → correcao → teste → verificacao</strong>. O Claude executa todas as etapas, garantindo que o fix nao apenas resolve o erro original mas tambem nao introduz novos problemas (regressoes).
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Fix cirurgico:</strong> O Claude faz a menor mudanca possivel para resolver o problema, minimizando risco de efeitos colaterais</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Verificacao automatica:</strong> Apos aplicar o fix, o Claude roda os testes e/ou reproduz o cenario de erro para confirmar a resolucao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Teste de regressao:</strong> O Claude pode gerar um teste especifico para o bug, garantindo que nao volte no futuro</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Commit descritivo:</strong> O Claude pode criar um commit com mensagem que descreve o bug e a correcao para referencia futura</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Exemplo -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Exemplo no Terminal
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-2">
+          <div class="text-neutral-500"># Pedir fix + verificacao completa</div>
+          <div><span class="text-purple-400">></span> <span class="text-neutral-300">Corrija o bug que voce identificou. Depois:</span></div>
+          <div><span class="text-neutral-300">1. Rode os testes para confirmar que o fix funciona</span></div>
+          <div><span class="text-neutral-300">2. Crie um teste de regressao para este bug</span></div>
+          <div><span class="text-neutral-300">3. Faca um commit com mensagem descritiva</span></div>
+          <div class="text-neutral-500 mt-3"># Resultado tipico:</div>
+          <div class="text-emerald-400">Fix aplicado em src/config/api.ts</div>
+          <div class="text-emerald-400">Teste de regressao criado em __tests__/api-config.test.ts</div>
+          <div class="text-emerald-400">Todos os 47 testes passando</div>
+          <div class="text-emerald-400">Commit: "fix: add fallback for undefined API URL in config"</div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Sempre peca um <strong class="text-white">teste de regressao</strong> junto com o fix. O teste garante que o mesmo bug nunca mais volte. Sem o teste, voce (ou outro dev) pode reintroduzir o mesmo problema no futuro.
+        </p>
+        <p class="text-neutral-300">
+          Padrao de commit para bugs: <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">"fix: [o que foi corrigido] - [causa raiz]"</code>. Ex: "fix: prevent null crash in UserList - add API URL fallback"
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🎲 Erros intermitentes (flaky debugging)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Os erros mais frustrantes sao os <strong class="text-purple-400">intermitentes</strong>: as vezes acontecem, as vezes nao. Race conditions, timing issues, flaky tests e erros que dependem do estado. O Claude Code pode ajudar a identificar padroes nesses erros e sugerir solucoes robustas.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Erros intermitentes geralmente tem causas sistematicas que se manifestam sob condicoes especificas. O Claude pode analisar <strong class="text-white">multiplas ocorrencias do mesmo erro</strong>, identificar padroes (horario, carga, estado) e propor solucoes que tratam a causa raiz.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Race conditions:</strong> Duas operacoes concorrentes acessando o mesmo recurso. Claude identifica shared state e sugere locks, mutexes ou reestruturacao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Flaky tests:</strong> Testes que passam e falham aleatoriamente. Geralmente causados por dependencia de timing, estado global ou ordem de execucao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Analise de padroes:</strong> Colete varias ocorrencias do erro e peca ao Claude para encontrar o que elas tem em comum</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Reproducao:</strong> O Claude pode sugerir como reproduzir o erro de forma consistente, o que e metade da solucao</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Exemplo -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Exemplo no Terminal
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-2">
+          <div class="text-neutral-500"># Analisar flaky test</div>
+          <div><span class="text-purple-400">></span> <span class="text-neutral-300">O teste "should update user profile" falha intermitentemente (3 de 10 execucoes). Analise o teste e o codigo que ele testa para encontrar a causa da intermitencia.</span></div>
+          <div class="text-neutral-500 mt-3"># Analisar logs de multiplas ocorrencias</div>
+          <div><span class="text-purple-400">$</span> <span class="text-neutral-300">grep "ConnectionTimeout" app.log | claude -p "Estas timeouts acontecem em padroes? Qual a causa provavel?"</span></div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Para flaky tests, peca ao Claude para rodar o teste 10 vezes em loop e analisar os resultados: <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">"Rode este teste 10 vezes. Se falhar em alguma, analise a diferenca entre as execucoes que passaram e as que falharam."</code>
+        </p>
+        <p class="text-neutral-300">
+          Erros intermitentes em producao: colete pelo menos 5 ocorrencias antes de analisar. Uma unica ocorrencia pode ser ruido, mas 5 revelam padroes.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">📊 Logs de producao (analise segura)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Analisar logs de producao requer cuidado extra: eles podem conter <strong class="text-purple-400">dados sensiveis</strong> (tokens, emails, IPs). O Claude Code pode ajudar a diagnosticar problemas de producao de forma segura, desde que voce siga boas praticas de sanitizacao antes de compartilhar os logs.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Logs de producao sao a fonte mais rica de informacao para debugging, mas vem com responsabilidades. O Claude processa os logs localmente na sua maquina, mas e boa pratica <strong class="text-white">sanitizar dados sensiveis</strong> antes de enviar para analise.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Sanitizacao:</strong> Remova tokens, senhas, emails e dados pessoais antes de enviar ao Claude. Use sed/awk para mascarar</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Filtragem por relevancia:</strong> Nao envie 10GB de logs. Filtre por timestamp, nivel de severidade ou servico especifico</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Correlacao de eventos:</strong> O Claude pode correlacionar logs de multiplos servicos para tracar o fluxo de uma request que falhou</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Metricas e tendencias:</strong> Alem de erros pontuais, o Claude pode identificar tendencias: "erros aumentaram 300% nas ultimas 2 horas"</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Exemplo -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Exemplo no Terminal
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-2">
+          <div class="text-neutral-500"># Sanitizar e analisar</div>
+          <div><span class="text-purple-400">$</span> <span class="text-neutral-300">cat prod.log | sed 's/Bearer [^ ]*/Bearer [REDACTED]/g' | \</span></div>
+          <div><span class="text-neutral-300">  sed 's/[a-zA-Z0-9._%+-]*@[a-zA-Z0-9.-]*/[EMAIL]/g' | \</span></div>
+          <div><span class="text-neutral-300">  claude -p "Analise estes logs de producao. Identifique erros criticos e padroes."</span></div>
+          <div class="text-neutral-500 mt-3"># Logs de multiplos servicos</div>
+          <div><span class="text-purple-400">$</span> <span class="text-neutral-300">kubectl logs -l app=api --tail=200 | claude -p "Correlacione erros entre os pods"</span></div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Crie um script de sanitizacao reutilizavel para seus logs de producao. Isso torna seguro e rapido enviar logs para analise sem risco de vazamento de dados.
+        </p>
+        <p class="text-neutral-300">
+          Nunca envie logs de producao com dados de pagamento, credenciais de banco ou tokens de API. Use <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">grep -v</code> para remover linhas que contenham palavras-chave sensiveis antes do pipe.
+        </p>
+      </div>
+    </section>
+
+    <!-- EXERCICIO PRATICO -->
+    <section id="exercicio" class="mb-16">
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-2 flex items-center">
+          <span class="mr-3">🏋️</span> Exercicio Pratico
+        </h2>
+        <p class="text-neutral-400 mb-8">Diagnosticar 3 erros diferentes via pipe de logs e stack traces</p>
+
+        <div class="space-y-8">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Criar cenarios de erro</h4>
+              <p class="text-neutral-300 text-sm mb-3">Introduza 3 bugs intencionais no projeto e colete os erros:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-1">
+                <div><span class="text-neutral-500"># Bug 1: Referencia undefined</span></div>
+                <div><span class="text-neutral-500"># Bug 2: Import incorreto</span></div>
+                <div><span class="text-neutral-500"># Bug 3: Tipo errado de parametro</span></div>
+                <div><span class="text-purple-400">$</span> <span class="text-neutral-300">npm test 2>&1 > erros.log</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Diagnosticar via pipe</h4>
+              <p class="text-neutral-300 text-sm mb-3">Use pipe para enviar cada erro ao Claude:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-1">
+                <div><span class="text-purple-400">$</span> <span class="text-neutral-300">cat erros.log | claude -p "Identifique todos os erros, trace a root cause de cada um e sugira fixes"</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Aplicar fixes e verificar</h4>
+              <p class="text-neutral-300 text-sm mb-3">Peca ao Claude para corrigir cada erro interativamente:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-1">
+                <div><span class="text-purple-400">></span> <span class="text-neutral-300">Corrija os 3 bugs identificados. Apos cada fix, rode os testes para confirmar.</span></div>
+              </div>
+              <p class="text-neutral-400 text-xs mt-2">Todos os 3 erros devem estar resolvidos e os testes passando.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">4</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Criar testes de regressao</h4>
+              <p class="text-neutral-300 text-sm mb-3">Garanta que os bugs nao voltem:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-1">
+                <div><span class="text-purple-400">></span> <span class="text-neutral-300">Crie um teste de regressao para cada um dos 3 bugs corrigidos.</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checklist -->
+      <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6 mb-6 mt-8">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-purple-400">☐</span>
+            <span class="text-neutral-300">Colou stack trace e obteve diagnostico</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-purple-400">☐</span>
+            <span class="text-neutral-300">Usou pipe de logs para analise</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-purple-400">☐</span>
+            <span class="text-neutral-300">Encontrou root cause de cada erro</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-purple-400">☐</span>
+            <span class="text-neutral-300">Aplicou fixes e testes passam</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-purple-400">☐</span>
+            <span class="text-neutral-300">Criou testes de regressao</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-purple-400">☐</span>
+            <span class="text-neutral-300">Sanitizou dados sensiveis em logs</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Cole o erro e receba diagnostico</strong>
+              <span class="text-neutral-400"> - Stack traces colados diretamente sao interpretados automaticamente pelo Claude.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Pipe de logs para analise em massa</strong>
+              <span class="text-neutral-400"> - cat, grep, tail combinados com claude -p para processamento eficiente.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Root cause analysis multi-arquivo</strong>
+              <span class="text-neutral-400"> - O Claude segue a cadeia de chamadas ate encontrar a origem real do problema.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Fix + verificacao + regressao</strong>
+              <span class="text-neutral-400"> - Ciclo completo: corrige, testa, cria teste de regressao e comita.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Erros intermitentes tem padroes</strong>
+              <span class="text-neutral-400"> - Colete multiplas ocorrencias e peca ao Claude para encontrar o padrao.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Logs de producao com seguranca</strong>
+              <span class="text-neutral-400"> - Sempre sanitize dados sensiveis antes de enviar para analise.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-purple-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">3.8 - Workflow: Migracao Multi-arquivo</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-3-6.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Modulo Anterior
+          </a>
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha
+          </a>
+          <a href="modulo-3-8.html" class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>6 Pilares do Claude Code Full - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
