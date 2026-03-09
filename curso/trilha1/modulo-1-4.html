@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 1.4 - Flags de Linha de Comando | 6 Pilares CC Full</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span>
+            <span class="font-bold text-lg hidden sm:inline">6 Pilares CC Full</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Atalhos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">CLAUDE.md</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Workflows</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Prompts</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Skills</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">MCPs</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-emerald-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-emerald-400">Trilha 1</a>
+      <span>/</span>
+      <span class="text-emerald-400">Modulo 1.4</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 1.4
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🚩 Flags de Linha de Comando</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Domine as flags que transformam o Claude Code numa ferramenta de automacao poderosa: -p para execucao direta, --model para escolher o modelo, --resume para retomar sessoes, --allowedTools para seguranca e --output-format para integracao com scripts.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">30</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">Intermediario</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">Teoria + Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 1: -p (prompt) -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">⚡ -p (prompt) - Execucao direta sem sessao</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A flag <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">-p</code> (ou <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">--print</code>) e o modo <strong class="text-emerald-400">one-shot</strong> do Claude Code. Em vez de abrir uma sessao interativa, voce envia um prompt unico, recebe a resposta e o processo termina. E a base para automacao, scripts e pipelines de CI/CD.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Com <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">-p</code>, o Claude Code funciona como qualquer outro comando Unix: recebe input, processa e retorna output. Isso permite <strong class="text-white">piping, redirecionamento e integracao com scripts bash</strong> de forma natural.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Execucao unica:</strong> O Claude processa o prompt, retorna a resposta e encerra. Nao abre sessao interativa, nao espera mais input. Ideal para automacao onde voce nao quer interacao humana</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Piping nativo:</strong> Voce pode enviar dados via pipe: <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">cat arquivo.py | claude -p "explique este codigo"</code>. O conteudo do pipe e incluido no contexto automaticamente</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Sem interacao:</strong> Todas as acoes que normalmente requerem aprovacao (editar arquivos, rodar comandos) sao executadas automaticamente quando possivel, ou ignoradas quando nao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Saida limpa:</strong> A saida do -p e apenas o texto da resposta, sem formatacao de terminal, sem indicadores de tools. Perfeito para capturar em variaveis ou redirecionar para arquivos</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Exemplo de Codigo -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Exemplos Praticos
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-3">
+          <div class="text-neutral-500"># Prompt simples</div>
+          <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">claude -p "Explique o que este projeto faz"</span></div>
+          <div class="text-neutral-500 mt-3"># Piping de arquivo</div>
+          <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">cat src/auth.ts | claude -p "Encontre vulnerabilidades neste codigo"</span></div>
+          <div class="text-neutral-500 mt-3"># Salvando resposta em arquivo</div>
+          <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">claude -p "Gere documentacao para as funcoes em utils.ts" > docs/utils.md</span></div>
+          <div class="text-neutral-500 mt-3"># Combinando com outros comandos</div>
+          <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">git diff HEAD~3 | claude -p "Resuma as mudancas dos ultimos 3 commits"</span></div>
+          <div class="text-neutral-500 mt-3"># Usando em script bash</div>
+          <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">REVIEW=$(claude -p "Revise o codigo em src/api.ts e liste os problemas")</span></div>
+          <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">echo "$REVIEW" | mail -s "Code Review" dev@team.com</span></div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          O <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">-p</code> e a flag mais poderosa do Claude Code para automacao. Crie <strong class="text-white">aliases no seu .bashrc/.zshrc</strong> para tarefas repetitivas: <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">alias cr='claude -p "Revise o codigo alterado"'</code>.
+        </p>
+        <p class="text-neutral-300">
+          Para prompts longos, use heredoc: <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">claude -p "$(cat &lt;&lt;EOF
+Analise este projeto e gere um relatorio...
+EOF
+)"</code>. Isso permite prompts multiline sem escapar aspas.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 2: --model -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">🤖 --model - Escolhendo o modelo certo</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A flag <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">--model</code> permite escolher qual modelo Claude sera usado na sessao. Cada modelo tem um <strong class="text-emerald-400">perfil diferente de capacidade, velocidade e custo</strong>, e saber quando usar cada um e essencial para otimizar tanto a qualidade quanto os gastos.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O Claude Code suporta toda a familia de modelos Claude. Voce escolhe o modelo baseado no <strong class="text-white">trade-off entre inteligencia, velocidade e custo</strong>. Nao existe modelo "melhor" - existe o modelo certo para cada tarefa.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Opus (claude-opus-4):</strong> O mais inteligente e capaz. Melhor para arquitetura complexa, refatoracoes grandes, debug de problemas dificeis e decisoes de design criticas. Mais lento e mais caro</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Sonnet (claude-sonnet-4):</strong> O equilibrio ideal para a maioria das tarefas. Rapido, inteligente e com custo moderado. Melhor para desenvolvimento diario: escrever features, corrigir bugs, fazer reviews</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Haiku (claude-haiku-4):</strong> O mais rapido e barato. Ideal para tarefas simples e repetitivas: formatacao, geracao de boilerplate, perguntas rapidas, automacoes em massa. Menos capaz para raciocinio complexo</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Tabela de Comparacao -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6 overflow-x-auto">
+        <h3 class="text-lg font-semibold text-white mb-4">Quando usar cada modelo</h3>
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-dark-600">
+              <th class="text-left py-3 pr-4 text-neutral-400 font-medium">Modelo</th>
+              <th class="text-left py-3 px-4 text-neutral-400 font-medium">Melhor para</th>
+              <th class="text-left py-3 px-4 text-neutral-400 font-medium">Velocidade</th>
+              <th class="text-left py-3 pl-4 text-neutral-400 font-medium">Custo</th>
+            </tr>
+          </thead>
+          <tbody class="text-neutral-300">
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-medium text-emerald-400">Opus</td>
+              <td class="py-3 px-4">Arquitetura, refatoracao, debug complexo</td>
+              <td class="py-3 px-4">Lento</td>
+              <td class="py-3 pl-4 text-red-300">Alto</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-medium text-emerald-400">Sonnet</td>
+              <td class="py-3 px-4">Desenvolvimento diario, features, bugs</td>
+              <td class="py-3 px-4">Rapido</td>
+              <td class="py-3 pl-4 text-yellow-300">Medio</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 font-medium text-emerald-400">Haiku</td>
+              <td class="py-3 px-4">Tarefas simples, boilerplate, automacao</td>
+              <td class="py-3 px-4">Muito rapido</td>
+              <td class="py-3 pl-4 text-emerald-300">Baixo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Exemplo de Codigo -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Exemplos de Uso
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-3">
+          <div class="text-neutral-500"># Sessao interativa com Opus para arquitetura</div>
+          <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">claude --model claude-opus-4</span></div>
+          <div class="text-neutral-500 mt-3"># One-shot com Haiku para tarefa simples</div>
+          <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">claude -p "Formate este JSON" --model claude-haiku-4 < data.json</span></div>
+          <div class="text-neutral-500 mt-3"># Sonnet para desenvolvimento diario (padrao)</div>
+          <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">claude --model claude-sonnet-4</span></div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Regra pratica: use <strong class="text-white">Sonnet como padrao</strong> para 80% das tarefas. Suba para Opus quando sentir que o Sonnet nao esta dando conta (problemas de raciocinio, arquitetura complexa). Desça para Haiku para tarefas mecanicas que nao precisam de inteligencia profunda.
+        </p>
+        <p class="text-neutral-300">
+          Crie aliases para trocar rapido: <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">alias co='claude --model claude-opus-4'</code> e <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">alias ch='claude --model claude-haiku-4'</code>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 3: --resume -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🔄 --resume - Retomando sessoes anteriores</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A flag <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">--resume</code> permite retomar uma sessao anterior do Claude Code exatamente de onde voce parou. O contexto, as decisoes e o historico sao <strong class="text-emerald-400">restaurados completamente</strong>, como se voce nunca tivesse saido.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Cada sessao do Claude Code recebe um <strong class="text-white">ID unico</strong> e seu historico e salvo localmente. O --resume recarrega esse historico, permitindo que voce continue um trabalho interrompido sem perder contexto nem precisar re-explicar o que ja foi discutido.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">--resume (sem argumento):</strong> Retoma a sessao mais recente no diretorio atual. E o uso mais comum - voce fechou o terminal e quer voltar de onde parou</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">--resume SESSION_ID:</strong> Retoma uma sessao especifica pelo ID. Util quando voce tem multiplas sessoes e quer voltar para uma antiga</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Contexto completo:</strong> Toda a conversa e restaurada: perguntas, respostas, arquivos lidos, decisoes tomadas. O Claude "lembra" de tudo como se nao houvesse interrupcao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Custo de retomada:</strong> Ao retomar, o contexto inteiro e reenviado na primeira mensagem. Em sessoes longas, isso pode ser caro. Considere /compact antes de sair</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Exemplo de Codigo -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Exemplos de Uso
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-3">
+          <div class="text-neutral-500"># Retomar a sessao mais recente</div>
+          <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">claude --resume</span></div>
+          <div class="text-neutral-500 mt-3"># Retomar uma sessao especifica</div>
+          <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">claude --resume abc123def456</span></div>
+          <div class="text-neutral-500 mt-3"># Combo: compactar antes de sair, retomar depois</div>
+          <div class="text-neutral-500"># Na sessao atual:</div>
+          <div><span class="text-emerald-400">></span> <span class="text-neutral-300">/compact</span></div>
+          <div><span class="text-emerald-400">></span> <span class="text-neutral-300">exit</span></div>
+          <div class="text-neutral-500"># Depois:</div>
+          <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">claude --resume</span></div>
+        </div>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ Quando RETOMAR</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Voce saiu no meio de uma tarefa e quer continuar</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>O terminal crashou durante uma operacao</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Voce precisa voltar a uma sessao com decisoes importantes</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ Quando NAO retomar</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>A tarefa anterior ja foi concluida - inicie uma nova sessao</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>O contexto da sessao antiga esta muito poluido</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Voce mudou significativamente o codigo desde a ultima sessao</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Antes de fechar uma sessao que voce pretende retomar, rode <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">/compact</code>. Isso reduz dramaticamente o custo da retomada, ja que o contexto compactado e muito menor que o historico completo.
+        </p>
+        <p class="text-neutral-300">
+          Para sessoes importantes, anote o session ID. Voce pode ver no inicio da sessao ou com <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">/status</code>. Isso permite retomar sessoes especificas mesmo depois de iniciar varias outras.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 4: --allowedTools -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🔒 --allowedTools - Controlando permissoes</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A flag <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">--allowedTools</code> permite restringir quais ferramentas o Claude Code pode usar durante a sessao. E essencial para <strong class="text-emerald-400">seguranca em automacao</strong>, ambientes de producao e quando voce quer controle fino sobre o que o agente pode fazer.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Por padrao, o Claude Code pode ler arquivos, escrever arquivos, executar comandos shell e usar MCPs - tudo com aprovacao. O --allowedTools permite <strong class="text-white">limitar ou expandir</strong> essas capacidades explicitamente, sem depender de aprovacao manual.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Lista branca:</strong> Quando voce especifica --allowedTools, apenas as tools listadas ficam disponiveis. Todas as outras sao bloqueadas, mesmo com aprovacao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Seguranca em CI/CD:</strong> Em pipelines automatizados, use --allowedTools para garantir que o Claude so pode ler arquivos e nao pode executar comandos arbitrarios ou modificar codigo</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Tools disponiveis:</strong> Read, Write, Edit, Bash, Glob, Grep, e qualquer tool de MCP conectado. Voce pode permitir qualquer combinacao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Granularidade:</strong> Voce pode permitir Bash mas bloquear Write, ou permitir Read e Grep mas bloquear tudo que modifica. O controle e por ferramenta individual</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Exemplo de Codigo -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Exemplos de Uso
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-3">
+          <div class="text-neutral-500"># So leitura - ideal para analise segura</div>
+          <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">claude --allowedTools "Read,Glob,Grep" -p "Analise a seguranca deste projeto"</span></div>
+          <div class="text-neutral-500 mt-3"># Leitura + escrita, sem shell</div>
+          <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">claude --allowedTools "Read,Write,Edit,Glob,Grep"</span></div>
+          <div class="text-neutral-500 mt-3"># Tudo exceto MCP externo</div>
+          <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">claude --allowedTools "Read,Write,Edit,Bash,Glob,Grep"</span></div>
+          <div class="text-neutral-500 mt-3"># CI/CD pipeline: so review, sem modificar nada</div>
+          <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">claude --allowedTools "Read,Glob,Grep" -p "Revise o codigo e reporte problemas" --output-format json</span></div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Para automacao em producao, <strong class="text-white">sempre use --allowedTools</strong>. Nunca de ao Claude acesso irrestrito em scripts automatizados. A regra e: quanto mais automatizado, mais restrito. Sessoes interativas podem ser mais permissivas porque voce esta supervisionando.
+        </p>
+        <p class="text-neutral-300">
+          Um padrao comum em CI/CD: <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">--allowedTools "Read,Glob,Grep"</code> para analise e <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">--allowedTools "Read,Write,Edit,Glob,Grep"</code> para geracao de codigo controlada.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 5: --output-format -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">📄 --output-format - Formatando saida</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A flag <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">--output-format</code> controla o formato da saida do Claude Code. Em vez de texto formatado para humanos, voce pode obter <strong class="text-emerald-400">JSON estruturado, texto puro ou streaming JSON</strong> - essencial para integracao com outros sistemas e ferramentas.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O --output-format transforma a saida do Claude Code de texto legivel por humanos para <strong class="text-white">dados estruturados processaveis por maquina</strong>. Isso permite que voce use o Claude Code como componente de pipelines maiores.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">text (padrao):</strong> Saida em texto puro, sem formatacao de terminal. E o formato natural para leitura humana e para redirecionar para arquivos .txt ou .md</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">json:</strong> Retorna um objeto JSON com a resposta, metadados de uso (tokens, custo) e informacoes da sessao. Ideal para parsing automatizado com jq, Python ou Node.js</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">stream-json:</strong> Emite eventos JSON em tempo real conforme o Claude gera a resposta. Cada chunk e um evento separado. Ideal para interfaces que mostram progresso em tempo real</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Exemplo de Codigo -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Exemplos Praticos
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-3">
+          <div class="text-neutral-500"># Saida JSON para processamento automatizado</div>
+          <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">claude -p "Liste os 5 maiores arquivos do projeto" --output-format json</span></div>
+          <div class="text-neutral-500 mt-3"># Extrair so a resposta do JSON com jq</div>
+          <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">claude -p "Resuma este projeto" --output-format json | jq -r '.result'</span></div>
+          <div class="text-neutral-500 mt-3"># Stream JSON para interfaces em tempo real</div>
+          <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">claude -p "Analise o codigo" --output-format stream-json</span></div>
+          <div class="text-neutral-500 mt-3"># Pipeline completo: analise → JSON → dashboard</div>
+          <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">claude -p "Revise src/" --output-format json --allowedTools "Read,Glob,Grep" | python process_review.py</span></div>
+        </div>
+      </div>
+
+      <!-- Dados -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Estrutura do JSON de Saida
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm text-neutral-300">
+          <div>{</div>
+          <div>  "result": "A resposta do Claude...",</div>
+          <div>  "session_id": "abc123def456",</div>
+          <div>  "usage": {</div>
+          <div>    "input_tokens": 15432,</div>
+          <div>    "output_tokens": 3210,</div>
+          <div>    "total_cost": 0.0847</div>
+          <div>  },</div>
+          <div>  "model": "claude-sonnet-4",</div>
+          <div>  "duration_ms": 4523</div>
+          <div>}</div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Use <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">--output-format json</code> sempre que o resultado do Claude for consumido por outro programa. O campo <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">usage</code> no JSON e particularmente util para monitorar custos em automacoes.
+        </p>
+        <p class="text-neutral-300">
+          Combine com <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">jq</code> para extrair campos especificos: <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">claude -p "..." --output-format json | jq '.usage.total_cost'</code> retorna so o custo, ideal para dashboards de monitoramento.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 6: Combinando flags -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🔧 Combinando flags para power-use</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O verdadeiro poder das flags aparece quando voce as <strong class="text-emerald-400">combina</strong>. Um unico comando pode escolher o modelo, restringir permissoes, formatar a saida e enviar um prompt - criando uma ferramenta de automacao sob medida para qualquer necessidade.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Cada flag resolve um aspecto diferente: <strong class="text-white">-p define o que fazer, --model define quem faz, --allowedTools define o que pode ser feito e --output-format define como a resposta chega</strong>. Juntas, elas formam comandos completos e seguros para qualquer cenario.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">CI/CD Review:</strong> <code class="bg-dark-700 px-1 py-0.5 rounded text-emerald-400">claude -p "Revise" --model claude-haiku-4 --allowedTools "Read,Glob,Grep" --output-format json</code> - review barato, seguro e parseavel</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Analise profunda:</strong> <code class="bg-dark-700 px-1 py-0.5 rounded text-emerald-400">claude -p "Analise a arquitetura" --model claude-opus-4 --allowedTools "Read,Glob,Grep"</code> - inteligencia maxima, so leitura</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Geracao controlada:</strong> <code class="bg-dark-700 px-1 py-0.5 rounded text-emerald-400">claude -p "Gere testes" --model claude-sonnet-4 --allowedTools "Read,Write,Glob"</code> - pode ler e escrever, nao pode executar</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Exemplos Avancados -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Receitas Prontas para Copiar
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-4">
+          <div>
+            <div class="text-neutral-500"># Review automatizado no CI/CD</div>
+            <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">git diff main...HEAD | claude -p "Revise estas mudancas. Liste bugs, vulnerabilidades e sugestoes em JSON" --model claude-sonnet-4 --output-format json --allowedTools "Read,Glob,Grep"</span></div>
+          </div>
+          <div>
+            <div class="text-neutral-500"># Gerar changelog automatico</div>
+            <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">git log --oneline v1.0..HEAD | claude -p "Gere um changelog em portugues agrupado por tipo (feature, fix, refactor)" --model claude-haiku-4 > CHANGELOG.md</span></div>
+          </div>
+          <div>
+            <div class="text-neutral-500"># Analise de seguranca com Opus</div>
+            <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">claude -p "Faca uma auditoria de seguranca completa deste projeto. Priorize vulnerabilidades criticas." --model claude-opus-4 --allowedTools "Read,Glob,Grep" --output-format json</span></div>
+          </div>
+          <div>
+            <div class="text-neutral-500"># Retomar sessao com modelo diferente</div>
+            <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">claude --resume --model claude-opus-4</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabela de Referencia -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6 overflow-x-auto">
+        <h3 class="text-lg font-semibold text-white mb-4">Referencia Rapida das Flags</h3>
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-dark-600">
+              <th class="text-left py-3 pr-4 text-neutral-400 font-medium">Flag</th>
+              <th class="text-left py-3 px-4 text-neutral-400 font-medium">Funcao</th>
+              <th class="text-left py-3 pl-4 text-neutral-400 font-medium">Exemplo</th>
+            </tr>
+          </thead>
+          <tbody class="text-neutral-300">
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-medium text-emerald-400">-p / --print</td>
+              <td class="py-3 px-4">Modo one-shot (sem sessao)</td>
+              <td class="py-3 pl-4 font-mono text-xs">claude -p "prompt"</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-medium text-emerald-400">--model</td>
+              <td class="py-3 px-4">Escolher modelo</td>
+              <td class="py-3 pl-4 font-mono text-xs">--model claude-opus-4</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-medium text-emerald-400">--resume</td>
+              <td class="py-3 px-4">Retomar sessao</td>
+              <td class="py-3 pl-4 font-mono text-xs">--resume [session_id]</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-medium text-emerald-400">--allowedTools</td>
+              <td class="py-3 px-4">Restringir ferramentas</td>
+              <td class="py-3 pl-4 font-mono text-xs">--allowedTools "Read,Grep"</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 font-medium text-emerald-400">--output-format</td>
+              <td class="py-3 px-4">Formato da saida</td>
+              <td class="py-3 pl-4 font-mono text-xs">--output-format json</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Crie um arquivo <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">scripts/claude-helpers.sh</code> no seu projeto com funcoes prontas para as combinacoes mais usadas. Por exemplo:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm text-neutral-300 mt-3">
+          <div class="text-neutral-500"># Em scripts/claude-helpers.sh</div>
+          <div>review_safe() { claude -p "Revise: $1" --model claude-sonnet-4 --allowedTools "Read,Glob,Grep"; }</div>
+          <div>analyze_deep() { claude -p "Analise: $1" --model claude-opus-4 --allowedTools "Read,Glob,Grep"; }</div>
+          <div>generate() { claude -p "$1" --model claude-sonnet-4 --allowedTools "Read,Write,Edit,Glob,Grep"; }</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- EXERCICIO PRATICO -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="exercicio" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">🏋️</span>
+        <h2 class="text-2xl font-bold">🏋️ Exercicio Pratico</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Neste exercicio, voce vai criar <strong class="text-emerald-400">3 comandos combinando -p, --model e --resume</strong>, experimentando diferentes combinacoes de flags para entender como elas interagem e se complementam.
+      </p>
+
+      <!-- Box Principal do Exercicio -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border-2 border-emerald-500/40 p-8 mb-6">
+        <div class="flex items-center space-x-3 mb-6">
+          <span class="text-3xl">🏋️</span>
+          <div>
+            <h3 class="text-xl font-bold text-emerald-400">Exercicio: Power-Use com Flags</h3>
+            <p class="text-neutral-400 text-sm">Tempo estimado: 15-20 minutos</p>
+          </div>
+        </div>
+
+        <!-- Passos Numerados -->
+        <div class="space-y-6">
+          <!-- Passo 1 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/30 flex items-center justify-center border border-emerald-500/40">
+              <span class="text-emerald-400 font-bold">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Comando 1: Analise rapida com Haiku</h4>
+              <p class="text-neutral-300 text-sm mb-3">Use -p com --model Haiku para uma analise rapida e barata:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-neutral-500">$</span> <span class="text-emerald-400">claude -p "Liste os 5 arquivos mais importantes deste projeto e explique por que" --model claude-haiku-4</span>
+              </div>
+              <p class="text-neutral-400 text-xs mt-2">Observe a velocidade da resposta. Haiku e ideal para tarefas simples e rapidas.</p>
+            </div>
+          </div>
+
+          <!-- Passo 2 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/30 flex items-center justify-center border border-emerald-500/40">
+              <span class="text-emerald-400 font-bold">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Comando 2: Analise profunda com Opus e JSON</h4>
+              <p class="text-neutral-300 text-sm mb-3">Use -p com --model Opus e --output-format json para analise detalhada:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-neutral-500">$</span> <span class="text-emerald-400">claude -p "Faca uma analise de arquitetura deste projeto. Identifique padroes, problemas e sugestoes." --model claude-opus-4 --output-format json --allowedTools "Read,Glob,Grep"</span>
+              </div>
+              <p class="text-neutral-400 text-xs mt-2">Compare a profundidade da analise com a do Haiku. Observe o campo "usage" no JSON.</p>
+            </div>
+          </div>
+
+          <!-- Passo 3 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/30 flex items-center justify-center border border-emerald-500/40">
+              <span class="text-emerald-400 font-bold">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Comando 3: Sessao interativa + resume</h4>
+              <p class="text-neutral-300 text-sm mb-3">Inicie uma sessao, saia e retome com --resume:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-1">
+                <div class="text-neutral-500"># Iniciar sessao</div>
+                <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">claude --model claude-sonnet-4</span></div>
+                <div><span class="text-emerald-400">></span> <span class="text-neutral-300">Qual a stack principal deste projeto?</span></div>
+                <div><span class="text-emerald-400">></span> <span class="text-neutral-300">/compact</span></div>
+                <div><span class="text-emerald-400">></span> <span class="text-neutral-300">exit</span></div>
+                <div class="text-neutral-500 mt-2"># Retomar a sessao</div>
+                <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">claude --resume</span></div>
+                <div><span class="text-emerald-400">></span> <span class="text-neutral-300">Voce lembra qual e a stack do projeto?</span></div>
+              </div>
+              <p class="text-neutral-400 text-xs mt-2">Confirme que o Claude manteve o contexto apos o resume.</p>
+            </div>
+          </div>
+
+          <!-- Passo 4 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/30 flex items-center justify-center border border-emerald-500/40">
+              <span class="text-emerald-400 font-bold">4</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Bonus: Pipeline com pipe</h4>
+              <p class="text-neutral-300 text-sm mb-3">Combine piping com flags para automacao real:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-neutral-500">$</span> <span class="text-emerald-400">git log --oneline -10 | claude -p "Analise os ultimos 10 commits e sugira melhorias no padrao de mensagens" --model claude-haiku-4</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Passo 5 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/30 flex items-center justify-center border border-emerald-500/40">
+              <span class="text-emerald-400 font-bold">5</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Comparar custos</h4>
+              <p class="text-neutral-300 text-sm mb-3">Use --output-format json para comparar custos entre modelos:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-1">
+                <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">claude -p "Explique o projeto" --model claude-haiku-4 --output-format json | jq '.usage'</span></div>
+                <div><span class="text-neutral-500">$</span> <span class="text-emerald-400">claude -p "Explique o projeto" --model claude-sonnet-4 --output-format json | jq '.usage'</span></div>
+              </div>
+              <p class="text-neutral-400 text-xs mt-2">Compare os custos side-by-side. O Haiku deve ser 5-10x mais barato.</p>
+            </div>
+          </div>
+
+          <!-- Passo 6 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/30 flex items-center justify-center border border-emerald-500/40">
+              <span class="text-emerald-400 font-bold">6</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Criar um alias util</h4>
+              <p class="text-neutral-300 text-sm mb-3">Adicione ao seu .bashrc/.zshrc um alias que voce vai usar no dia a dia:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-neutral-500">$</span> <span class="text-emerald-400">echo 'alias cr="claude -p \"Revise o codigo alterado e liste problemas\" --model claude-sonnet-4 --allowedTools \"Read,Glob,Grep\""' >> ~/.bashrc</span>
+              </div>
+              <p class="text-neutral-400 text-xs mt-2">Agora voce pode rodar "cr" de qualquer projeto para um review rapido.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checklist de Sucesso -->
+      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Executou comando com -p e --model Haiku</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Executou comando com --model Opus e --output-format json</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Usou --resume para retomar sessao</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Combinou piping com -p</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Comparou custos entre modelos</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Criou pelo menos um alias util</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESUMO FINAL -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">-p transforma Claude Code em ferramenta de automacao</strong>
+              <span class="text-neutral-400"> - Execucao one-shot, piping, redirecionamento. A base para scripts e CI/CD.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">--model permite escolher inteligencia vs velocidade vs custo</strong>
+              <span class="text-neutral-400"> - Opus para complexo, Sonnet para diario, Haiku para simples e barato.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">--resume restaura sessoes anteriores completamente</strong>
+              <span class="text-neutral-400"> - Todo o contexto e recuperado. Use /compact antes de sair para economizar na retomada.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">--allowedTools garante seguranca em automacao</strong>
+              <span class="text-neutral-400"> - Controle granular por ferramenta. Quanto mais automatizado, mais restritivo deve ser.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">--output-format json integra com qualquer sistema</strong>
+              <span class="text-neutral-400"> - Saida estruturada com resposta, metadados e custos. Ideal para pipelines automatizados.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Combinar flags cria ferramentas sob medida</strong>
+              <span class="text-neutral-400"> - -p + --model + --allowedTools + --output-format = automacao completa e segura.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-emerald-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">1.5 - Configuracoes e Personalizacao</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-1-3.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Modulo Anterior
+          </a>
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha
+          </a>
+          <a href="modulo-1-5.html" class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>6 Pilares do Claude Code Full - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

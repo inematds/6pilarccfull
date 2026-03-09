@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 1.6 - Atalhos de Teclado e Navegacao | 6 Pilares CC Full</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span>
+            <span class="font-bold text-lg hidden sm:inline">6 Pilares CC Full</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Atalhos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">CLAUDE.md</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Workflows</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Prompts</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Skills</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">MCPs</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-emerald-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-emerald-400">Trilha 1</a>
+      <span>/</span>
+      <span class="text-emerald-400">Modulo 1.6</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 1.6
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">⌨️ Atalhos de Teclado e Navegacao</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Domine os atalhos de teclado do Claude Code para navegar, editar, controlar e acelerar suas sessoes. Quem domina os atalhos trabalha duas vezes mais rapido.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">25</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">Basico</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">Teoria + Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 1: Navegacao na sessao -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🧭 Navegacao na Sessao</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Quando uma sessao do Claude Code fica longa, com muitas respostas e blocos de codigo, <strong class="text-emerald-400">saber navegar rapidamente e essencial</strong>. Em vez de ficar rolando infinitamente com o scroll do mouse, use atalhos para pular entre respostas, buscar conteudo especifico e encontrar informacoes rapidamente.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O Claude Code roda dentro do seu terminal, entao os atalhos de navegacao dependem do emulador de terminal que voce usa. Porem, existem atalhos universais que funcionam em praticamente todos os terminais modernos.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Scroll basico:</strong> Use <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">Shift+PageUp</code> e <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">Shift+PageDown</code> para rolar uma pagina inteira. Em muitos terminais, <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">Ctrl+Shift+Up/Down</code> rola linha a linha</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Busca no terminal:</strong> <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">Ctrl+Shift+F</code> na maioria dos terminais abre a busca de texto. Procure por nomes de funcoes, erros ou qualquer texto na saida</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Limpar tela:</strong> <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">Ctrl+L</code> limpa a tela sem encerrar a sessao. O historico permanece acessivel via scroll</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Tmux/Screen:</strong> Se voce usa tmux, <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">Ctrl+b [</code> entra no modo de copia/navegacao, permitindo scroll com vim keys (j/k/Ctrl+f/Ctrl+b)</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Tabela de Atalhos -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6 overflow-x-auto">
+        <h3 class="text-lg font-semibold text-white mb-4">Atalhos de Navegacao por Terminal</h3>
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-dark-600">
+              <th class="text-left py-3 pr-4 text-neutral-400 font-medium">Acao</th>
+              <th class="text-left py-3 px-4 text-neutral-400 font-medium">iTerm2/macOS</th>
+              <th class="text-left py-3 px-4 text-neutral-400 font-medium">Windows Terminal</th>
+              <th class="text-left py-3 pl-4 text-neutral-400 font-medium">Linux (GNOME)</th>
+            </tr>
+          </thead>
+          <tbody class="text-neutral-300">
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-medium text-white">Scroll up</td>
+              <td class="py-3 px-4 text-emerald-300">Cmd+Up / Fn+Up</td>
+              <td class="py-3 px-4">Ctrl+Shift+Up</td>
+              <td class="py-3 pl-4">Shift+PageUp</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-medium text-white">Scroll down</td>
+              <td class="py-3 px-4 text-emerald-300">Cmd+Down / Fn+Down</td>
+              <td class="py-3 px-4">Ctrl+Shift+Down</td>
+              <td class="py-3 pl-4">Shift+PageDown</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-medium text-white">Buscar texto</td>
+              <td class="py-3 px-4 text-emerald-300">Cmd+F</td>
+              <td class="py-3 px-4">Ctrl+Shift+F</td>
+              <td class="py-3 pl-4">Ctrl+Shift+F</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 font-medium text-white">Limpar tela</td>
+              <td class="py-3 px-4 text-emerald-300">Cmd+K</td>
+              <td class="py-3 px-4">Ctrl+L</td>
+              <td class="py-3 pl-4">Ctrl+L</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Se voce usa sessoes longas, considere usar o <strong class="text-white">tmux</strong> para gerenciar sua sessao Claude Code. Com tmux, voce pode dividir a tela, manter sessoes em background e navegar no historico com vim keys, o que e muito mais rapido do que o scroll padrao.
+        </p>
+        <p class="text-neutral-300">
+          Outra opcao: use <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">/clear</code> dentro do Claude Code periodicamente para limpar o contexto visual. Isso nao afeta o conhecimento da sessao, apenas limpa a tela.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 2: Edicao de prompt -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">✏️ Edicao de Prompt</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Digitar prompts longos no terminal pode ser trabalhoso sem os atalhos certos. Os <strong class="text-emerald-400">atalhos de edicao de linha</strong> do readline (usados pelo bash, zsh e pelo Claude Code) permitem mover o cursor, deletar palavras e editar texto com velocidade profissional. Dominar esses atalhos elimina a frustacao de ter que reescrever prompts inteiros por causa de um erro no meio.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O Claude Code usa uma interface de input baseada em readline/line-editor, o que significa que os atalhos classicos de Emacs funcionam para navegar e editar o texto do prompt antes de enviar. Esses sao os mesmos atalhos que voce ja usa no bash/zsh.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Ctrl+A / Ctrl+E:</strong> Mover o cursor para o inicio / final da linha. Essencial para editar prompts longos sem usar as setas</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Ctrl+W:</strong> Deletar a palavra anterior ao cursor (backspace por palavra). Muito mais rapido que segurar backspace</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Ctrl+U:</strong> Deletar tudo do cursor ate o inicio da linha. Limpa o prompt rapidamente para reescrever</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Ctrl+K:</strong> Deletar tudo do cursor ate o final da linha. Complemento do Ctrl+U</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Alt+B / Alt+F:</strong> Mover o cursor uma palavra para tras / frente. Navegacao rapida entre palavras do prompt</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Tabela de Atalhos -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6 overflow-x-auto">
+        <h3 class="text-lg font-semibold text-white mb-4">Atalhos de Edicao Essenciais</h3>
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-dark-600">
+              <th class="text-left py-3 pr-4 text-neutral-400 font-medium">Atalho</th>
+              <th class="text-left py-3 px-4 text-neutral-400 font-medium">Acao</th>
+              <th class="text-left py-3 pl-4 text-neutral-400 font-medium">Quando Usar</th>
+            </tr>
+          </thead>
+          <tbody class="text-neutral-300">
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-mono text-emerald-400">Ctrl+A</td>
+              <td class="py-3 px-4">Inicio da linha</td>
+              <td class="py-3 pl-4">Adicionar texto no comeco do prompt</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-mono text-emerald-400">Ctrl+E</td>
+              <td class="py-3 px-4">Final da linha</td>
+              <td class="py-3 pl-4">Voltar ao final apos editar o meio</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-mono text-emerald-400">Ctrl+W</td>
+              <td class="py-3 px-4">Deletar palavra anterior</td>
+              <td class="py-3 pl-4">Corrigir a ultima palavra digitada</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-mono text-emerald-400">Ctrl+U</td>
+              <td class="py-3 px-4">Deletar ate o inicio</td>
+              <td class="py-3 pl-4">Limpar tudo e reescrever</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-mono text-emerald-400">Ctrl+K</td>
+              <td class="py-3 px-4">Deletar ate o final</td>
+              <td class="py-3 pl-4">Manter inicio e mudar final</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-mono text-emerald-400">Alt+B</td>
+              <td class="py-3 px-4">Palavra anterior</td>
+              <td class="py-3 pl-4">Navegar entre palavras</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 font-mono text-emerald-400">Alt+F</td>
+              <td class="py-3 px-4">Proxima palavra</td>
+              <td class="py-3 pl-4">Navegar entre palavras</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          O combo mais util no dia a dia e <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">Ctrl+U</code> para limpar o prompt quando voce muda de ideia no meio da digitacao. Em vez de segurar backspace por 5 segundos, um unico atalho limpa tudo instantaneamente.
+        </p>
+        <p class="text-neutral-300">
+          No macOS com iTerm2, <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">Alt+B/F</code> pode nao funcionar por padrao. Va em Preferences > Profiles > Keys e mude "Left Option key" para "Esc+" para habilitar os atalhos com Alt.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 3: Controle de execucao -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🛑 Controle de Execucao</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Saber <strong class="text-emerald-400">interromper, cancelar e controlar a execucao</strong> do Claude Code e tao importante quanto saber pedir coisas. Quando o Claude esta gerando uma resposta muito longa, executando um comando errado ou seguindo um caminho que voce nao quer, voce precisa agir rapido. Estes atalhos sao sua rede de seguranca.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O Claude Code oferece diferentes niveis de interrupcao, desde cancelar a geracao atual ate sair completamente da sessao. Entender a diferenca entre eles e crucial para manter o controle.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Escape:</strong> Cancela a geracao em andamento. O Claude para de responder, mas a sessao continua ativa. Use quando a resposta esta indo na direcao errada</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Ctrl+C (uma vez):</strong> Interrompe a operacao atual. Se o Claude esta executando um comando ou gerando texto, ele para. Voce pode continuar a conversa normalmente</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Ctrl+C (duas vezes):</strong> Sai da sessao do Claude Code completamente. Use quando quiser encerrar e voltar ao shell normal</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Ctrl+D:</strong> Envia EOF (End of File), equivalente a sair da sessao. Funciona quando o prompt esta vazio</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Exemplos visuais -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">⌨️</span> Cenarios de Uso
+        </h3>
+        <div class="space-y-4">
+          <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+            <span class="text-neutral-500"># Cenario 1: Claude esta gerando resposta muito longa</span><br>
+            <span class="text-emerald-400">></span> <span class="text-neutral-300">Explique toda a arquitetura do Linux kernel...</span><br>
+            <span class="text-neutral-500"># O Claude comeca a gerar 5000 palavras...</span><br>
+            <span class="text-yellow-400"># Pressione Escape → Claude para de gerar</span><br>
+            <span class="text-emerald-400">></span> <span class="text-neutral-300">Resuma em 5 linhas apenas</span><br><br>
+
+            <span class="text-neutral-500"># Cenario 2: Claude executando comando demorado</span><br>
+            <span class="text-neutral-300">Claude quer executar: find / -name "*.log" -mtime -30</span><br>
+            <span class="text-neutral-500"># Voce aprovou mas esta demorando muito...</span><br>
+            <span class="text-yellow-400"># Pressione Ctrl+C → Comando cancelado</span><br><br>
+
+            <span class="text-neutral-500"># Cenario 3: Quer sair da sessao</span><br>
+            <span class="text-emerald-400">></span> <span class="text-neutral-300">(prompt vazio)</span><br>
+            <span class="text-yellow-400"># Pressione Ctrl+C duas vezes ou Ctrl+D → Sessao encerrada</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          O <strong class="text-white">Escape e seu melhor amigo</strong>. Use-o liberalmente. Se o Claude comecar a gerar algo que nao e o que voce quer, pressione Escape imediatamente. Nao espere a resposta terminar para refazer o prompt - isso desperdicaria tokens e tempo.
+        </p>
+        <p class="text-neutral-300">
+          Apos cancelar com Escape, voce pode refinar o prompt. O Claude mantem o contexto da conversa, entao basta pedir de forma mais especifica e ele corrige o rumo.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 4: Historico de comandos -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🕐 Historico de Comandos</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Assim como o bash mantem um historico de comandos que voce pode navegar com as setas, o Claude Code tambem permite <strong class="text-emerald-400">navegar por prompts anteriores</strong>. Reusar e adaptar prompts que ja funcionaram e uma das formas mais eficientes de trabalhar, evitando redigitar instrucoes complexas.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O Claude Code armazena o historico de prompts da sessao atual e permite navegar por eles. Isso funciona de forma similar ao historico do bash, mas dentro do contexto da sessao Claude.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Seta para cima (Up):</strong> Volta ao prompt anterior. Continue pressionando para navegar prompts mais antigos da sessao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Seta para baixo (Down):</strong> Avanca para o proximo prompt (mais recente). Use apos navegar para tras</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Reusar com edicao:</strong> Navegue ate um prompt anterior, edite-o com os atalhos de edicao (Ctrl+A, Ctrl+E, Alt+B, etc.) e pressione Enter para enviar a versao modificada</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Sessoes persistentes:</strong> Use <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">claude --resume</code> para retomar uma sessao anterior completa com todo o contexto e historico de prompts</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Exemplos -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">⌨️</span> Fluxo de Trabalho com Historico
+        </h3>
+        <div class="space-y-4">
+          <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+            <span class="text-neutral-500"># Prompt original</span><br>
+            <span class="text-emerald-400">></span> <span class="text-neutral-300">Refatore a funcao processData em src/utils.py para usar async/await</span><br><br>
+            <span class="text-neutral-500"># ... Claude responde e aplica mudancas ...</span><br><br>
+            <span class="text-neutral-500"># Agora quer fazer o mesmo para outra funcao:</span><br>
+            <span class="text-neutral-500"># Pressione Seta para cima (recupera prompt anterior)</span><br>
+            <span class="text-emerald-400">></span> <span class="text-neutral-300">Refatore a funcao processData em src/utils.py para usar async/await</span><br>
+            <span class="text-neutral-500"># Edite com Ctrl+W para mudar o nome da funcao:</span><br>
+            <span class="text-emerald-400">></span> <span class="text-neutral-300">Refatore a funcao validateInput em src/utils.py para usar async/await</span><br><br>
+
+            <span class="text-neutral-500"># Resumir sessao anterior</span><br>
+            <span class="text-neutral-500">$</span> <span class="text-emerald-400">claude --resume</span><br>
+            <span class="text-neutral-500"># Mostra lista de sessoes recentes para escolher</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Desenvolva o habito de <strong class="text-white">reusar prompts que funcionaram</strong>. Se voce encontrou uma formula de prompt que gera resultados excelentes (ex: "refatore X para usar Y mantendo os testes passando"), use a seta para cima e adapte em vez de reescrever do zero.
+        </p>
+        <p class="text-neutral-300">
+          Para prompts muito complexos que voce usa frequentemente, considere salva-los como aliases no shell (modulo 1.7) ou como snippets num arquivo de referencia. Isso e mais eficiente do que depender do historico de sessao.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 5: Multi-line input -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">📝 Multi-line Input</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Prompts eficazes frequentemente exigem <strong class="text-emerald-400">multiplas linhas</strong>: instrucoes detalhadas, listas de requisitos, exemplos de codigo ou templates estruturados. O Claude Code suporta entrada multi-line de varias formas, permitindo que voce componha prompts complexos sem sacrificar a formatacao.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          No Claude Code, <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">Enter</code> envia o prompt. Para inserir uma nova linha sem enviar, voce precisa usar metodos alternativos. Existem varias formas de compor prompts multi-line.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Shift+Enter:</strong> Insere uma nova linha no prompt sem enviar. Este e o metodo principal para entrada multi-line no Claude Code</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Colar blocos (Ctrl+V / Cmd+V):</strong> Quando voce cola texto multi-line do clipboard, as quebras de linha sao preservadas automaticamente. O Claude recebe o bloco completo</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Backslash continuation:</strong> Em alguns contextos, voce pode usar <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">\</code> no final da linha para indicar continuacao, similar ao shell</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Pipe com heredoc:</strong> Para prompts muito grandes, use o modo pipe: <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">claude -p << 'EOF' ... EOF</code></span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Exemplos -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">⌨️</span> Exemplos de Entrada Multi-line
+        </h3>
+        <div class="space-y-4">
+          <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+            <span class="text-neutral-500"># Usando Shift+Enter para multiplas linhas no prompt interativo</span><br>
+            <span class="text-emerald-400">></span> <span class="text-neutral-300">Crie uma funcao Python que: [Shift+Enter]</span><br>
+            <span class="text-neutral-300">  1. Receba uma lista de URLs [Shift+Enter]</span><br>
+            <span class="text-neutral-300">  2. Faca requisicoes async para cada uma [Shift+Enter]</span><br>
+            <span class="text-neutral-300">  3. Retorne um dict com URL: status_code [Enter para enviar]</span><br><br>
+
+            <span class="text-neutral-500"># Usando heredoc para prompts complexos via pipe</span><br>
+            <span class="text-neutral-500">$</span> <span class="text-emerald-400">claude -p << 'EOF'</span><br>
+            <span class="text-neutral-300">Refatore o arquivo src/auth.py seguindo estas regras:</span><br>
+            <span class="text-neutral-300">- Use dataclasses em vez de dicts</span><br>
+            <span class="text-neutral-300">- Adicione type hints em todas as funcoes</span><br>
+            <span class="text-neutral-300">- Substitua print() por logging</span><br>
+            <span class="text-neutral-300">- Mantenha os testes existentes passando</span><br>
+            <span class="text-emerald-400">EOF</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Para prompts realmente complexos, considere <strong class="text-white">escrever o prompt num arquivo de texto</strong> e depois enviar via pipe: <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">cat meu_prompt.txt | claude -p</code>. Isso permite usar seu editor de texto favorito (vim, VS Code) para compor o prompt com calma, com syntax highlighting e sem medo de enviar por engano.
+        </p>
+        <p class="text-neutral-300">
+          Outra tecnica: mantenha um diretorio <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">~/.prompts/</code> com seus prompts mais usados em arquivos .txt, e execute-os com <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">cat ~/.prompts/code-review.txt | claude -p</code>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 6: Atalhos customizados com keybindings.json -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🔧 Atalhos Customizados com keybindings.json</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Alem dos atalhos padrao, o Claude Code permite <strong class="text-emerald-400">personalizar keybindings</strong> atraves de um arquivo de configuracao. Isso significa que voce pode criar atalhos para acoes frequentes, mapear teclas de acordo com sua preferencia e ate criar "chord bindings" (sequencias de teclas) para fluxos de trabalho avancados.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O arquivo <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">~/.claude/keybindings.json</code> permite definir atalhos personalizados para o Claude Code. Voce pode mapear qualquer combinacao de teclas para acoes internas, slash commands ou macros de texto.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Localizacao do arquivo:</strong> <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">~/.claude/keybindings.json</code> - crie-o se nao existir. O Claude Code carrega automaticamente</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Formato:</strong> JSON com array de objetos, cada um com "key" (a combinacao de teclas) e "command" (a acao a executar)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Chord bindings:</strong> Sequencias como <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">Ctrl+K Ctrl+C</code> (pressionar Ctrl+K seguido de Ctrl+C) para acoes avancadas</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Integracao com terminal:</strong> Os keybindings do Claude Code coexistem com os do terminal. Evite conflitos testando antes de definir novos atalhos</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Exemplo de Configuracao -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">⌨️</span> Exemplo de keybindings.json
+        </h3>
+        <div class="space-y-4">
+          <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+            <span class="text-neutral-500">// ~/.claude/keybindings.json</span><br>
+            <span class="text-emerald-400">[</span><br>
+            <span class="text-neutral-300">  {</span><br>
+            <span class="text-neutral-300">    "key": "ctrl+shift+r",</span><br>
+            <span class="text-neutral-300">    "command": "/review"</span><br>
+            <span class="text-neutral-300">  },</span><br>
+            <span class="text-neutral-300">  {</span><br>
+            <span class="text-neutral-300">    "key": "ctrl+shift+t",</span><br>
+            <span class="text-neutral-300">    "command": "/test"</span><br>
+            <span class="text-neutral-300">  },</span><br>
+            <span class="text-neutral-300">  {</span><br>
+            <span class="text-neutral-300">    "key": "ctrl+shift+c",</span><br>
+            <span class="text-neutral-300">    "command": "/commit"</span><br>
+            <span class="text-neutral-300">  },</span><br>
+            <span class="text-neutral-300">  {</span><br>
+            <span class="text-neutral-300">    "key": "ctrl+shift+h",</span><br>
+            <span class="text-neutral-300">    "command": "/help"</span><br>
+            <span class="text-neutral-300">  }</span><br>
+            <span class="text-emerald-400">]</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Comece com poucos keybindings e adicione conforme necessidade. Os mais uteis sao atalhos para slash commands que voce usa frequentemente: <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">/review</code>, <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">/commit</code>, <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">/clear</code>.
+        </p>
+        <p class="text-neutral-300">
+          Evite conflitos com atalhos do terminal. Teste cada novo keybinding para garantir que nao sobrescreve algo importante. Use <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">Ctrl+Shift+</code> como prefixo para minimizar conflitos, pois essa combinacao raramente e usada por terminais.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- EXERCICIO PRATICO -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="exercicio" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">&#9733;</span>
+        <h2 class="text-2xl font-bold">🏋️ Exercicio Pratico</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Este exercicio e uma <strong class="text-emerald-400">sessao cronometrada de 10 minutos</strong> para praticar todos os atalhos. O objetivo e internalizar os movimentos ate que se tornem memoria muscular. Configure um timer e vamos la.
+      </p>
+
+      <!-- Box Principal do Exercicio -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border-2 border-emerald-500/40 p-8 mb-6">
+        <div class="flex items-center space-x-3 mb-6">
+          <span class="text-3xl">🏋️</span>
+          <div>
+            <h3 class="text-xl font-bold text-emerald-400">Exercicio: Sessao Cronometrada de Atalhos</h3>
+            <p class="text-neutral-400 text-sm">Tempo estimado: 10 minutos (cronometrado)</p>
+          </div>
+        </div>
+
+        <!-- Passos Numerados -->
+        <div class="space-y-6">
+          <!-- Passo 1 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/30 flex items-center justify-center border border-emerald-500/40">
+              <span class="text-emerald-400 font-bold">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Configurar o timer (Minuto 0)</h4>
+              <p class="text-neutral-300 text-sm mb-3">Abra um timer de 10 minutos e inicie uma sessao Claude Code:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-neutral-500">$</span> <span class="text-emerald-400">cd ~/projects/qualquer-projeto && claude</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Passo 2 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/30 flex items-center justify-center border border-emerald-500/40">
+              <span class="text-emerald-400 font-bold">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Praticar edicao de prompt (Minutos 0-3)</h4>
+              <p class="text-neutral-300 text-sm mb-3">Digite um prompt longo e pratique:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-neutral-500"># Digite: "Explique a arquitetura deste projeto em detalhes"</span><br>
+                <span class="text-neutral-500"># Use Ctrl+A para ir ao inicio</span><br>
+                <span class="text-neutral-500"># Use Ctrl+E para ir ao final</span><br>
+                <span class="text-neutral-500"># Use Ctrl+W para deletar "detalhes"</span><br>
+                <span class="text-neutral-500"># Use Alt+B para voltar 2 palavras</span><br>
+                <span class="text-neutral-500"># Use Ctrl+U para limpar tudo</span><br>
+                <span class="text-neutral-500"># Redigite e envie com Enter</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Passo 3 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/30 flex items-center justify-center border border-emerald-500/40">
+              <span class="text-emerald-400 font-bold">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Praticar controle de execucao (Minutos 3-5)</h4>
+              <p class="text-neutral-300 text-sm mb-3">Faca uma pergunta longa e interrompa:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-emerald-400">></span> <span class="text-neutral-300">Explique cada arquivo deste projeto em detalhes</span><br>
+                <span class="text-neutral-500"># Aguarde 3 segundos e pressione Escape</span><br>
+                <span class="text-emerald-400">></span> <span class="text-neutral-300">Resuma em 3 linhas</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Passo 4 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/30 flex items-center justify-center border border-emerald-500/40">
+              <span class="text-emerald-400 font-bold">4</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Praticar historico (Minutos 5-7)</h4>
+              <p class="text-neutral-300 text-sm mb-3">Navegue pelo historico de prompts:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-neutral-500"># Pressione Seta para cima para recuperar prompts anteriores</span><br>
+                <span class="text-neutral-500"># Edite o prompt e envie a versao modificada</span><br>
+                <span class="text-neutral-500"># Repita 3 vezes com variacoes</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Passo 5 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/30 flex items-center justify-center border border-emerald-500/40">
+              <span class="text-emerald-400 font-bold">5</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Praticar multi-line (Minutos 7-9)</h4>
+              <p class="text-neutral-300 text-sm mb-3">Compose um prompt multi-line:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-emerald-400">></span> <span class="text-neutral-300">Crie uma funcao que: [Shift+Enter]</span><br>
+                <span class="text-neutral-300">  - Receba um diretorio [Shift+Enter]</span><br>
+                <span class="text-neutral-300">  - Liste todos os arquivos .py [Shift+Enter]</span><br>
+                <span class="text-neutral-300">  - Conte as linhas de cada um [Enter]</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Passo 6 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/30 flex items-center justify-center border border-emerald-500/40">
+              <span class="text-emerald-400 font-bold">6</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Limpar e sair (Minuto 10)</h4>
+              <p class="text-neutral-300 text-sm mb-3">Pratique limpar e encerrar:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-neutral-500"># Use Ctrl+L para limpar a tela</span><br>
+                <span class="text-neutral-500"># Use Ctrl+C duas vezes ou Ctrl+D para sair</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checklist de Sucesso -->
+      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Usou Ctrl+A, Ctrl+E, Ctrl+W sem hesitar</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Interrompeu geracao com Escape</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Navegou historico com setas</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Criou prompt multi-line com Shift+Enter</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESUMO FINAL -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Navegacao depende do terminal</strong>
+              <span class="text-neutral-400"> - Use Shift+PageUp/Down, Ctrl+Shift+F para busca, e considere tmux para sessoes longas.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Atalhos readline aceleram edicao</strong>
+              <span class="text-neutral-400"> - Ctrl+A/E para inicio/fim, Ctrl+W para deletar palavra, Ctrl+U para limpar linha.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Escape e Ctrl+C controlam execucao</strong>
+              <span class="text-neutral-400"> - Escape cancela geracao, Ctrl+C interrompe, Ctrl+C duplo sai da sessao.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Historico permite reusar prompts</strong>
+              <span class="text-neutral-400"> - Setas Up/Down navegam prompts anteriores. --resume retoma sessoes completas.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Multi-line com Shift+Enter ou heredoc</strong>
+              <span class="text-neutral-400"> - Compose prompts complexos com multiplas linhas sem enviar acidentalmente.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Keybindings personalizaveis</strong>
+              <span class="text-neutral-400"> - Configure ~/.claude/keybindings.json para atalhos customizados de slash commands.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-emerald-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">1.7 - Criando Aliases e Scripts</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-1-5.html" class="flex-1 text-left px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors justify-start">
+            ← Modulo Anterior
+          </a>
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha
+          </a>
+          <a href="modulo-1-7.html" class="flex-1 text-left px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors justify-start">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>6 Pilares do Claude Code Full - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 1.1 - Introducao ao Claude Code | 6 Pilares CC Full</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span>
+            <span class="font-bold text-lg hidden sm:inline">6 Pilares CC Full</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Atalhos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">CLAUDE.md</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Workflows</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Prompts</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Skills</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">MCPs</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-emerald-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-emerald-400">Trilha 1</a>
+      <span>/</span>
+      <span class="text-emerald-400">Modulo 1.1</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 1.1
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🌟 Introducao ao Claude Code</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Entenda o que e Claude Code, como ele se diferencia do Claude Chat e Cowork, e de seus primeiros passos: instalacao, configuracao e sua primeira sessao no terminal.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">25</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">Basico</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">Teoria + Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 1: O que e Claude Code -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🚀 O que e Claude Code</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Claude Code e a <strong class="text-emerald-400">ferramenta de CLI agentica mais avancada da Anthropic</strong>. Diferente de chatbots tradicionais, ele roda direto no seu terminal, le e edita arquivos, executa comandos, entende a estrutura completa do seu codebase e toma acoes concretas. Nao e uma interface de perguntas e respostas. E um assistente que age.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Claude Code e um <strong class="text-white">agente de codificacao</strong> que opera no terminal. Quando voce inicia uma sessao, ele mapeia o diretorio do projeto, entende a estrutura de pastas, identifica linguagens e frameworks, e fica pronto para executar tarefas complexas de desenvolvimento.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Roda no terminal:</strong> Nao e uma interface web. Voce interage via linha de comando, o que significa acesso direto ao sistema de arquivos, ao git, ao npm, ao docker e a qualquer ferramenta CLI que voce ja usa</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Le e escreve arquivos:</strong> Claude Code abre, le, edita e cria arquivos no seu projeto. Ele nao apenas sugere codigo. Ele aplica as mudancas diretamente, com diff visual para voce aprovar</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Executa comandos:</strong> Roda npm install, git commit, pytest, docker build e qualquer outro comando necessario para completar a tarefa. Com sua permissao, claro</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Entende o codebase:</strong> Em vez de voce copiar e colar codigo no chat, o Claude Code navega pelo projeto inteiro, encontra as dependencias, identifica padroes e faz mudancas consistentes em multiplos arquivos</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dados 2026 -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Dados 2026
+        </h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong class="text-white">29 milhoes</strong> de instalacoes diarias no VS Code (extensao Claude integrada)</li>
+          <li><strong class="text-white">4%</strong> de todos os commits publicos no GitHub sao gerados pelo Claude Code</li>
+          <li><strong class="text-white">42.8%</strong> taxa de adocao entre desenvolvedores profissionais</li>
+          <li><strong class="text-white">92%</strong> de reducao no tempo de conclusao de tarefas de codificacao em benchmarks internos</li>
+          <li><strong class="text-white">9.000+</strong> plugins no ecossistema, com integracao nativa via MCP</li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          A forma mais rapida de entender o poder do Claude Code e usar. Navegue ate qualquer projeto no terminal, digite <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">claude</code> e pergunte: "O que este projeto faz?". Em segundos, ele vai ler o codebase e dar uma analise estruturada que levaria 30 minutos manualmente.
+        </p>
+        <p class="text-neutral-300">
+          Nao pense nele como "AI que escreve codigo". Pense como um <strong class="text-white">colega senior que acabou de sentar do seu lado</strong>, tem acesso ao seu projeto inteiro e pode executar qualquer comando que voce pediria.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 2: Claude Chat vs Code vs Cowork -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">🔀 Claude Chat vs Code vs Cowork</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A Anthropic oferece tres interfaces distintas para o Claude, cada uma otimizada para um tipo de trabalho. Entender as diferencas e fundamental para usar a <strong class="text-emerald-400">ferramenta certa no momento certo</strong>. Muita gente tenta fazer tudo no Chat quando deveria estar no Code, ou usa o Code quando o Cowork seria mais eficiente.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Cada produto tem um dominio claro. Quando voce usa a ferramenta certa, a produtividade multiplica. Quando usa a errada, voce luta contra a interface.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Claude Chat (claude.ai):</strong> Interface web para conversas, analise de documentos, brainstorming, criacao de textos. Voce envia mensagens e recebe respostas. Nao tem acesso ao seu sistema de arquivos, nao executa comandos, nao modifica codigo. Ideal para pensar.</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Claude Code (terminal CLI):</strong> Agente de codificacao agentico. Roda no terminal, le seu codebase inteiro, edita arquivos, executa comandos shell, faz commits, cria PRs. Ideal para construir.</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Claude Cowork (desktop agent):</strong> Agente de desktop para trabalho de conhecimento. Gerencia arquivos, cria apresentacoes, organiza documentos, conecta com servicos via connectors. Ideal para produzir entregas nao-codigo.</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Tabela de Comparacao -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6 overflow-x-auto">
+        <h3 class="text-lg font-semibold text-white mb-4">Comparacao Detalhada</h3>
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-dark-600">
+              <th class="text-left py-3 pr-4 text-neutral-400 font-medium">Caracteristica</th>
+              <th class="text-left py-3 px-4 text-neutral-400 font-medium">Chat</th>
+              <th class="text-left py-3 px-4 text-emerald-400 font-medium">Code</th>
+              <th class="text-left py-3 pl-4 text-neutral-400 font-medium">Cowork</th>
+            </tr>
+          </thead>
+          <tbody class="text-neutral-300">
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-medium text-white">Interface</td>
+              <td class="py-3 px-4">Web (navegador)</td>
+              <td class="py-3 px-4 text-emerald-300">Terminal CLI</td>
+              <td class="py-3 pl-4">Desktop app</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-medium text-white">Acesso a arquivos</td>
+              <td class="py-3 px-4">Upload manual</td>
+              <td class="py-3 px-4 text-emerald-300">Le/escreve direto</td>
+              <td class="py-3 pl-4">Via connectors</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-medium text-white">Executa comandos</td>
+              <td class="py-3 px-4">Nao</td>
+              <td class="py-3 px-4 text-emerald-300">Sim (shell completo)</td>
+              <td class="py-3 pl-4">Limitado</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-medium text-white">Git integrado</td>
+              <td class="py-3 px-4">Nao</td>
+              <td class="py-3 px-4 text-emerald-300">Sim (/commit, /pr)</td>
+              <td class="py-3 pl-4">Nao</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-medium text-white">Codebase awareness</td>
+              <td class="py-3 px-4">Nao</td>
+              <td class="py-3 px-4 text-emerald-300">Sim (completo)</td>
+              <td class="py-3 pl-4">Nao</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 font-medium text-white">Melhor para</td>
+              <td class="py-3 px-4">Pensar, analisar</td>
+              <td class="py-3 px-4 text-emerald-300">Construir, codar</td>
+              <td class="py-3 pl-4">Produzir, organizar</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Regra simples de decisao: se envolve <strong class="text-white">codigo e terminal</strong>, use Claude Code. Se envolve <strong class="text-white">conversa e analise</strong>, use Claude Chat. Se envolve <strong class="text-white">arquivos nao-codigo e produtividade geral</strong>, use Cowork.
+        </p>
+        <p class="text-neutral-300">
+          Na duvida: se voce precisa que o Claude execute algo (rodar um comando, editar um arquivo, fazer um commit), a resposta e Claude Code. Se voce so precisa pensar junto, e Chat.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ O que FAZER</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Usar Claude Code para qualquer tarefa que envolva seu codebase</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Usar Chat para planejar arquitetura antes de implementar no Code</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Combinar ferramentas: planeje no Chat, execute no Code</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ O que NAO fazer</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Copiar/colar codigo no Chat quando poderia abrir Claude Code no projeto</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Tentar usar Claude Code para escrever emails ou documentos longos</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Ignorar Cowork para tarefas de produtividade que nao envolvem codigo</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 3: Pre-requisitos -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">📋 Pre-requisitos</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Antes de instalar o Claude Code, voce precisa de <strong class="text-emerald-400">poucas coisas</strong>, mas todas sao obrigatorias. A boa noticia: se voce e desenvolvedor, provavelmente ja tem quase tudo. Vamos checar item por item.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Claude Code roda como um pacote npm global. Isso significa que voce precisa do Node.js instalado e de uma conta Anthropic com plano pago para autenticacao. O resto e opcional mas recomendado.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Conta Anthropic (obrigatorio):</strong> Plano Pro ($20/mes), Team ou Enterprise. O plano gratuito nao inclui acesso ao Claude Code. O Pro da um limite generoso de uso mensal que cobre a maioria dos workflows</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Node.js 18+ (obrigatorio):</strong> Recomendado usar a versao 20 LTS. Voce pode verificar com <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">node --version</code>. Se nao tiver ou estiver desatualizado, use nvm para instalar</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Terminal moderno (obrigatorio):</strong> Qualquer terminal funciona: Terminal.app (macOS), iTerm2, Warp, Windows Terminal, Alacritty, Kitty. O terminal padrao do seu SO ja serve</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Sistema operacional:</strong> macOS, Linux ou Windows com WSL. No Windows sem WSL, o funcionamento e limitado. Recomendacao forte: use WSL se estiver no Windows</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Checklist de Requisitos -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">✅</span> Checklist de Requisitos
+        </h3>
+        <div class="space-y-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="text-emerald-400 text-lg">☐</span>
+            <div>
+              <span class="text-white font-medium">Conta Anthropic com plano pago</span>
+              <span class="text-neutral-400 text-sm block">Pro ($20/mes), Team ou Enterprise</span>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="text-emerald-400 text-lg">☐</span>
+            <div>
+              <span class="text-white font-medium">Node.js 18+ instalado</span>
+              <span class="text-neutral-400 text-sm block">Verificar: <code class="text-emerald-400">node --version</code></span>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="text-emerald-400 text-lg">☐</span>
+            <div>
+              <span class="text-white font-medium">Terminal moderno</span>
+              <span class="text-neutral-400 text-sm block">Terminal.app, iTerm2, Warp, Windows Terminal, etc.</span>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="text-emerald-400 text-lg">☐</span>
+            <div>
+              <span class="text-white font-medium">macOS, Linux ou Windows + WSL</span>
+              <span class="text-neutral-400 text-sm block">WSL fortemente recomendado para Windows</span>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/30 rounded-lg border border-dashed border-dark-600">
+            <span class="text-neutral-500 text-lg">☐</span>
+            <div>
+              <span class="text-neutral-300 font-medium">Opcional: VS Code</span>
+              <span class="text-neutral-400 text-sm block">Para experiencia integrada com a extensao Claude</span>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/30 rounded-lg border border-dashed border-dark-600">
+            <span class="text-neutral-500 text-lg">☐</span>
+            <div>
+              <span class="text-neutral-300 font-medium">Opcional: GitHub CLI (gh)</span>
+              <span class="text-neutral-400 text-sm block">Para usar /pr e integracao com GitHub</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Se voce nao tem Node.js ou precisa atualizar, a forma mais limpa e usar <strong class="text-white">nvm</strong> (Node Version Manager). Instale o nvm e depois rode <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">nvm install 20</code> seguido de <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">nvm use 20</code>. Isso evita problemas de permissao e conflitos com versoes anteriores.
+        </p>
+        <p class="text-neutral-300">
+          No Windows, <strong class="text-white">nao tente instalar o Claude Code no PowerShell nativo</strong>. Use o WSL. O funcionamento no Windows sem WSL tem muitas limitacoes e bugs conhecidos. 5 minutos configurando o WSL economizam horas de frustacao.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 4: Instalacao -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">⚙️ Instalacao</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A instalacao do Claude Code e direta: um unico comando npm. Mas existem detalhes de <strong class="text-emerald-400">autenticacao e verificacao</strong> que voce precisa acertar na primeira vez. Vamos passo a passo.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Claude Code e distribuido como um pacote npm global. A instalacao coloca o binario <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">claude</code> no seu PATH, disponivel em qualquer diretorio do terminal. Apos instalar, voce autentica uma vez e esta pronto.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Pacote global:</strong> Instalacao unica que fica disponivel em todo o sistema. Nao precisa instalar por projeto</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Autenticacao via browser:</strong> O <code class="bg-dark-700 px-1 py-0.5 rounded text-emerald-400">claude login</code> abre o navegador para autenticar com sua conta Anthropic. O token fica salvo localmente</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Atualizacoes:</strong> Atualize com <code class="bg-dark-700 px-1 py-0.5 rounded text-emerald-400">npm update -g @anthropic-ai/claude-code</code>. Novas versoes saem frequentemente com melhorias significativas</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Blocos de Codigo -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Comandos de Instalacao
+        </h3>
+        <div class="space-y-4">
+          <div>
+            <p class="text-neutral-400 text-sm mb-2">1. Instalar o Claude Code globalmente:</p>
+            <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+              <span class="text-neutral-500">$</span> <span class="text-emerald-400">npm install -g @anthropic-ai/claude-code</span>
+            </div>
+          </div>
+          <div>
+            <p class="text-neutral-400 text-sm mb-2">2. Verificar se a instalacao funcionou:</p>
+            <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+              <span class="text-neutral-500">$</span> <span class="text-emerald-400">claude --version</span>
+              <br>
+              <span class="text-neutral-400"># Deve exibir algo como: claude-code 1.x.x</span>
+            </div>
+          </div>
+          <div>
+            <p class="text-neutral-400 text-sm mb-2">3. Autenticar com sua conta Anthropic:</p>
+            <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+              <span class="text-neutral-500">$</span> <span class="text-emerald-400">claude login</span>
+              <br>
+              <span class="text-neutral-400"># Abre o navegador para autenticacao OAuth</span>
+            </div>
+          </div>
+          <div>
+            <p class="text-neutral-400 text-sm mb-2">4. Iniciar sua primeira sessao:</p>
+            <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+              <span class="text-neutral-500">$</span> <span class="text-emerald-400">cd ~/projects/meu-projeto</span>
+              <br>
+              <span class="text-neutral-500">$</span> <span class="text-emerald-400">claude</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alerta - Erros Comuns -->
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">⚠️</span> Erros Comuns e Solucoes
+        </h3>
+        <div class="space-y-4 text-neutral-300">
+          <div>
+            <p class="font-medium text-white mb-1">EACCES: permission denied</p>
+            <p class="text-sm">Problema de permissao do npm global. Solucao: configure o npm para usar um diretorio local com <code class="bg-dark-700 px-1 py-0.5 rounded text-red-300">npm config set prefix ~/.npm-global</code> e adicione ao PATH. Ou use nvm (recomendado).</p>
+          </div>
+          <div>
+            <p class="font-medium text-white mb-1">Node version incompativel</p>
+            <p class="text-sm">Claude Code exige Node.js 18+. Verifique com <code class="bg-dark-700 px-1 py-0.5 rounded text-red-300">node --version</code>. Se menor que 18, atualize via nvm: <code class="bg-dark-700 px-1 py-0.5 rounded text-red-300">nvm install 20 && nvm use 20</code>.</p>
+          </div>
+          <div>
+            <p class="font-medium text-white mb-1">claude: command not found</p>
+            <p class="text-sm">O binario nao esta no PATH. Rode <code class="bg-dark-700 px-1 py-0.5 rounded text-red-300">npm list -g @anthropic-ai/claude-code</code> para confirmar a instalacao. Se instalou, o PATH do npm global nao esta configurado. Use <code class="bg-dark-700 px-1 py-0.5 rounded text-red-300">which claude</code> ou adicione o prefixo do npm ao PATH.</p>
+          </div>
+          <div>
+            <p class="font-medium text-white mb-1">Algo mais estranho?</p>
+            <p class="text-sm">Rode <code class="bg-dark-700 px-1 py-0.5 rounded text-red-300">/doctor</code> dentro de uma sessao do Claude Code. Ele diagnostica e tenta resolver problemas de configuracao automaticamente.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Se voce usa <strong class="text-white">VS Code</strong>, o Claude Code tambem tem uma extensao nativa que integra diretamente no editor. Mas comece pelo terminal: entender o CLI puro primeiro te da mais controle e entendimento de como tudo funciona por baixo.
+        </p>
+        <p class="text-neutral-300">
+          Mantenha o Claude Code atualizado. As atualizacoes sao frequentes (quase semanais em 2026) e trazem melhorias significativas. Rode <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">npm update -g @anthropic-ai/claude-code</code> periodicamente ou crie um alias: <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">alias ccup='npm update -g @anthropic-ai/claude-code'</code>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 5: Primeira Sessao -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🖥️ Primeira Sessao</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A sua primeira sessao no Claude Code e o momento em que tudo faz sentido. Voce navega ate um projeto, digita <code class="bg-dark-700 px-2 py-1 rounded text-emerald-400">claude</code>, e o assistente le seu codebase automaticamente. Vamos ver exatamente <strong class="text-emerald-400">o que acontece e o que esperar</strong>.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Ao iniciar o Claude Code num diretorio, ele faz um scan automatico do projeto. Se existir um arquivo <strong class="text-white">CLAUDE.md</strong> na raiz, ele carrega essas instrucoes como contexto persistente. Sem CLAUDE.md, ele ainda funciona, mas sem instrucoes customizadas.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Scan automatico:</strong> Claude mapeia a estrutura de diretorios, identifica linguagens, frameworks e dependencias do projeto</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">CLAUDE.md:</strong> Se existir, funciona como "instrucoes de briefing". Voce pode definir regras de estilo, stack preferida, padroes de nomeacao e comportamentos esperados (veremos isso na Trilha 2)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Interface interativa:</strong> Apos o scan, voce ve uma area de prompt onde digita instrucoes. O Claude responde, usa ferramentas (Read, Write, Bash, etc.) e mostra indicadores de quais tools esta usando</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">Indicador de custo:</strong> No rodape da sessao, voce ve os tokens consumidos e o custo acumulado. Esse numero cresce a cada interacao</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Timeline - Primeira Sessao -->
+      <div class="space-y-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-2">Passo a Passo da Primeira Sessao</h3>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center">
+            <span class="text-emerald-400 font-bold">1</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Navegar ate o projeto</h4>
+            <p class="text-sm text-neutral-400 mb-3">Terminal</p>
+            <div class="bg-dark-900 rounded-lg p-3 font-mono text-sm">
+              <span class="text-neutral-500">$</span> <span class="text-emerald-400">cd ~/projects/meu-app</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center">
+            <span class="text-emerald-400 font-bold">2</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Iniciar o Claude Code</h4>
+            <p class="text-sm text-neutral-400 mb-3">Um unico comando</p>
+            <div class="bg-dark-900 rounded-lg p-3 font-mono text-sm">
+              <span class="text-neutral-500">$</span> <span class="text-emerald-400">claude</span>
+            </div>
+            <p class="text-neutral-300 text-sm mt-3">Ele carrega, faz o scan do diretorio e mostra o prompt interativo.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center">
+            <span class="text-emerald-400 font-bold">3</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Fazer sua primeira pergunta</h4>
+            <p class="text-sm text-neutral-400 mb-3">Explore o codebase</p>
+            <div class="bg-dark-900 rounded-lg p-3 font-mono text-sm">
+              <span class="text-emerald-400">></span> <span class="text-neutral-300">O que este projeto faz?</span>
+            </div>
+            <p class="text-neutral-300 text-sm mt-3">Claude vai ler os arquivos principais (package.json, README, entry points) e dar uma analise completa do projeto.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center">
+            <span class="text-emerald-400 font-bold">4</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Observar as ferramentas em acao</h4>
+            <p class="text-sm text-neutral-400 mb-3">Tool use indicators</p>
+            <p class="text-neutral-300 text-sm">Voce vera indicadores como <code class="bg-dark-700 px-1 py-0.5 rounded text-blue-400">Read(package.json)</code>, <code class="bg-dark-700 px-1 py-0.5 rounded text-blue-400">Glob(**/*.ts)</code>, <code class="bg-dark-700 px-1 py-0.5 rounded text-blue-400">Bash(git log)</code>. Isso mostra que o Claude esta ativamente investigando o projeto, nao apenas "chutando" uma resposta.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center">
+            <span class="text-emerald-400 font-bold">5</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Continuar a conversa</h4>
+            <p class="text-sm text-neutral-400 mb-3">Sessao interativa</p>
+            <div class="bg-dark-900 rounded-lg p-3 font-mono text-sm">
+              <span class="text-emerald-400">></span> <span class="text-neutral-300">Quais tecnologias este projeto usa?</span>
+              <br>
+              <span class="text-emerald-400">></span> <span class="text-neutral-300">Mostre o ponto de entrada principal</span>
+              <br>
+              <span class="text-emerald-400">></span> <span class="text-neutral-300">Existem testes? Qual a cobertura?</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Na primeira sessao, foque em <strong class="text-white">explorar, nao modificar</strong>. Faca perguntas sobre o projeto, peca para ele explicar partes do codigo, pergunte sobre dependencias. Quando voce estiver confortavel com a interface, ai sim comece a pedir mudancas.
+        </p>
+        <p class="text-neutral-300">
+          Atalhos uteis logo na primeira sessao: <strong class="text-white">Escape</strong> cancela a geracao atual, <strong class="text-white">Shift+Tab</strong> ativa modo de multiplas linhas para prompts longos, e <strong class="text-white">/help</strong> mostra todos os comandos disponiveis.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ O que FAZER</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Comecar com perguntas explorationais antes de pedir mudancas</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Observar quais tools o Claude usa para entender o fluxo</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Iniciar num projeto que voce conhece bem para validar as respostas</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ O que NAO fazer</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Pedir mudancas complexas na primeira sessao sem entender a interface</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Aprovar todas as acoes sem ler os diffs mostrados</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Iniciar num projeto vazio (o scan nao tera muito para analisar)</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 6: Exercicio Pratico -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🏋️ Exercicio Pratico</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Hora de colocar a mao na massa. Este exercicio guiado vai levar voce da <strong class="text-emerald-400">instalacao ate sua primeira conversa com o Claude Code</strong>. Siga cada passo e confirme o resultado antes de avancar.
+      </p>
+
+      <!-- Box Principal do Exercicio -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border-2 border-emerald-500/40 p-8 mb-6">
+        <div class="flex items-center space-x-3 mb-6">
+          <span class="text-3xl">🏋️</span>
+          <div>
+            <h3 class="text-xl font-bold text-emerald-400">Exercicio: Primeiros Passos com Claude Code</h3>
+            <p class="text-neutral-400 text-sm">Tempo estimado: 10-15 minutos</p>
+          </div>
+        </div>
+
+        <!-- Passos Numerados -->
+        <div class="space-y-6">
+          <!-- Passo 1 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/30 flex items-center justify-center border border-emerald-500/40">
+              <span class="text-emerald-400 font-bold">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Instalar o Claude Code</h4>
+              <p class="text-neutral-300 text-sm mb-3">Abra seu terminal e rode o comando de instalacao global:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-neutral-500">$</span> <span class="text-emerald-400">npm install -g @anthropic-ai/claude-code</span>
+              </div>
+              <p class="text-neutral-400 text-xs mt-2">Aguarde a instalacao completar. Se der erro de permissao, veja a secao de troubleshooting no Topico 4.</p>
+            </div>
+          </div>
+
+          <!-- Passo 2 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/30 flex items-center justify-center border border-emerald-500/40">
+              <span class="text-emerald-400 font-bold">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Verificar a instalacao</h4>
+              <p class="text-neutral-300 text-sm mb-3">Confirme que o binario esta acessivel:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-neutral-500">$</span> <span class="text-emerald-400">claude --version</span>
+                <br>
+                <span class="text-neutral-500"># Esperado: claude-code 1.x.x (ou versao mais recente)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Passo 3 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/30 flex items-center justify-center border border-emerald-500/40">
+              <span class="text-emerald-400 font-bold">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Fazer login</h4>
+              <p class="text-neutral-300 text-sm mb-3">Autentique com sua conta Anthropic. Um navegador vai abrir automaticamente:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-neutral-500">$</span> <span class="text-emerald-400">claude login</span>
+                <br>
+                <span class="text-neutral-500"># O navegador abre -> faca login na Anthropic -> autorize o Claude Code</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Passo 4 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/30 flex items-center justify-center border border-emerald-500/40">
+              <span class="text-emerald-400 font-bold">4</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Navegar ate um projeto</h4>
+              <p class="text-neutral-300 text-sm mb-3">Escolha qualquer projeto existente no seu computador:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-neutral-500">$</span> <span class="text-emerald-400">cd ~/projects/qualquer-projeto</span>
+              </div>
+              <p class="text-neutral-400 text-xs mt-2">Nao tem um projeto? Clone um repo publico: <code class="text-emerald-400">git clone https://github.com/expressjs/express.git && cd express</code></p>
+            </div>
+          </div>
+
+          <!-- Passo 5 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/30 flex items-center justify-center border border-emerald-500/40">
+              <span class="text-emerald-400 font-bold">5</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Iniciar sessao interativa</h4>
+              <p class="text-neutral-300 text-sm mb-3">Abra o Claude Code no diretorio do projeto:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-neutral-500">$</span> <span class="text-emerald-400">claude</span>
+              </div>
+              <p class="text-neutral-400 text-xs mt-2">Aguarde o carregamento e o scan do projeto. Voce vera o prompt interativo aparecer.</p>
+            </div>
+          </div>
+
+          <!-- Passo 6 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/30 flex items-center justify-center border border-emerald-500/40">
+              <span class="text-emerald-400 font-bold">6</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Explorar o projeto</h4>
+              <p class="text-neutral-300 text-sm mb-3">Faca as seguintes perguntas e observe as respostas:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-2">
+                <div><span class="text-emerald-400">></span> <span class="text-neutral-300">O que este projeto faz?</span></div>
+                <div><span class="text-emerald-400">></span> <span class="text-neutral-300">Quais tecnologias este projeto usa?</span></div>
+              </div>
+              <p class="text-neutral-400 text-xs mt-2">Observe as tools que o Claude usa (Read, Glob, Grep, etc.) para responder cada pergunta.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resultado Esperado -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Resultado Esperado
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Ao completar o exercicio, voce tera o Claude Code instalado, autenticado e tera experimentado sua primeira interacao real com um agente agentico de codificacao. Voce deve ter visto:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span>O Claude lendo arquivos do projeto automaticamente (tool indicators como Read, Glob)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span>Uma analise precisa do que o projeto faz baseada na leitura real do codigo</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span>Identificacao correta das tecnologias, dependencias e estrutura</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span>O custo da sessao exibido no rodape (deve ser menos de $0.05 para essas perguntas iniciais)</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Checklist de Sucesso -->
+      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Claude Code instalado com sucesso</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Login autenticado na Anthropic</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Sessao interativa aberta num projeto</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Primeira pergunta respondida pelo Claude</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bonus -->
+      <div class="bg-gradient-to-br from-emerald-900/20 via-blue-900/20 to-purple-900/20 rounded-xl border border-emerald-500/20 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-3 flex items-center">
+          <span class="mr-2">🌟</span> Bonus Challenge
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Para ir alem, rode este comando one-liner que combina verificacao da instalacao com um prompt rapido:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <span class="text-neutral-500">$</span> <span class="text-emerald-400">claude --version && claude -p "Diga ola em portugues e explique o que voce pode fazer como agente de codificacao em 3 frases"</span>
+        </div>
+        <p class="text-neutral-300 text-sm">
+          O flag <code class="bg-dark-700 px-1 py-0.5 rounded text-emerald-400">-p</code> (print mode) executa um prompt unico sem abrir sessao interativa. E o modo "one-shot" do Claude Code. Voce vai aprender mais sobre ele no modulo 1.4 (Flags de Linha de Comando).
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESUMO FINAL -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Claude Code e um agente agentico de terminal</strong>
+              <span class="text-neutral-400"> - Le/escreve arquivos, executa comandos, entende seu codebase inteiro. Nao e chatbot.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Chat para pensar, Code para construir, Cowork para produzir</strong>
+              <span class="text-neutral-400"> - Tres ferramentas, tres dominios. Use a certa para cada tipo de trabalho.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Pre-requisitos minimos</strong>
+              <span class="text-neutral-400"> - Conta Anthropic paga + Node.js 18+ + terminal moderno. Windows precisa de WSL.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Instalacao em um comando</strong>
+              <span class="text-neutral-400"> - <code class="text-emerald-400">npm install -g @anthropic-ai/claude-code</code> + <code class="text-emerald-400">claude login</code> + <code class="text-emerald-400">claude</code>.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Primeira sessao: explore antes de modificar</strong>
+              <span class="text-neutral-400"> - Comece perguntando sobre o projeto. Observe as tools em acao. Depois evolua para mudancas.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Exercicio concluido: do zero ate a primeira conversa</strong>
+              <span class="text-neutral-400"> - Instalou, autenticou, abriu sessao e fez sua primeira pergunta ao Claude Code.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-emerald-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">1.2 - Comandos Essenciais do Terminal</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <span class="flex-1 text-center px-6 py-3 bg-dark-700/50 text-neutral-500 rounded-lg font-semibold cursor-not-allowed">
+            ← Modulo Anterior
+          </span>
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha
+          </a>
+          <span class="flex-1 text-center px-6 py-3 bg-emerald-600/40 text-emerald-100 rounded-lg font-semibold cursor-not-allowed">
+            Proximo Modulo em breve →
+          </span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>6 Pilares do Claude Code Full - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
