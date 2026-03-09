@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 2.8 - &#128200; Boas Praticas e Otimizacao (&lt; 200 linhas) | 6 Pilares CC Full</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    html:not(.dark) body { background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%); }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">&#129504;</span>
+            <span class="font-bold text-lg hidden sm:inline">6 Pilares CC Full</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Atalhos</span></a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10"><span class="sm:hidden">T2</span><span class="hidden sm:inline">CLAUDE.md</span></a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Workflows</span></a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Prompts</span></a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Skills</span></a>
+          <a href="../trilha6/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"><span class="sm:hidden">T6</span><span class="hidden sm:inline">MCPs</span></a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-blue-400">Inicio</a><span>/</span>
+      <a href="index.html" class="hover:text-blue-400">Trilha 2</a><span>/</span>
+      <span class="text-blue-400">Modulo 2.8</span>
+    </div>
+  </nav>
+
+  <header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MODULO 2.8</span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">&#128200; Boas Praticas e Otimizacao (&lt; 200 linhas)</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">Domine a arte de manter o CLAUDE.md enxuto e poderoso. A regra das 200 linhas, o que incluir e cortar, formatacao, auditoria e anti-patterns comuns.</p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Topicos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">25</div><div class="text-xs text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Intermediario</div><div class="text-xs text-neutral-400">Nivel</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Teoria + Pratica</div><div class="text-xs text-neutral-400">Tipo</div></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">&#128207; A Regra das 200 Linhas</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">CLAUDE.md e lido <strong class='text-blue-400'>toda sessao</strong>, o que significa que cada linha consome tokens. Um CLAUDE.md de 500 linhas desperdicea tokens e pode ate confundir o Claude com informacoes demais. A regra pratica: mantenha abaixo de 200 linhas.</p>
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">&#127919;</span> Conceito Principal</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">Custo de tokens:</strong> Cada linha do CLAUDE.md consome tokens do seu limite mensal</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">Atencao do modelo:</strong> Quanto mais texto, mais diluida a atencao do Claude em cada instrucao</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">200 linhas = sweet spot:</strong> Cobre stack, comandos, convencoes e regras sem excesso</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">Excesso = ruido:</strong> Um CLAUDE.md de 500 linhas tem informacoes que o Claude provavelmente ignora</span></li>
+        </ul>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">&#128161;</span> Dica Pratica</h3>
+        <p class="text-neutral-300">Conte as linhas do seu CLAUDE.md agora. Se passou de 200, e hora de cortar. Cada linha removida e um token economizado em TODA sessao. Em 100 sessoes, a economia e significativa.</p>
+      </div>
+    </section>
+
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">&#9986;&#65039; O que Incluir e o que Cortar</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">A arte do CLAUDE.md eficiente e saber o que e <strong class='text-blue-400'>essencial vs nice-to-have</strong>. Inclua o que muda o comportamento do Claude. Corte o que ele ja sabe ou pode descobrir sozinho.</p>
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">&#127919;</span> Conceito Principal</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">Incluir:</strong> Stack, package manager, comandos de build/test/lint, convencoes unicas do projeto</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">Incluir:</strong> Things To Avoid - regras negativas que previnem erros recorrentes</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">Cortar:</strong> Informacoes que o Claude descobre lendo o codigo (ex: quais dependencias tem)</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">Cortar:</strong> Convencoes gerais da linguagem (ex: 'use camelCase em JavaScript')</span></li>
+        </ul>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">&#128161;</span> Dica Pratica</h3>
+        <p class="text-neutral-300">Regra de ouro: se voce pode remover uma linha e o Claude ainda faz a coisa certa, remova. O CLAUDE.md deve conter apenas o que o Claude erraria sem a instrucao.</p>
+      </div>
+    </section>
+
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">&#128209; Usando Marcadores e Secoes Claras</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">A <strong class='text-blue-400'>formatacao do CLAUDE.md</strong> importa tanto quanto o conteudo. Headers claros, bullets consistentes e secoes bem definidas ajudam o Claude a processar as informacoes mais eficientemente.</p>
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">&#127919;</span> Conceito Principal</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">Use Markdown headers (##):</strong> Secoes claras com ## Project Overview, ## Commands, etc.</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">Bullets para listas:</strong> Use - para cada item. Evite paragrafos longos</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">Negrito para enfase:</strong> Use **Never** e **Always** para regras criticas</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">Codigo inline:</strong> Use backticks para comandos: `pnpm dev`, `npm test`</span></li>
+        </ul>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">&#128161;</span> Dica Pratica</h3>
+        <p class="text-neutral-300">O Claude processa Markdown muito bem. Headers ajudam na hierarquia de informacao, bullets na clareza, e codigo inline na precisao. Nao escreva paragrafos longos - use bullets curtos e diretos.</p>
+      </div>
+    </section>
+
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">&#128260; Atualizando com Frequencia</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Um CLAUDE.md desatualizado e <strong class='text-blue-400'>pior que nenhum CLAUDE.md</strong>. Se as instrucoes nao refletem o estado atual do projeto, o Claude vai seguir regras erradas e produzir codigo inconsistente.</p>
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">&#127919;</span> Conceito Principal</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">Atualize a cada mudanca de stack:</strong> Migrou de npm para pnpm? Atualize imediatamente</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">Atualize apos refactoring:</strong> Mudou patterns? O CLAUDE.md precisa refletir isso</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">Review mensal:</strong> Reserve 10 minutos por mes para revisar e atualizar</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">PR trigger:</strong> Se um PR muda convencoes, o PR deve incluir update do CLAUDE.md</span></li>
+        </ul>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">&#128161;</span> Dica Pratica</h3>
+        <p class="text-neutral-300">Adicione 'Atualizar CLAUDE.md' no checklist de toda migracacao de stack ou refactoring grande. E o tipo de coisa que leva 5 minutos mas economiza horas de frustacao com respostas desalinhadas.</p>
+      </div>
+    </section>
+
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">&#128270; Auditoria do CLAUDE.md</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Periodicamente, faca uma <strong class='text-blue-400'>auditoria estruturada</strong> do seu CLAUDE.md. Use um checklist para verificar se ele esta completo, correto e conciso.</p>
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">&#127919;</span> Conceito Principal</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">Checklist de auditoria:</strong> Project Overview presente? Stack atual? Comandos funcionam? Convencoes refletem a realidade?</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">Teste pratico:</strong> Peca ao Claude para resumir o que sabe sobre o projeto. As respostas batem?</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">Contagem de linhas:</strong> Esta abaixo de 200 linhas? Se nao, o que pode ser cortado?</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">Relevancia:</strong> Cada secao e relevante? Tem informacao duplicada?</span></li>
+        </ul>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">&#128161;</span> Dica Pratica</h3>
+        <p class="text-neutral-300">Faca a auditoria com outro membro do time. Dois pares de olhos pegam inconsistencias que um sozinho nao ve. Bonus: o colega pode nao conhecer alguma convencao, e isso mostra que a documentacao precisa ser mais clara.</p>
+      </div>
+    </section>
+
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">&#128683; Anti-patterns Comuns</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Saber o que <strong class='text-blue-400'>NAO fazer</strong> no CLAUDE.md e tao importante quanto saber o que fazer. Estes sao os erros mais comuns que degradam a eficacia do arquivo.</p>
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">&#127919;</span> Conceito Principal</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">CLAUDE.md gigante (500+ linhas):</strong> Informacao demais dilui a atencao e desperdicea tokens</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">Copiar o README inteiro:</strong> README e para humanos, CLAUDE.md e para o Claude. Propositos diferentes</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">Nunca atualizar:</strong> CLAUDE.md desatualizado gera codigo com padroes antigos</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">Instrucoes vagas:</strong> 'Escreva bom codigo' nao ajuda. 'Use named exports, never any type' ajuda</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">&#8226;</span><span><strong class="text-white">Duplicar informacao:</strong> Se esta no CLAUDE.md e tambem em rules/, remova de um dos dois</span></li>
+        </ul>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">&#128161;</span> Dica Pratica</h3>
+        <p class="text-neutral-300">O anti-pattern mais destrutivo e o CLAUDE.md desatualizado. Ele faz o Claude seguir convencoes que nao existem mais. Se voce nao vai manter atualizado, e melhor nao ter. Um CLAUDE.md errado e pior que nenhum CLAUDE.md.</p>
+      </div>
+    </section>
+
+    <section id="exercicio" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">&#127947;&#65039;</span>
+        <h2 class="text-2xl font-bold">Exercicio Pratico</h2>
+      </div>
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border-2 border-blue-500/40 p-8 mb-6">
+        <div class="flex items-center space-x-3 mb-6">
+          <span class="text-3xl">&#127947;&#65039;</span>
+          <div><h3 class="text-xl font-bold text-blue-400">Exercicio: Auditar e Otimizar um CLAUDE.md para Menos de 200 Linhas</h3><p class="text-neutral-400 text-sm">Tempo estimado: 15-20 minutos</p></div>
+        </div>
+        <div class="space-y-6">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/30 flex items-center justify-center border border-blue-500/40"><span class="text-blue-400 font-bold">1</span></div>
+            <div class="flex-1"><h4 class="font-semibold text-white mb-2">Conte as linhas</h4><p class="text-neutral-300 text-sm">Abra seu CLAUDE.md atual e conte quantas linhas ele tem. Se nao tem um, crie usando o template do modulo 2.2.</p></div>
+          </div>
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/30 flex items-center justify-center border border-blue-500/40"><span class="text-blue-400 font-bold">2</span></div>
+            <div class="flex-1"><h4 class="font-semibold text-white mb-2">Identifique o excesso</h4><p class="text-neutral-300 text-sm">Marque cada secao como 'essencial', 'util' ou 'dispensavel'. Remova os dispensaveis.</p></div>
+          </div>
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/30 flex items-center justify-center border border-blue-500/40"><span class="text-blue-400 font-bold">3</span></div>
+            <div class="flex-1"><h4 class="font-semibold text-white mb-2">Verifique informacoes duplicadas</h4><p class="text-neutral-300 text-sm">Compare com .claude/rules/ e remova duplicatas do CLAUDE.md.</p></div>
+          </div>
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/30 flex items-center justify-center border border-blue-500/40"><span class="text-blue-400 font-bold">4</span></div>
+            <div class="flex-1"><h4 class="font-semibold text-white mb-2">Teste com o Claude</h4><p class="text-neutral-300 text-sm">Abra Claude Code e peca para criar algo. O resultado segue as convencoes? Se nao, a regra esta mal escrita.</p></div>
+          </div>
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/30 flex items-center justify-center border border-blue-500/40"><span class="text-blue-400 font-bold">5</span></div>
+            <div class="flex-1"><h4 class="font-semibold text-white mb-2">Meta: menos de 200 linhas</h4><p class="text-neutral-300 text-sm">Itere ate ficar abaixo de 200 linhas mantendo todas as informacoes essenciais.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">&#128203;</span> Resumo do Modulo</h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">&#10003;</span><div><strong class="text-white">Regra das 200 linhas</strong><span class="text-neutral-400"> - Mantenha enxuto para economizar tokens e manter atencao do Claude.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">&#10003;</span><div><strong class="text-white">Inclua so o essencial</strong><span class="text-neutral-400"> - Stack, comandos, convencoes unicas e Things To Avoid.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">&#10003;</span><div><strong class="text-white">Formatacao importa</strong><span class="text-neutral-400"> - Headers, bullets, negrito e codigo inline para clareza maxima.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">&#10003;</span><div><strong class="text-white">Atualize sempre</strong><span class="text-neutral-400"> - CLAUDE.md desatualizado e pior que nenhum. Revise mensalmente.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">&#10003;</span><div><strong class="text-white">Audite periodicamente</strong><span class="text-neutral-400"> - Checklist + teste pratico para verificar completude e precisao.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">&#10003;</span><div><strong class="text-white">Evite anti-patterns</strong><span class="text-neutral-400"> - Nada de CLAUDE.md gigante, copia do README ou instrucoes vagas.</span></div></div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-blue-400 mb-2">Proximo Modulo:</h3><p class="text-neutral-300">Trilha 3 - Workflows</p></div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-2-7.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">&larr; Modulo Anterior</a>
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">Voltar para Trilha</a>
+          <a href="../trilha3/index.html" class="flex-1 text-center px-6 py-3 bg-blue-600/40 text-blue-100 rounded-lg font-semibold hover:bg-blue-600/60 transition-colors">Proximo Modulo &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>6 Pilares do Claude Code Full - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) { themeToggleDarkIcon.classList.remove('hidden'); html.classList.remove('dark'); } else { themeToggleLightIcon.classList.remove('hidden'); }
+    themeToggle.addEventListener('click', () => { themeToggleDarkIcon.classList.toggle('hidden'); themeToggleLightIcon.classList.toggle('hidden'); html.classList.toggle('dark'); localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light'); });
+  </script>
+</body>
+</html>

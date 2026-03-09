@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 2.2 - Anatomia do CLAUDE.md Perfeito | 6 Pilares CC Full</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    html:not(.dark) body { background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%); }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span>
+            <span class="font-bold text-lg hidden sm:inline">6 Pilares CC Full</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Atalhos</span></a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10"><span class="sm:hidden">T2</span><span class="hidden sm:inline">CLAUDE.md</span></a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Workflows</span></a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Prompts</span></a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Skills</span></a>
+          <a href="../trilha6/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"><span class="sm:hidden">T6</span><span class="hidden sm:inline">MCPs</span></a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-blue-400">Inicio</a><span>/</span>
+      <a href="index.html" class="hover:text-blue-400">Trilha 2</a><span>/</span>
+      <span class="text-blue-400">Modulo 2.2</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MODULO 2.2</span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🏗️ Anatomia do CLAUDE.md Perfeito</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">Domine cada secao do CLAUDE.md: Project Overview, Tech Stack, Commands, Code Conventions, Important Patterns e Things To Avoid. Saia com um template completo pronto para usar.</p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Topicos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">30</div><div class="text-xs text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Basico</div><div class="text-xs text-neutral-400">Nivel</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Teoria + Pratica</div><div class="text-xs text-neutral-400">Tipo</div></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- TOPICO 1: Project Overview -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">📝 Secao Project Overview</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">A primeira secao do CLAUDE.md e a mais importante: o <strong class="text-blue-400">Project Overview</strong>. Em 2-3 frases, voce explica o que o projeto faz, qual o dominio e qual a stack principal. O Claude usa isso como ancoragem para todas as decisoes subsequentes.</p>
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">🎯</span> Conceito Principal</h3>
+        <p class="text-neutral-300 mb-4">O Project Overview responde tres perguntas: <strong class="text-white">O que e?</strong>, <strong class="text-white">Para quem?</strong> e <strong class="text-white">Com que tecnologia?</strong>. Mantenha curto e direto.</p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <span class="text-blue-400">## Project Overview</span><br>
+          This is SaaSify, a B2B subscription management platform.<br>
+          Built with Next.js 14 (App Router), TypeScript, and Supabase.<br>
+          Target users: SaaS companies managing recurring billing.
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong class="text-white">Seja especifico:</strong> "B2B subscription platform" e melhor que "aplicacao web"</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong class="text-white">Inclua o stack principal:</strong> O Claude ajusta suas sugestoes baseado na stack declarada</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong class="text-white">Maximo 3 frases:</strong> Nao e README. E contexto rapido</span></li>
+        </ul>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica Pratica</h3>
+        <p class="text-neutral-300">Escreva o Project Overview como se estivesse respondendo a pergunta "O que voce ta construindo?" para um colega senior em uma frase. Se precisa de mais de 3 frases, voce esta incluindo detalhes demais.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 2: Tech Stack e Commands -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">⚙️ Secao Tech Stack e Commands</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">A secao de <strong class="text-blue-400">Tech Stack e Commands</strong> e onde voce declara as tecnologias do projeto e os comandos que o Claude deve usar. Isso e crucial porque o Claude frequentemente precisa rodar comandos e precisa saber qual package manager e quais scripts usar.</p>
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">🎯</span> Conceito Principal</h3>
+        <p class="text-neutral-300 mb-4">Liste sua stack como bullet points e seus comandos como pares chave-valor. O Claude usa isso para saber qual ferramenta usar em cada situacao.</p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <span class="text-blue-400">## Tech Stack</span><br>
+          - Language: TypeScript (strict mode)<br>
+          - Framework: Next.js 14 with App Router<br>
+          - Database: Supabase (PostgreSQL)<br>
+          - Styling: Tailwind CSS + shadcn/ui<br>
+          - Testing: Vitest + Playwright<br>
+          - Package Manager: pnpm<br><br>
+          <span class="text-blue-400">## Commands</span><br>
+          - Dev: pnpm dev<br>
+          - Build: pnpm build<br>
+          - Test: pnpm test<br>
+          - E2E: pnpm test:e2e<br>
+          - Lint: pnpm lint<br>
+          - Type check: npx tsc --noEmit
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong class="text-white">Package Manager explicitamente:</strong> Sem isso, o Claude pode usar npm quando voce usa pnpm</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong class="text-white">Todos os comandos importantes:</strong> Dev, build, test, lint, type check. O Claude usa esses comandos frequentemente</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong class="text-white">Versoes especificas quando relevante:</strong> "Next.js 14 with App Router" e muito mais util que apenas "Next.js"</span></li>
+        </ul>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica Pratica</h3>
+        <p class="text-neutral-300">O erro mais comum e esquecer o package manager. Se voce usa pnpm e nao declara, o Claude vai rodar <code class="bg-dark-700 px-2 py-1 rounded text-blue-400">npm install</code> e criar um package-lock.json indesejado no seu projeto. Sempre declare explicitamente.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 3: Code Conventions -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">📐 Secao Code Conventions</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">A secao de <strong class="text-blue-400">Code Conventions</strong> define como o codigo deve ser escrito. E aqui que voce evita que o Claude gere codigo que "funciona mas nao e do jeito certo" para o seu projeto.</p>
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">🎯</span> Conceito Principal</h3>
+        <p class="text-neutral-300 mb-4">Documente apenas as convencoes que sao <strong class="text-white">especificas do seu projeto</strong>. Nao precisa dizer "use camelCase em JavaScript". Foque no que e unico.</p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <span class="text-blue-400">## Code Conventions</span><br>
+          - Use Server Components by default, Client Components only when needed<br>
+          - Named exports for all components (never default export)<br>
+          - File naming: kebab-case for files, PascalCase for components<br>
+          - Colocate tests next to source files as *.test.ts<br>
+          - Use Zod for all input validation<br>
+          - Prefer composition over inheritance<br>
+          - All API responses follow { data, error, meta } pattern
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong class="text-white">Exports:</strong> Named vs default e uma das maiores fontes de inconsistencia. Declare explicitamente</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong class="text-white">Naming:</strong> kebab-case, camelCase, PascalCase para cada contexto</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong class="text-white">Patterns:</strong> Padroes de resposta de API, tratamento de erros, validacao</span></li>
+        </ul>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica Pratica</h3>
+        <p class="text-neutral-300">Revise os ultimos 5 PRs que voce fez correcoes de estilo. Cada correcao que voce fez e uma convencao que deveria estar no CLAUDE.md. Se voce corrigiu "use named export" 3 vezes, adicione essa regra.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 4: Important Patterns -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🔗 Secao Important Patterns</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">A secao de <strong class="text-blue-400">Important Patterns</strong> documenta os padroes arquiteturais do projeto. Tratamento de erros, gerenciamento de estado, autenticacao, chamadas de API. Esses padroes sao o que separa codigo que "funciona" de codigo que "se encaixa" no projeto.</p>
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">🎯</span> Conceito Principal</h3>
+        <p class="text-neutral-300 mb-4">Padroes arquiteturais sao decisoes que afetam multiplos arquivos e funcionalidades. O Claude precisa conhece-los para gerar codigo consistente.</p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <span class="text-blue-400">## Important Patterns</span><br>
+          - Error handling: Use Result&lt;T, E&gt; pattern, never throw in business logic<br>
+          - State management: Zustand for client state, React Query for server state<br>
+          - API calls: Always through src/lib/api.ts, never fetch directly<br>
+          - Authentication: Supabase Auth with JWT, middleware checks in middleware.ts<br>
+          - Database queries: Always through repository pattern in src/repositories/
+        </div>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica Pratica</h3>
+        <p class="text-neutral-300">Se voce tem um pattern de error handling especifico, escreva um mini-exemplo no CLAUDE.md. O Claude aprende muito melhor com exemplos concretos do que com descricoes abstratas. Mostre o "antes ruim" e o "depois certo".</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 5: Things To Avoid -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🚫 Secao Things To Avoid</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">A secao <strong class="text-blue-400">Things To Avoid</strong> e tao poderosa quanto as regras positivas. Dizer ao Claude o que <strong class="text-blue-400">NAO fazer</strong> previne erros comuns antes que eles acontecam. Essa secao funciona como guardrails automaticos.</p>
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">🎯</span> Conceito Principal</h3>
+        <p class="text-neutral-300 mb-4">Regras negativas sao mais faceis de seguir do que regras positivas. "Nunca use any" e mais claro do que "sempre use types adequados". Use linguagem direta e imperativa.</p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <span class="text-blue-400">## Things To Avoid</span><br>
+          - Never use "any" type — use "unknown" and narrow<br>
+          - Don't use the Pages Router — App Router only<br>
+          - Never commit .env files<br>
+          - Don't install new dependencies without discussing first<br>
+          - Never use console.log in production code — use the logger<br>
+          - Don't create files outside the src/ directory
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong class="text-white">Use "Never" e "Don't":</strong> Linguagem forte e inequivoca funciona melhor com LLMs</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong class="text-white">Explique brevemente o motivo:</strong> "Never use any — use unknown and narrow" e melhor que apenas "Never use any"</span></li>
+        </ul>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica Pratica</h3>
+        <p class="text-neutral-300">Cada bug que voce encontrou porque o Claude fez algo errado e um candidato para Things To Avoid. Mantenha um log mental e atualize essa secao regularmente. Depois de 2 semanas de uso, essa lista se torna ouro puro.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 6: Template Completo -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">📋 Template Completo Pronto para Copiar</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Aqui esta o <strong class="text-blue-400">template completo</strong> que voce pode copiar e adaptar para qualquer projeto. Cada secao tem placeholders explicativos que voce substitui com as informacoes do seu projeto.</p>
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">🎯</span> Conceito Principal</h3>
+        <p class="text-neutral-300 mb-4">Este template cobre 95% dos casos de uso. Copie, substitua os placeholders e pronto. Voce tera um CLAUDE.md funcional em menos de 10 minutos.</p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+          <span class="text-blue-400"># CLAUDE.md</span><br><br>
+          <span class="text-blue-400">## Project Overview</span><br>
+          This is [PROJECT NAME], a [brief description].<br>
+          Built with [primary tech stack].<br><br>
+          <span class="text-blue-400">## Tech Stack</span><br>
+          - Language: [e.g., TypeScript, Python, Go]<br>
+          - Framework: [e.g., Next.js, FastAPI, Express]<br>
+          - Database: [e.g., PostgreSQL, MongoDB, Supabase]<br>
+          - Styling: [e.g., Tailwind CSS, styled-components]<br>
+          - Testing: [e.g., Jest, Pytest, Vitest]<br>
+          - Package Manager: [e.g., npm, pnpm, bun, uv]<br><br>
+          <span class="text-blue-400">## Project Structure</span><br>
+          - src/ — Main application source code<br>
+          - src/components/ — Reusable UI components<br>
+          - src/lib/ — Utility functions and shared logic<br>
+          - tests/ — Test files<br><br>
+          <span class="text-blue-400">## Commands</span><br>
+          - Dev server: [command]<br>
+          - Build: [command]<br>
+          - Test: [command]<br>
+          - Lint: [command]<br><br>
+          <span class="text-blue-400">## Code Conventions</span><br>
+          - [Your convention 1]<br>
+          - [Your convention 2]<br>
+          - [Your convention 3]<br><br>
+          <span class="text-blue-400">## Important Patterns</span><br>
+          - Error handling: [describe]<br>
+          - State management: [describe]<br>
+          - API calls: [describe]<br><br>
+          <span class="text-blue-400">## Things To Avoid</span><br>
+          - Never [thing 1]<br>
+          - Don't [thing 2]<br>
+          - Avoid [thing 3]
+        </div>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica Pratica</h3>
+        <p class="text-neutral-300">Comece com esse template e va refinando ao longo do tempo. A primeira versao nao precisa ser perfeita. O importante e ter algo que o Claude possa ler. Voce vai iterar e melhorar naturalmente conforme usa.</p>
+      </div>
+    </section>
+
+    <!-- EXERCICIO -->
+    <section id="exercicio" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">🏋️</span>
+        <h2 class="text-2xl font-bold">Exercicio Pratico</h2>
+      </div>
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border-2 border-blue-500/40 p-8 mb-6">
+        <div class="flex items-center space-x-3 mb-6">
+          <span class="text-3xl">🏋️</span>
+          <div>
+            <h3 class="text-xl font-bold text-blue-400">Exercicio: Criar CLAUDE.md Completo para um Projeto Pessoal</h3>
+            <p class="text-neutral-400 text-sm">Tempo estimado: 15-20 minutos</p>
+          </div>
+        </div>
+        <div class="space-y-6">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/30 flex items-center justify-center border border-blue-500/40"><span class="text-blue-400 font-bold">1</span></div>
+            <div class="flex-1"><h4 class="font-semibold text-white mb-2">Escolha um projeto ativo</h4><p class="text-neutral-300 text-sm">Selecione um projeto real que voce esta trabalhando atualmente.</p></div>
+          </div>
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/30 flex items-center justify-center border border-blue-500/40"><span class="text-blue-400 font-bold">2</span></div>
+            <div class="flex-1"><h4 class="font-semibold text-white mb-2">Copie o template</h4><p class="text-neutral-300 text-sm">Use o template completo do Topico 6 como base.</p></div>
+          </div>
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/30 flex items-center justify-center border border-blue-500/40"><span class="text-blue-400 font-bold">3</span></div>
+            <div class="flex-1"><h4 class="font-semibold text-white mb-2">Preencha todas as secoes</h4><p class="text-neutral-300 text-sm">Substitua cada placeholder com informacoes reais do seu projeto. Nao pule nenhuma secao.</p></div>
+          </div>
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/30 flex items-center justify-center border border-blue-500/40"><span class="text-blue-400 font-bold">4</span></div>
+            <div class="flex-1"><h4 class="font-semibold text-white mb-2">Teste com o Claude Code</h4><p class="text-neutral-300 text-sm">Abra o Claude Code no projeto e pergunte: "Quais instrucoes voce tem sobre este projeto?" Verifique se ele listou tudo corretamente.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📋</span> Resumo do Modulo</h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Project Overview:</strong><span class="text-neutral-400"> 2-3 frases que explicam o que, para quem e com que stack.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Tech Stack + Commands:</strong><span class="text-neutral-400"> Declare stack e TODOS os comandos que o Claude precisa.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Code Conventions:</strong><span class="text-neutral-400"> Somente convencoes especificas do seu projeto.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Important Patterns:</strong><span class="text-neutral-400"> Padroes arquiteturais que afetam multiplos arquivos.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Things To Avoid:</strong><span class="text-neutral-400"> Regras negativas claras com "Never" e "Don't".</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Template pronto:</strong><span class="text-neutral-400"> Copie, preencha, use. 10 minutos para um CLAUDE.md funcional.</span></div></div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-blue-400 mb-2">Proximo Modulo:</h3><p class="text-neutral-300">2.3 - Escopos e Hierarquia de Memoria</p></div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-2-1.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Modulo Anterior</a>
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">Voltar para Trilha</a>
+          <a href="modulo-2-3.html" class="flex-1 text-center px-6 py-3 bg-blue-600/40 text-blue-100 rounded-lg font-semibold hover:bg-blue-600/60 transition-colors">Proximo Modulo →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>6 Pilares do Claude Code Full - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) { themeToggleDarkIcon.classList.remove('hidden'); html.classList.remove('dark'); } else { themeToggleLightIcon.classList.remove('hidden'); }
+    themeToggle.addEventListener('click', () => { themeToggleDarkIcon.classList.toggle('hidden'); themeToggleLightIcon.classList.toggle('hidden'); html.classList.toggle('dark'); localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light'); });
+  </script>
+</body>
+</html>
