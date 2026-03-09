@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 5.3 - Skills Praticas: Screenshot to Website | 6 Pilares CC Full</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span>
+            <span class="font-bold text-lg hidden sm:inline">6 Pilares CC Full</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Atalhos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">CLAUDE.md</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Workflows</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Prompts</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-teal-400 bg-teal-500/10">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Skills</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">MCPs</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-teal-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-teal-400">Trilha 5</a>
+      <span>/</span>
+      <span class="text-teal-400">Modulo 5.3</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 5.3
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">📸 Skills Praticas: Screenshot to Website</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Domine a skill mais impressionante do ecossistema: converter screenshots de design em paginas web pixel-perfect com HTML semantico e Tailwind CSS.
+      </p>
+
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">35</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">Intermediario</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🎯 O que a Skill Faz</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A skill <strong class="text-teal-400">Screenshot to Website</strong> e uma das mais poderosas e impressionantes do ecossistema Claude Code. Ela recebe uma imagem de um design (screenshot de Figma, Dribbble, site existente) e gera uma pagina web responsiva que replica o design com <strong class="text-white">95%+ de fidelidade visual</strong>.
+      </p>
+
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O workflow da skill segue um pipeline de 5 etapas que transforma pixels em codigo:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Input:</strong> Screenshot ou imagem do design desejado (PNG, JPG, Figma export)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Analise:</strong> Claude examina o layout, grid, espacamento, cores e tipografia</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Planejamento:</strong> Estrutura HTML semantica e mapeamento de componentes</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Implementacao:</strong> Construcao com Tailwind CSS, responsivo e acessivel</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Verificacao:</strong> Loop de comparacao visual ate atingir 95%+ de match</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Esta skill funciona melhor com screenshots de alta resolucao e designs com layout claro. Designs muito complexos (dashboards com 20+ componentes) devem ser divididos em secoes menores. Invoque a skill uma vez por secao para resultados mais precisos.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">🔍 Analise de Layout</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O primeiro step da skill e a <strong class="text-teal-400">analise profunda do design</strong>. O Claude examina o screenshot pixel a pixel, identificando os elementos estruturais que compoem o layout. Essa analise e o fundamento para todo o codigo que sera gerado.
+      </p>
+
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          A analise cobre quatro dimensoes criticas do design:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Grid System:</strong> Numero de colunas, gaps entre elementos, alinhamento. O Claude identifica se e um grid de 12 colunas, flexbox, ou layout customizado</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Espacamento:</strong> Padding e margin entre secoes, dentro de cards, entre texto e bordas. Valores exatos em pixels convertidos para classes Tailwind</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Cores:</strong> Extracao de hex values exatos para backgrounds, textos, bordas, sombras e gradientes. Cada cor e mapeada para o design system</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Tipografia:</strong> Font families, tamanhos (em rem), pesos (light, regular, bold), line-heights e letter-spacing</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Se voce tem acesso ao arquivo Figma original, exporte com 2x de resolucao e inclua a paleta de cores e tokens de tipografia junto com o screenshot. Quanto mais informacao o Claude tiver, mais preciso sera o resultado. Um screenshot de 1920x1080 e o minimo recomendado.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🏗️ Planejamento de HTML Semantico</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Antes de escrever uma linha de codigo, a skill planeja a <strong class="text-teal-400">estrutura HTML semantica</strong>. Isso garante acessibilidade, SEO e manutenibilidade. O Claude mapeia cada elemento visual para a tag HTML mais apropriada.
+      </p>
+
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Hierarquia de headings:</strong> h1 para titulo principal, h2 para secoes, h3 para subsecoes. Nunca pular niveis</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Tags semanticas:</strong> header, nav, main, section, article, aside, footer. Cada regiao do layout recebe a tag apropriada</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Componentes reutilizaveis:</strong> Cards, botoes, badges que aparecem multiplas vezes sao identificados para reutilizacao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Elementos interativos:</strong> Botoes, links, forms, inputs. Cada um com roles ARIA apropriados quando necessario</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          A fase de planejamento evita retrabalho massivo. Se o Claude pular direto para codigo sem planejar, o resultado tende a ser uma sopa de divs. Inclua na skill a instrucao explicita: "Antes de escrever codigo, liste a estrutura HTML completa em formato de outline".
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🎨 Construcao com Tailwind</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A implementacao usa <strong class="text-teal-400">Tailwind CSS</strong> por padrao, o que permite construcao rapida sem CSS customizado. O Claude traduz cada elemento visual analisado em classes Tailwind precisas, mantendo o codigo limpo e consistente.
+      </p>
+
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Utility-first:</strong> Cada propriedade visual vira uma classe Tailwind. <code class="bg-dark-700 px-1 py-0.5 rounded text-teal-400">bg-slate-900 text-white p-6 rounded-xl</code> em vez de CSS customizado</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Responsividade:</strong> Breakpoints mobile-first com prefixos <code class="bg-dark-700 px-1 py-0.5 rounded text-teal-400">sm:</code>, <code class="bg-dark-700 px-1 py-0.5 rounded text-teal-400">md:</code>, <code class="bg-dark-700 px-1 py-0.5 rounded text-teal-400">lg:</code></span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Dark mode:</strong> Suporte automatico com prefixo <code class="bg-dark-700 px-1 py-0.5 rounded text-teal-400">dark:</code> quando o design incluir versao escura</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Cores customizadas:</strong> Valores hex que nao existem no Tailwind padrao sao adicionados via arbitrary values <code class="bg-dark-700 px-1 py-0.5 rounded text-teal-400">bg-[#1a2b3c]</code></span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Para resultados production-ready, inclua na skill a instrucao de usar CDN do Tailwind para prototipagem rapida e migrar para build local (PostCSS) para producao. O CDN e perfeito para demonstracoes e prototipagem, mas nao deve ser usado em producao.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🔄 Loop de Comparacao Visual</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O diferencial desta skill e o <strong class="text-teal-400">loop de comparacao visual</strong>. Apos gerar o codigo, o Claude compara o resultado com o screenshot original e itera ate atingir 95%+ de fidelidade. Nao e "gerar e entregar", e "gerar, comparar, ajustar, repetir".
+      </p>
+
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Iteracao 1:</strong> Geracao inicial do codigo baseado na analise. Captura aproximadamente 80-85% do design</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Iteracao 2:</strong> Ajustes de espacamento, cores exatas e tipografia. Sobe para 90-93%</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Iteracao 3:</strong> Refinamentos finais: sombras, gradientes, border-radius, transicoes. Atinge 95%+</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Criterio de parada:</strong> O loop continua ate que todos os quality checks estejam satisfeitos ou o numero maximo de iteracoes seja atingido</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Limite o loop a 3-4 iteracoes na skill para controlar custos de token. Apos a terceira iteracao, os ganhos marginais sao pequenos. Se o resultado nao estiver satisfatorio apos 3 iteracoes, o problema provavelmente esta na qualidade do screenshot de referencia.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">✅ Checklist de Qualidade</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O checklist de qualidade da skill Screenshot to Website cobre <strong class="text-teal-400">seis dimensoes criticas</strong> que determinam se o output e production-ready ou precisa de mais trabalho.
+      </p>
+
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <div class="space-y-3 text-neutral-300">
+          <div class="flex items-start space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span><strong class="text-white">Layout matches:</strong> Posicao e proporcao dos elementos correspondem ao screenshot original</span>
+          </div>
+          <div class="flex items-start space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span><strong class="text-white">Cores exatas:</strong> Hex values identicos ao design, sem aproximacoes</span>
+          </div>
+          <div class="flex items-start space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span><strong class="text-white">Tipografia fiel:</strong> Font family, size, weight e line-height corretos</span>
+          </div>
+          <div class="flex items-start space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span><strong class="text-white">Responsivo:</strong> Funciona em mobile (320px), tablet (768px) e desktop (1280px+)</span>
+          </div>
+          <div class="flex items-start space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span><strong class="text-white">Hover + Focus states:</strong> Botoes, links e elementos interativos com estados visuais</span>
+          </div>
+          <div class="flex items-start space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span><strong class="text-white">Sem erros no console:</strong> Zero erros JavaScript, zero warnings CSS</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Use o DevTools do navegador para comparar lado a lado: screenshot original na esquerda, resultado gerado na direita. Foque primeiro nos problemas mais visiveis (layout, cores) e depois nos detalhes finos (shadows, border-radius). Essa ordem de prioridade e a mesma que a skill segue internamente.
+        </p>
+      </div>
+    </section>
+
+    <!-- EXERCICIO -->
+    <section id="exercicio" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">🏋️</span>
+        <h2 class="text-2xl font-bold">Exercicio Pratico</h2>
+      </div>
+
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border-2 border-teal-500/40 p-8 mb-6">
+        <div class="flex items-center space-x-3 mb-6">
+          <span class="text-3xl">🏋️</span>
+          <div>
+            <h3 class="text-xl font-bold text-teal-400">Exercicio: Implementar Screenshot to Website</h3>
+            <p class="text-neutral-400 text-sm">Tempo estimado: 25-30 minutos</p>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Criar a skill no projeto</h4>
+              <p class="text-neutral-300 text-sm">Crie o arquivo <code class="text-teal-400">.claude/commands/screenshot-to-website.md</code> usando o template do modulo 5.2 com os steps especificos deste modulo.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Escolher um screenshot de referencia</h4>
+              <p class="text-neutral-300 text-sm">Use um design simples para o primeiro teste: landing page de uma pagina, card de produto ou section hero. Evite dashboards complexos.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Invocar e testar</h4>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-teal-400">></span> <span class="text-neutral-300">/screenshot-to-website</span>
+              </div>
+              <p class="text-neutral-300 text-sm mt-2">Forneca o screenshot e observe o Claude seguir os steps da skill.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">4</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Comparar e avaliar</h4>
+              <p class="text-neutral-300 text-sm">Abra o resultado no navegador e compare com o screenshot original. Verifique cada item do checklist de qualidade.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-teal-900/20 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span class="text-neutral-300">Skill criada e funcionando</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span class="text-neutral-300">HTML semantico gerado</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span class="text-neutral-300">Layout responsivo</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span class="text-neutral-300">90%+ fidelidade visual</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-teal-900/40 via-dark-800 to-dark-800 rounded-xl border border-teal-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div><strong class="text-white">Screenshot to Website transforma pixels em codigo</strong><span class="text-neutral-400"> - Pipeline de 5 etapas: input, analise, planejamento, implementacao, verificacao.</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div><strong class="text-white">Analise de 4 dimensoes</strong><span class="text-neutral-400"> - Grid, espacamento, cores e tipografia extraidos do screenshot.</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div><strong class="text-white">HTML semantico antes de codigo</strong><span class="text-neutral-400"> - Planejamento da estrutura previne "sopa de divs".</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div><strong class="text-white">Tailwind CSS utility-first</strong><span class="text-neutral-400"> - Responsivo, dark mode e cores customizadas via classes inline.</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div><strong class="text-white">Loop de comparacao visual</strong><span class="text-neutral-400"> - 3 iteracoes para atingir 95%+ de fidelidade ao design original.</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div><strong class="text-white">6 criterios de qualidade</strong><span class="text-neutral-400"> - Layout, cores, tipografia, responsividade, interatividade, zero erros.</span></div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-teal-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">5.4 - Skills Praticas: Lead Research e Code Review</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-5-2.html" class="flex-1 text-left px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors justify-start">
+            ← Modulo Anterior
+          </a>
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha
+          </a>
+          <a href="modulo-5-4.html" class="flex-1 text-left px-6 py-3 bg-teal-600/40 text-teal-100 rounded-lg font-semibold hover:bg-teal-600/60 transition-colors justify-start">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>6 Pilares do Claude Code Full - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

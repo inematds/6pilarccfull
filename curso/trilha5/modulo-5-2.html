@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 5.2 - Anatomia de uma Skill (Template Completo) | 6 Pilares CC Full</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span>
+            <span class="font-bold text-lg hidden sm:inline">6 Pilares CC Full</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Atalhos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">CLAUDE.md</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Workflows</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Prompts</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-teal-400 bg-teal-500/10">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Skills</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">MCPs</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-teal-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-teal-400">Trilha 5</a>
+      <span>/</span>
+      <span class="text-teal-400">Modulo 5.2</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 5.2
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">📐 Anatomia de uma Skill (Template Completo)</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Desvende cada secao do template oficial de skills: Purpose, Inputs Required, Steps, Quality Checks e Output. Construa skills profissionais que funcionam de primeira.
+      </p>
+
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">30</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">Basico</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">Teoria + Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- TOPICO 1: Secao Purpose -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🎯 Secao Purpose (Objetivo em Uma Frase)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A secao Purpose e a <strong class="text-teal-400">primeira linha de defesa contra ambiguidade</strong>. E uma unica frase que descreve o resultado final que a skill deve produzir. Sem um Purpose claro, o Claude pode interpretar a skill de formas diferentes a cada invocacao.
+      </p>
+
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O Purpose deve ser <strong class="text-white">uma unica frase orientada a resultado</strong>. Nao descreve o processo, descreve o que o usuario recebe no final. Exemplos:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Bom:</strong> "Converter um screenshot de design em uma pagina web responsiva pixel-perfect usando Tailwind CSS"</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Bom:</strong> "Realizar code review em nivel de PR senior com classificacao de severidade"</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400 mt-1">•</span>
+            <span><strong class="text-white">Ruim:</strong> "Ajudar com codigo" (muito vago, sem resultado mensuravel)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400 mt-1">•</span>
+            <span><strong class="text-white">Ruim:</strong> "Ler arquivos e analisar e depois gerar um relatorio e enviar" (multiplos resultados misturados)</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Use o teste da "uma frase": se voce nao consegue descrever o resultado em uma frase, a skill esta complexa demais. Divida em duas ou mais skills menores. Skills focadas sao mais reutilizaveis e produzem resultados melhores.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 2: Secao Inputs Required -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">📥 Secao Inputs Required</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A secao Inputs Required define <strong class="text-teal-400">o que o usuario precisa fornecer</strong> para que a skill funcione. Sem inputs claros, o Claude pode pedir informacoes durante a execucao ou assumir defaults inadequados.
+      </p>
+
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Os inputs devem ser listados de forma explicita, com tipo e descricao:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-teal-400">## Inputs Required</div>
+          <div class="text-neutral-300">- Screenshot ou URL do design (imagem ou link)</div>
+          <div class="text-neutral-300">- Framework alvo (React, Vue, HTML puro)</div>
+          <div class="text-neutral-300">- Breakpoints desejados (mobile, tablet, desktop)</div>
+          <div class="text-neutral-300">- Paleta de cores (se diferente do screenshot)</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Seja especifico:</strong> "Arquivo de imagem" e melhor que "referencia visual". O Claude precisa saber exatamente o que esperar</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Indique opcionalidade:</strong> Marque inputs opcionais com "(opcional)" para que o Claude saiba quais pode pular</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Inclua defaults:</strong> Se um input tem valor padrao, especifique: "Framework alvo (default: HTML com Tailwind)"</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Quanto menos inputs obrigatorios, mais facil de usar a skill. Defina defaults inteligentes para tudo que puder. O usuario so precisa fornecer o que e unico para cada invocacao. O resto deve ter valores padrao razoaveis.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 3: Secao Steps -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">📝 Secao Steps (Passos Detalhados)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A secao Steps e o <strong class="text-teal-400">coracao da skill</strong>. Aqui voce define cada passo que o Claude deve seguir, em ordem, com instrucoes especificas o suficiente para produzir resultados consistentes. Steps vagos geram outputs vagos.
+      </p>
+
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Cada step deve ter um titulo claro e instrucoes especificas:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-teal-400">## Steps</div>
+          <div class="mt-2 text-teal-400">### Step 1: Analisar o Design</div>
+          <div class="text-neutral-300">Examine o screenshot e identifique:</div>
+          <div class="text-neutral-300">- Grid system (colunas, gaps)</div>
+          <div class="text-neutral-300">- Espacamento (padding, margin)</div>
+          <div class="text-neutral-300">- Cores exatas (extrair hex values)</div>
+          <div class="text-neutral-300">- Tipografia (font-family, sizes, weights)</div>
+          <div class="mt-2 text-teal-400">### Step 2: Planejar HTML Semantico</div>
+          <div class="text-neutral-300">Antes de escrever codigo, crie um outline da estrutura:</div>
+          <div class="text-neutral-300">- Identificar componentes reutilizaveis</div>
+          <div class="text-neutral-300">- Definir hierarquia de heading tags</div>
+          <div class="text-neutral-300">- Mapear elementos interativos</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Seja especifico:</strong> "Analisar cores" e vago. "Extrair hex values de cada cor visivel no screenshot" e especifico e acionavel</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Inclua o PORQQUE:</strong> Adicionar o motivo por tras de cada step ajuda o Claude a tomar decisoes melhores quando encontra ambiguidade</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Ordene logicamente:</strong> Steps devem seguir uma progressao natural. Analise antes de implementacao, implementacao antes de testes</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          A regra de ouro para steps: <strong class="text-white">se voce fosse treinar um junior para fazer essa tarefa, quais instrucoes daria?</strong> Esse nivel de detalhe e o ideal para uma skill. O Claude e extraordinariamente capaz, mas instrucoes especificas produzem resultados especificos.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 4: Secao Quality Checks -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">✅ Secao Quality Checks</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Quality Checks sao o <strong class="text-teal-400">mecanismo de auto-verificacao</strong> da skill. Sem eles, o Claude entrega o resultado e segue em frente. Com eles, o Claude verifica cada criterio antes de considerar a tarefa completa. E a diferenca entre "feito" e "feito direito".
+      </p>
+
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Quality Checks devem ser verificaveis objetivamente:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-teal-400">## Quality Checks</div>
+          <div class="text-neutral-300">- [ ] Layout corresponde ao screenshot original</div>
+          <div class="text-neutral-300">- [ ] Valores hex de cores sao exatos</div>
+          <div class="text-neutral-300">- [ ] Tipografia e fiel ao design</div>
+          <div class="text-neutral-300">- [ ] Responsivo em mobile, tablet e desktop</div>
+          <div class="text-neutral-300">- [ ] Hover e focus states incluidos</div>
+          <div class="text-neutral-300">- [ ] Sem erros no console</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Objetivos, nao subjetivos:</strong> "Codigo limpo" e subjetivo. "Funcoes com menos de 50 linhas" e objetivo e verificavel</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Use checkbox syntax:</strong> O formato <code class="bg-dark-700 px-1 py-0.5 rounded text-teal-400">- [ ]</code> sinaliza ao Claude que cada item precisa ser verificado individualmente</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Cubra edge cases:</strong> Inclua checks para cenarios que costumam ser esquecidos: estados de erro, loading states, campos vazios</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Comece com 4-6 quality checks essenciais. Skills com muitos checks (10+) podem tornar a execucao lenta e cara em tokens. Foque nos criterios que realmente diferenciam um resultado "ok" de um resultado "excelente". Se preciso, agrupe checks relacionados.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 5: Secao Output -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">📤 Secao Output (Entrega Esperada)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A secao Output descreve <strong class="text-teal-400">exatamente o que o Claude deve entregar</strong> ao finalizar a skill. Sem isso, o Claude pode entregar o resultado em formato inesperado: um arquivo quando voce esperava texto no console, ou vice-versa.
+      </p>
+
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O Output deve especificar formato, estrutura e local de entrega:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-teal-400">## Output</div>
+          <div class="text-neutral-300">Arquivos HTML/CSS production-ready no diretorio do projeto:</div>
+          <div class="text-neutral-300">- index.html com estrutura semantica completa</div>
+          <div class="text-neutral-300">- Tailwind classes inline (sem CSS custom)</div>
+          <div class="text-neutral-300">- README com instrucoes de preview</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Formato explicito:</strong> Especifique se o output e arquivo, texto no console, tabela, JSON, CSV, etc.</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Localizacao:</strong> Indique onde os arquivos devem ser criados (diretorio atual, subpasta especifica, etc.)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Qualidade minima:</strong> "Production-ready" vs "Prototipo" vs "Draft" define o nivel de polimento esperado</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Inclua um exemplo do output esperado quando possivel. Se a skill gera um relatorio, mostre a estrutura do relatorio. Se gera codigo, mostre a estrutura de arquivos esperada. Exemplos concretos eliminam ambiguidade mais do que qualquer descricao textual.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 6: Template Completo Comentado -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">📋 Template Completo Comentado</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Aqui esta o <strong class="text-teal-400">template completo e oficial</strong> para criar skills profissionais. Copie este template, preencha com seu workflow especifico e salve em <code class="bg-dark-700 px-2 py-1 rounded text-teal-400">.claude/commands/</code>.
+      </p>
+
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4 overflow-x-auto">
+          <div class="text-teal-400"># Skill: [Nome Descritivo]</div>
+          <div class="mt-3 text-teal-400">## Purpose</div>
+          <div class="text-neutral-500"><!-- UMA frase descrevendo o resultado final --></div>
+          <div class="text-neutral-300">[Verbo + objeto + qualificador]</div>
+          <div class="mt-3 text-teal-400">## Inputs Required</div>
+          <div class="text-neutral-500"><!-- O que o usuario precisa fornecer --></div>
+          <div class="text-neutral-300">- [Input obrigatorio 1 (tipo/formato)]</div>
+          <div class="text-neutral-300">- [Input obrigatorio 2 (tipo/formato)]</div>
+          <div class="text-neutral-300">- [Input opcional (opcional, default: X)]</div>
+          <div class="mt-3 text-teal-400">## Steps</div>
+          <div class="text-neutral-500"><!-- Passos em ordem logica --></div>
+          <div class="mt-1 text-teal-400">### Step 1: [Acao Clara]</div>
+          <div class="text-neutral-300">[Instrucao especifica com detalhes suficientes]</div>
+          <div class="text-neutral-300">[Incluir o PORQUE quando relevante]</div>
+          <div class="mt-1 text-teal-400">### Step 2: [Acao Clara]</div>
+          <div class="text-neutral-300">[Instrucao especifica]</div>
+          <div class="mt-1 text-teal-400">### Step 3: [Acao Clara]</div>
+          <div class="text-neutral-300">[Instrucao especifica]</div>
+          <div class="mt-3 text-teal-400">## Quality Checks</div>
+          <div class="text-neutral-500"><!-- Criterios objetivos e verificaveis --></div>
+          <div class="text-neutral-300">- [ ] [Criterio verificavel 1]</div>
+          <div class="text-neutral-300">- [ ] [Criterio verificavel 2]</div>
+          <div class="text-neutral-300">- [ ] [Criterio verificavel 3]</div>
+          <div class="mt-3 text-teal-400">## Output</div>
+          <div class="text-neutral-500"><!-- Descricao clara do entregavel --></div>
+          <div class="text-neutral-300">[Formato + localizacao + nivel de qualidade]</div>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Seis regras para skills excelentes: <strong class="text-white">1)</strong> Seja especifico, steps vagos geram output vago. <strong class="text-white">2)</strong> Inclua checklists para auto-verificacao. <strong class="text-white">3)</strong> Comece com 25 invocacoes de teste antes de escalar. <strong class="text-white">4)</strong> Adicione o PORQUE por tras dos steps. <strong class="text-white">5)</strong> Versione suas skills no git. <strong class="text-white">6)</strong> Compartilhe no repositorio do time.
+        </p>
+      </div>
+    </section>
+
+    <!-- EXERCICIO PRATICO -->
+    <section id="exercicio" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">🏋️</span>
+        <h2 class="text-2xl font-bold">Exercicio Pratico</h2>
+      </div>
+
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border-2 border-teal-500/40 p-8 mb-6">
+        <div class="flex items-center space-x-3 mb-6">
+          <span class="text-3xl">🏋️</span>
+          <div>
+            <h3 class="text-xl font-bold text-teal-400">Exercicio: Construir Skill Completa</h3>
+            <p class="text-neutral-400 text-sm">Tempo estimado: 20-25 minutos</p>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Escolher um workflow repetitivo</h4>
+              <p class="text-neutral-300 text-sm">Identifique algo que voce faz com frequencia: gerar testes, documentar funcoes, criar boilerplate, etc.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Escrever Purpose e Inputs</h4>
+              <p class="text-neutral-300 text-sm">Defina o resultado em uma frase e liste todos os inputs necessarios com tipos e defaults.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Detalhar Steps com instrucoes especificas</h4>
+              <p class="text-neutral-300 text-sm">Escreva 3-5 steps com instrucoes claras. Inclua o porque de cada step quando relevante.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">4</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Adicionar Quality Checks e Output</h4>
+              <p class="text-neutral-300 text-sm">Crie 4-6 criterios de verificacao objetivos e descreva o entregavel final com formato e localizacao.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">5</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Testar 3 vezes e iterar</h4>
+              <p class="text-neutral-300 text-sm">Invoque a skill 3 vezes com inputs diferentes. Ajuste steps e checks com base nos resultados.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-teal-900/20 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span class="text-neutral-300">Purpose em uma frase clara</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span class="text-neutral-300">Inputs com tipos e defaults</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span class="text-neutral-300">Steps especificos e ordenados</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span class="text-neutral-300">Quality Checks verificaveis</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-teal-900/40 via-dark-800 to-dark-800 rounded-xl border border-teal-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Purpose: uma frase, um resultado</strong>
+              <span class="text-neutral-400"> - Orientado a outcome, nao a processo. Se nao cabe em uma frase, divida a skill.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Inputs Required: explicitos e tipados</strong>
+              <span class="text-neutral-400"> - Com defaults inteligentes para minimizar o que o usuario precisa fornecer.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Steps: especificos e com PORQUE</strong>
+              <span class="text-neutral-400"> - Como treinaria um junior. Instrucoes claras produzem resultados claros.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Quality Checks: objetivos e verificaveis</strong>
+              <span class="text-neutral-400"> - Checkbox syntax para auto-verificacao. 4-6 criterios essenciais.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Output: formato, local e qualidade</strong>
+              <span class="text-neutral-400"> - Elimina ambiguidade sobre o que o Claude deve entregar no final.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Template completo pronto para uso</strong>
+              <span class="text-neutral-400"> - Copie, preencha, salve em .claude/commands/ e comece a usar.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-teal-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">5.3 - Skills Praticas: Screenshot to Website</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-5-1.html" class="flex-1 text-left px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors justify-start">
+            ← Modulo Anterior
+          </a>
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha
+          </a>
+          <a href="modulo-5-3.html" class="flex-1 text-left px-6 py-3 bg-teal-600/40 text-teal-100 rounded-lg font-semibold hover:bg-teal-600/60 transition-colors justify-start">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>6 Pilares do Claude Code Full - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
