@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 3.1 - Workflow: Corrigir um Bug | 6 Pilares CC Full</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span>
+            <span class="font-bold text-lg hidden sm:inline">6 Pilares CC Full</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Atalhos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">CLAUDE.md</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Workflows</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Prompts</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Skills</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">MCPs</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-purple-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-purple-400">Trilha 3</a>
+      <span>/</span>
+      <span class="text-purple-400">Modulo 3.1</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 3.1
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">Workflow: Corrigir um Bug</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        O workflow mais comum do dia a dia. Aprenda a diagnosticar, investigar e corrigir bugs de forma sistematica com Claude Code, desde a descricao do sintoma ate o commit da correcao.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">30</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Pratico</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Workflow</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 1: Identificando o bug -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">Identificando o Bug</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Todo bug fix comeca com uma <strong class="text-purple-400">descricao clara do sintoma</strong>. Quanto mais preciso voce for ao descrever o problema para o Claude Code, mais rapido ele vai encontrar a causa raiz. Nao diga apenas "esta quebrado" — descreva o que acontece, quando acontece e o que deveria acontecer.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          A qualidade do diagnostico depende diretamente da qualidade da descricao do sintoma. O Claude Code precisa de tres informacoes essenciais para iniciar uma investigacao eficaz:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Sintoma:</strong> O que esta acontecendo de errado? Qual e o comportamento observado? Uma mensagem de erro, um resultado incorreto, um crash, um timeout?</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Reproducao:</strong> Quais passos reproduzem o bug? Acontece sempre ou intermitentemente? Em qual ambiente (dev, staging, producao)?</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Expectativa:</strong> O que deveria acontecer em vez do bug? Qual e o comportamento correto esperado?</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Use este template para descrever bugs ao Claude Code. Ele funciona como um <strong class="text-white">bug report estruturado</strong> que maximiza a chance de diagnostico correto na primeira tentativa:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+          <span class="text-neutral-500">$</span> <span class="text-purple-400">claude</span> <span class="text-neutral-300">"Ha um bug onde [sintoma]. Acontece quando [passos de reproducao]. O esperado seria [comportamento correto]."</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 2: Forcando investigacao antes do fix -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">Forcando Investigacao Antes do Fix</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Um dos erros mais comuns e pedir ao Claude Code para <strong class="text-purple-400">"consertar o bug" sem antes investigar</strong>. Isso leva a fixes superficiais que tratam o sintoma mas nao a causa raiz. O segredo e forcar a leitura e o diagnostico antes de qualquer mudanca no codigo.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          A abordagem <strong class="text-white">"read first, diagnose second, fix third"</strong> e a chave para correcoes duradouras. Quando voce pede ao Claude para ler os arquivos relevantes antes de sugerir qualquer mudanca, ele constroi um modelo mental mais completo do problema.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Leia primeiro:</strong> Peca ao Claude para ler os arquivos relevantes e tracar a logica do fluxo onde o bug ocorre</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Diagnostique:</strong> Peca uma explicacao da causa raiz antes de ver qualquer sugestao de fix</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Confirme:</strong> Valide se o diagnostico faz sentido com seu conhecimento do sistema antes de autorizar mudancas</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Use este prompt para forcar investigacao antes do fix:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+          <span class="text-purple-400">></span> <span class="text-neutral-300">Leia os arquivos relevantes e trace a logica antes de sugerir qualquer fix. Quero entender a causa raiz primeiro.</span>
+        </div>
+        <p class="text-neutral-300 mt-3">
+          O Claude vai usar as tools Read, Grep e Glob para investigar o codebase, e so depois apresentar um diagnostico estruturado. Isso evita o padrao <strong class="text-white">"chuta e reza"</strong> que gera bugs secundarios.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 3: Colando stack traces completos -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">Colando Stack Traces Completos</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Stack traces sao <strong class="text-purple-400">ouro puro para diagnostico</strong>. Cada linha do stack trace conta uma parte da historia: onde o erro aconteceu, qual funcao chamou qual, e em que ponto a execucao falhou. Nao resuma, nao corte — cole o stack trace completo.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O contexto completo do erro e o que permite ao Claude Code <strong class="text-white">navegar diretamente aos arquivos e linhas relevantes</strong>. Um stack trace completo contem nomes de arquivos, numeros de linha e a cadeia de chamadas que levou ao erro.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Cole tudo:</strong> Stack traces completos, mensagens de erro, warnings. Nao resuma — o Claude precisa dos detalhes para encontrar o arquivo e a linha exatos</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Inclua contexto:</strong> Qual comando voce rodou? Qual endpoint foi chamado? Qual input gerou o erro? O contexto ao redor do erro e tao importante quanto o erro em si</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Use pipe:</strong> Para erros em arquivos de log, use <code class="bg-dark-700 px-1 py-0.5 rounded text-purple-400">cat error.log | claude -p "O que esta causando estes erros?"</code> para alimentar o Claude diretamente</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Ao colar um erro no Claude Code, inclua o maximo de contexto possivel. O Claude vai automaticamente usar as tools para navegar ate os arquivos mencionados no stack trace:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+          <span class="text-purple-400">></span> <span class="text-neutral-300">Estou recebendo este erro ao rodar npm test:</span><br>
+          <span class="text-neutral-300">[cole o stack trace completo aqui]</span><br>
+          <span class="text-neutral-300">Ajude-me a identificar e corrigir a causa raiz.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 4: Aplicando o fix com seguranca -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">Aplicando o Fix com Seguranca</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Depois de confirmar o diagnostico, e hora de aplicar a correcao. Mas <strong class="text-purple-400">um fix sem teste e uma bomba-relogio</strong>. O workflow correto e: aplicar o fix, rodar os testes existentes e, idealmente, adicionar um teste que cobre o cenario do bug para garantir que ele nunca volte.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O padrao <strong class="text-white">"fix + test"</strong> e inegociavel. Toda correcao de bug deve vir acompanhada de verificacao automatizada:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Aplique o fix:</strong> Deixe o Claude fazer as mudancas necessarias. Revise o diff cuidadosamente antes de aceitar — preste atencao especial em efeitos colaterais</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Rode os testes:</strong> Peca ao Claude para rodar a suite de testes completa. Se algum teste quebrar, o fix pode estar incorreto ou incompleto</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Adicione teste de regressao:</strong> Peca ao Claude para criar um teste que reproduz o bug original e verifica que o fix resolve. Isso e sua garantia contra regressoes futuras</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Use este prompt para garantir que o fix inclui verificacao:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+          <span class="text-purple-400">></span> <span class="text-neutral-300">Corrija o bug e rode os testes para garantir que nada mais quebrou. Adicione um teste de regressao para este cenario.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 5: Commitando a correcao -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">Commitando a Correcao</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Com o fix aplicado e os testes passando, e hora de <strong class="text-purple-400">registrar a correcao no historico do projeto</strong>. O comando <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">/commit</code> do Claude Code analisa suas mudancas e gera uma mensagem de commit descritiva automaticamente.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O <strong class="text-white">/commit</strong> nao e um simples <code class="bg-dark-700 px-1 py-0.5 rounded text-purple-400">git commit</code>. Ele analisa o diff, entende o contexto das mudancas e gera uma mensagem de commit semantica que explica o "porque" da mudanca, nao apenas o "o que":
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Analise automatica:</strong> O Claude le o diff e entende quais arquivos mudaram, quais funcoes foram alteradas e qual era o objetivo da mudanca</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Mensagem semantica:</strong> Gera mensagens no formato convencional (fix:, feat:, refactor:) com descricao clara do que foi corrigido</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Revisao antes de confirmar:</strong> Voce ve a mensagem gerada e pode aceitar, editar ou rejeitar antes do commit ser feito</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Depois de confirmar que os testes passam, simplesmente digite:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+          <span class="text-purple-400">></span> <span class="text-neutral-300">/commit</span>
+        </div>
+        <p class="text-neutral-300 mt-3">
+          O Claude vai analisar todas as mudancas staged e unstaged, gerar uma mensagem de commit e perguntar se voce quer confirmar. E o jeito mais rapido e consistente de manter um historico de commits limpo.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 6: Post-mortem: aprendendo com o bug -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">Post-mortem: Aprendendo com o Bug</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O bug esta corrigido, mas o trabalho nao termina ai. O passo final — e mais subestimado — e <strong class="text-purple-400">entender por que o bug existiu em primeiro lugar</strong>. Isso transforma cada bug fix em uma oportunidade de aprendizado que previne bugs futuros similares.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          A <strong class="text-white">analise de causa raiz (root cause analysis)</strong> responde perguntas que vao alem do fix imediato:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Por que o bug existiu?</strong> Foi um erro de logica, uma falta de validacao, um edge case nao considerado, ou uma mudanca em outra parte do sistema que causou efeito colateral?</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Por que nao foi pego antes?</strong> Faltavam testes? O code review nao cobriu? A documentacao estava incompleta?</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Como prevenir?</strong> Que regras, testes ou padroes podemos adicionar para que bugs deste tipo nunca mais passem?</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Apos o commit do fix, peca ao Claude uma analise post-mortem:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+          <span class="text-purple-400">></span> <span class="text-neutral-300">Explique a causa raiz desse bug. Por que existiu? Por que nao foi pego antes? O que podemos fazer para prevenir bugs similares?</span>
+        </div>
+        <p class="text-neutral-300 mt-3">
+          As respostas do Claude podem revelar gaps no seu CLAUDE.md, testes faltantes ou padroes de codigo que precisam de reforcamento. Use essas insights para <strong class="text-white">atualizar a documentacao do projeto</strong>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- EXERCICIO PRATICO -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="exercicio" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">🏋️</span>
+        <h2 class="text-2xl font-bold">Exercicio Pratico</h2>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Reproduzir e corrigir bug real num repo de exemplo</h3>
+        <p class="text-neutral-300 mb-4">
+          Neste exercicio, voce vai aplicar o workflow completo de bug fix usando Claude Code em um projeto real.
+        </p>
+
+        <div class="space-y-6">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Clone um repo com bugs conhecidos</h4>
+              <p class="text-neutral-300 text-sm">Escolha qualquer projeto open source que tenha issues abertas marcadas como "bug".</p>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Descreva o bug para o Claude</h4>
+              <p class="text-neutral-300 text-sm">Use o template: sintoma + reproducao + expectativa.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Force investigacao antes do fix</h4>
+              <p class="text-neutral-300 text-sm">Peca leitura e diagnostico antes de qualquer mudanca.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">4</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Aplique o fix + rode testes + commit</h4>
+              <p class="text-neutral-300 text-sm">Complete o ciclo: fix, teste de regressao, e /commit.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Criterios de Sucesso -->
+      <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-purple-400">☐</span>
+            <span class="text-neutral-300">Bug descrito com sintoma + reproducao</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-purple-400">☐</span>
+            <span class="text-neutral-300">Investigacao feita antes do fix</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-purple-400">☐</span>
+            <span class="text-neutral-300">Testes passando apos a correcao</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-purple-400">☐</span>
+            <span class="text-neutral-300">Commit feito com /commit</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESUMO FINAL -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Descreva o sintoma com precisao</strong>
+              <span class="text-neutral-400"> - Sintoma + reproducao + expectativa. Quanto melhor a descricao, melhor o diagnostico.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Investigue antes de corrigir</strong>
+              <span class="text-neutral-400"> - Read first, diagnose second, fix third. Evite fixes superficiais.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Cole stack traces completos</strong>
+              <span class="text-neutral-400"> - Nao resuma erros. O contexto completo e essencial para o diagnostico correto.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Fix + teste sempre juntos</strong>
+              <span class="text-neutral-400"> - Toda correcao deve vir com verificacao. Adicione teste de regressao.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Use /commit para registrar</strong>
+              <span class="text-neutral-400"> - Mensagens de commit semanticas geradas automaticamente.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Faca post-mortem</strong>
+              <span class="text-neutral-400"> - Entenda a causa raiz para prevenir bugs similares no futuro.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-purple-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">3.2 - Workflow: Construir Feature Nova</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="index.html" class="flex-1 justify-start px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors text-center">
+            ← Voltar para Trilha
+          </a>
+          <a href="index.html" class="flex-1 justify-start px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors text-center">
+            Voltar para Trilha
+          </a>
+          <a href="modulo-3-2.html" class="flex-1 justify-start px-6 py-3 bg-purple-600/40 text-purple-100 rounded-lg font-semibold hover:bg-purple-600/60 transition-colors text-center">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>6 Pilares do Claude Code Full - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
