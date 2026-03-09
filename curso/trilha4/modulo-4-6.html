@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 4.6 - Prompts de Arquitetura e API Design | 6 Pilares CC Full</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span>
+            <span class="font-bold text-lg hidden sm:inline">6 Pilares CC Full</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Atalhos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">CLAUDE.md</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Workflows</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-400 bg-amber-500/10">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Prompts</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Skills</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">MCPs</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-amber-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-amber-400">Trilha 4</a>
+      <span>/</span>
+      <span class="text-amber-400">Modulo 4.6</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 4.6
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🏗️ Prompts de Arquitetura e API Design</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Use o Claude Code como seu arquiteto de software. Aprenda prompts para decisoes de arquitetura, design de APIs REST, modelagem de banco de dados, system design distribuido e planejamento de migracoes. Decisoes de arquitetura certas no inicio economizam meses de retrabalho.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">45</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">Avancado</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">Teoria + Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 1: Architecture Decision Prompt -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">⚖️ Architecture Decision Prompt (Compare Options)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Decisoes de arquitetura sao as mais caras de reverter. Escolher entre monolito e microservicos, entre SQL e NoSQL, entre SSR e SPA, pode definir o sucesso ou fracasso do projeto. O Architecture Decision prompt forca o Claude a <strong class="text-amber-400">comparar opcoes sistematicamente</strong> antes de recomendar.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O prompt de Architecture Decision segue o formato ADR (Architecture Decision Record) adaptado para interacao com IA:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">I need to decide: [decision to make].</div>
+          <br>
+          <div class="text-amber-400">Context:</div>
+          <div class="text-amber-400">- Team size: [N developers]</div>
+          <div class="text-amber-400">- Expected scale: [users/requests]</div>
+          <div class="text-amber-400">- Timeline: [deadline]</div>
+          <div class="text-amber-400">- Constraints: [budget, tech stack, team skills]</div>
+          <br>
+          <div class="text-amber-400">Compare options with:</div>
+          <div class="text-amber-400">1. Pros and cons of each</div>
+          <div class="text-amber-400">2. Complexity to implement</div>
+          <div class="text-amber-400">3. Long-term maintenance cost</div>
+          <div class="text-amber-400">4. Risk assessment</div>
+          <div class="text-amber-400">5. Your recommendation and why</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Contexto e crucial:</strong> A melhor arquitetura para 3 devs e diferente da melhor para 30. O Claude precisa saber o contexto real para recomendar corretamente</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Comparacao estruturada:</strong> Em vez de pedir "o que devo usar?", voce pede uma analise comparativa. Isso elimina o vies de confirmacao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Custo de manutencao:</strong> A opcao mais rapida de implementar nem sempre e a melhor. O Claude avalia o custo total ao longo do tempo</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Recomendacao justificada:</strong> O Claude nao so compara, mas recomenda. E explica o raciocinio, para voce poder concordar ou discordar com base em fatos</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Salve o output do Architecture Decision como <strong class="text-white">ADR no repositorio</strong> (pasta docs/adr/). Decisoes de arquitetura documentadas sao invaluaveis quando alguem pergunta "por que fizemos assim?" daqui a 6 meses.
+        </p>
+        <p class="text-neutral-300">
+          Depois da recomendacao, faca follow-up: "Now assume I chose [option]. What are the first 5 things I should implement to set up this architecture correctly?"
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 2: API Design Prompt -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">🔌 API Design Prompt (REST API)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        APIs mal projetadas geram dor por anos. Naming inconsistente, paginacao ausente, versionamento inexistente, respostas de erro sem padrao. O API Design prompt faz o Claude projetar <strong class="text-amber-400">APIs profissionais desde o primeiro endpoint</strong>, seguindo boas praticas de REST e da industria.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O prompt de API Design cobre todas as dimensoes de uma API bem projetada:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">Design a REST API for [domain/feature].</div>
+          <br>
+          <div class="text-amber-400">Include:</div>
+          <div class="text-amber-400">1. All endpoints (method + path + description)</div>
+          <div class="text-amber-400">2. Request/response schemas (with examples)</div>
+          <div class="text-amber-400">3. Authentication strategy</div>
+          <div class="text-amber-400">4. Pagination approach</div>
+          <div class="text-amber-400">5. Error response format (consistent)</div>
+          <div class="text-amber-400">6. Versioning strategy</div>
+          <div class="text-amber-400">7. Rate limiting recommendations</div>
+          <br>
+          <div class="text-amber-400">Follow REST best practices and use consistent naming.</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Endpoints completos:</strong> O Claude gera a lista inteira de endpoints com metodo HTTP correto, path semantico e descricao clara</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Schemas com exemplos:</strong> Request e response bodies com exemplos reais. Isso serve como documentacao instantanea</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Error format consistente:</strong> Um formato padrao para erros (ex: {error: {code, message, details}}) em toda a API. Facilita o frontend e integradores</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Depois de gerar o design da API, peca ao Claude: <strong class="text-white">"Now generate the OpenAPI 3.0 spec for this API."</strong> Voce recebe um arquivo YAML que pode ser importado diretamente no Swagger UI, Postman ou qualquer ferramenta de documentacao de API.
+        </p>
+        <p class="text-neutral-300">
+          Para APIs publicas, adicione: "This API will be consumed by third-party developers. Include comprehensive documentation, clear error messages, and idempotency keys for write operations."
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 3: Database Schema Prompt -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🗄️ Database Schema Prompt</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O schema do banco de dados e a fundacao de tudo. Um schema mal projetado gera queries complexas, performance ruim e migracoes dolorosas. O Database Schema prompt faz o Claude <strong class="text-amber-400">modelar dados pensando em queries, performance e evolucao</strong> do schema ao longo do tempo.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O prompt de Database Schema vai alem de "crie tabelas". Ele considera o uso real dos dados:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">Design a database schema for [domain].</div>
+          <br>
+          <div class="text-amber-400">Requirements:</div>
+          <div class="text-amber-400">- [list main entities and relationships]</div>
+          <div class="text-amber-400">- [list main queries/access patterns]</div>
+          <br>
+          <div class="text-amber-400">Include:</div>
+          <div class="text-amber-400">1. Tables with columns, types, and constraints</div>
+          <div class="text-amber-400">2. Indexes optimized for the query patterns above</div>
+          <div class="text-amber-400">3. Foreign keys and relationships</div>
+          <div class="text-amber-400">4. Normalization decisions (and when to denormalize)</div>
+          <div class="text-amber-400">5. Migration SQL</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Access patterns primeiro:</strong> Definir como os dados serao lidos antes de definir como serao armazenados. Isso guia decisoes de indexacao e desnormalizacao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Indexes otimizados:</strong> O Claude cria indexes baseados nos patterns de query que voce listou. Nao indexes genericos, mas indexes que aceleram suas queries reais</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Decisoes de normalizacao:</strong> Nem tudo deve ser normalizado. O Claude explica quando desnormalizar para performance e quando manter normalizado para consistencia</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Migration SQL pronta:</strong> O output ja inclui o SQL de migracao que voce pode rodar diretamente ou adaptar para o ORM do seu projeto</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Sempre liste os <strong class="text-white">access patterns mais frequentes</strong> no prompt. "Users will query orders by date range with status filter" e muito mais util que "I need an orders table". O Claude otimiza indexes compostos para exatamente esses patterns.
+        </p>
+        <p class="text-neutral-300">
+          Apos o schema inicial, peca: "Now stress-test this schema. What happens with 10M rows in orders? What queries will become slow? What indexes should we add proactively?"
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 4: System Design Prompt -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🌐 System Design Prompt (Distributed)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        System design vai alem de um unico servico. Envolve multiplos componentes, comunicacao entre servicos, filas, caches, CDNs e tolerancia a falhas. O System Design prompt faz o Claude <strong class="text-amber-400">pensar como arquiteto de sistemas distribuidos</strong>, considerando escalabilidade, resiliencia e custos.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O prompt de System Design cobre todas as camadas de um sistema distribuido:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">Design a system for [use case].</div>
+          <br>
+          <div class="text-amber-400">Scale requirements:</div>
+          <div class="text-amber-400">- [N] daily active users</div>
+          <div class="text-amber-400">- [N] requests per second (peak)</div>
+          <div class="text-amber-400">- [N] GB data stored</div>
+          <br>
+          <div class="text-amber-400">Include:</div>
+          <div class="text-amber-400">1. High-level architecture diagram (text)</div>
+          <div class="text-amber-400">2. Service boundaries and responsibilities</div>
+          <div class="text-amber-400">3. Data flow for main use cases</div>
+          <div class="text-amber-400">4. Caching strategy</div>
+          <div class="text-amber-400">5. Queue/async processing needs</div>
+          <div class="text-amber-400">6. Failure scenarios and mitigation</div>
+          <div class="text-amber-400">7. Estimated infrastructure costs</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Numeros reais:</strong> Fornecer DAU, RPS e volume de dados permite ao Claude dimensionar corretamente. Sem numeros, o design fica generico demais</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Failure scenarios:</strong> O que acontece se o cache cai? Se um servico fica indisponivel? O Claude projeta fallbacks e circuit breakers</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Custos estimados:</strong> O Claude estima custos de infra baseado nos numeros fornecidos. Isso ajuda a validar se o design cabe no orcamento</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Use o System Design prompt nao so para projetos novos, mas tambem para <strong class="text-white">entender e documentar sistemas existentes</strong>. Descreva os componentes atuais e peca: "Given this current architecture, identify bottlenecks and propose an evolution path for 10x the current scale."
+        </p>
+        <p class="text-neutral-300">
+          Para startups em estagio inicial: "Design this for 1000 users initially, but plan the architecture so it can scale to 1M users without a complete rewrite. Show what changes at each scale milestone."
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 5: Migration Planning Prompt -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🔄 Migration Planning Prompt</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Migracoes sao as tarefas mais arriscadas em engenharia de software. Migrar banco de dados, trocar framework, atualizar major version, mover para cloud. Cada uma pode quebrar tudo se mal planejada. O Migration Planning prompt forca o Claude a <strong class="text-amber-400">planejar migracoes com zero-downtime e rollback garantido</strong>.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O prompt de Migration Planning cria um plano detalhado com fases, rollback e verificacao:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">Plan a migration from [current] to [target].</div>
+          <br>
+          <div class="text-amber-400">Current state: [describe current setup]</div>
+          <div class="text-amber-400">Target state: [describe desired end state]</div>
+          <div class="text-amber-400">Constraint: zero downtime required</div>
+          <br>
+          <div class="text-amber-400">Provide:</div>
+          <div class="text-amber-400">1. Step-by-step migration phases</div>
+          <div class="text-amber-400">2. Rollback plan for each phase</div>
+          <div class="text-amber-400">3. Data migration strategy</div>
+          <div class="text-amber-400">4. Verification checks between phases</div>
+          <div class="text-amber-400">5. Risk assessment per phase</div>
+          <div class="text-amber-400">6. Estimated timeline</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Fases incrementais:</strong> Nunca migre tudo de uma vez. O Claude divide em fases que podem ser executadas e verificadas independentemente</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Rollback por fase:</strong> Cada fase tem seu proprio plano de rollback. Se a fase 3 falha, voce volta so a fase 3, nao o projeto inteiro</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Verificacao entre fases:</strong> Checks automaticos que confirmam que cada fase completou com sucesso antes de avancar para a proxima</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          O segredo de migracoes bem-sucedidas e o <strong class="text-white">pattern "strangler fig"</strong>: o novo sistema cresce em paralelo com o antigo ate substitui-lo completamente. Mencione isso no prompt: "Use strangler fig pattern. Both systems run in parallel during migration."
+        </p>
+        <p class="text-neutral-300">
+          Sempre peca estimativa de timeline por fase. "Phase 1: 2 days, Phase 2: 1 week" ajuda voce a planejar sprints e comunicar stakeholders sobre o progresso da migracao.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 6: Architecture Review Workflow -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🔍 Architecture Review Workflow</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O Architecture Review combina todos os prompts anteriores num <strong class="text-amber-400">workflow completo para avaliar e melhorar a arquitetura existente</strong>. Em vez de projetar do zero, voce alimenta o Claude com a arquitetura atual e ele identifica problemas, sugere melhorias e prioriza mudancas.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O workflow de Architecture Review segue 4 etapas para avaliar qualquer sistema existente:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Etapa 1 - Mapeamento:</strong> "Read the codebase and describe the current architecture. Include: services, databases, APIs, queues, external integrations." O Claude mapeia o que existe</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Etapa 2 - Analise:</strong> "Given this architecture, identify: single points of failure, scaling bottlenecks, coupling issues, and technical debt." O Claude aponta problemas</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Etapa 3 - Proposta:</strong> "Propose improvements prioritized by: impact (high/medium/low) and effort (days/weeks/months)." O Claude sugere com priorizacao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Etapa 4 - Roadmap:</strong> "Create a migration roadmap from current to target architecture. Group changes into quarters." O Claude gera o plano de evolucao</span>
+          </li>
+        </ul>
+        <p class="text-neutral-300 mt-4">
+          <strong class="text-white">Importante:</strong> Cada etapa usa o output da anterior. Nao pule etapas. O mapeamento preciso na etapa 1 e a base para analises corretas nas etapas seguintes.
+        </p>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Rode o Architecture Review <strong class="text-white">trimestralmente</strong> em projetos ativos. A arquitetura evolui organicamente e problemas se acumulam gradualmente. Uma review trimestral pega tech debt antes que se torne critico.
+        </p>
+        <p class="text-neutral-300">
+          Compartilhe o output com o time. O mapeamento da etapa 1 e especialmente valioso para onboarding de novos membros. Eles ganham visao completa do sistema em minutos.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- EXERCICIO PRATICO -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="exercicio" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">&#9998;</span>
+        <h2 class="text-2xl font-bold">Exercicio Pratico</h2>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Projetar API REST completa usando prompts de arquitetura</h3>
+        <p class="text-neutral-300 mb-4">
+          Escolha um dominio (e-commerce, rede social, sistema de reservas) e projete a API completa:
+        </p>
+        <ol class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">1.</span>
+            <span>Use o <strong class="text-white">Architecture Decision</strong> para decidir entre monolito vs microservicos para o seu dominio. Documente a decisao</span>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">2.</span>
+            <span>Use o <strong class="text-white">Database Schema</strong> prompt para modelar as entidades principais. Inclua pelo menos 5 tabelas com relacionamentos</span>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">3.</span>
+            <span>Use o <strong class="text-white">API Design</strong> prompt para projetar os endpoints REST. Inclua auth, paginacao e error format</span>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">4.</span>
+            <span>Peca ao Claude para gerar a <strong class="text-white">especificacao OpenAPI 3.0</strong> da sua API</span>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">5.</span>
+            <span>Rode o <strong class="text-white">Architecture Review</strong> no design final e ajuste baseado no feedback</span>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Criterios de Sucesso -->
+      <div class="bg-amber-900/20 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">Decisao de arquitetura documentada com pros/cons</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">Schema com 5+ tabelas e indexes otimizados</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">API com endpoints, auth, paginacao e errors</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">Especificacao OpenAPI 3.0 gerada</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">Architecture Review rodado e ajustes aplicados</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESUMO FINAL -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-amber-900/40 via-dark-800 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Architecture Decision compara opcoes sistematicamente</strong>
+              <span class="text-neutral-400"> - Pros/cons, complexidade, custo de manutencao, risco. Recomendacao justificada.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">API Design cria APIs profissionais</strong>
+              <span class="text-neutral-400"> - Endpoints, schemas, auth, paginacao, errors, versioning. OpenAPI spec pronta.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Database Schema modela pensando em queries</strong>
+              <span class="text-neutral-400"> - Access patterns primeiro, indexes otimizados, decisoes de normalizacao explicitas.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">System Design projeta sistemas distribuidos</strong>
+              <span class="text-neutral-400"> - Servicos, caching, filas, failure scenarios, custos estimados. Escala realista.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Migration Planning garante migracoes seguras</strong>
+              <span class="text-neutral-400"> - Fases incrementais, rollback por fase, verificacao, zero downtime.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Architecture Review avalia sistemas existentes</strong>
+              <span class="text-neutral-400"> - Mapeamento → Analise → Proposta → Roadmap. Review trimestral recomendado.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-amber-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">4.7 - Outcome Delegation (Tecnica 2026)</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-4-5.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors justify-start">
+            ← Modulo Anterior
+          </a>
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha
+          </a>
+          <a href="modulo-4-7.html" class="flex-1 text-center px-6 py-3 bg-amber-600/40 text-amber-100 rounded-lg font-semibold hover:bg-amber-600/60 transition-colors">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>6 Pilares do Claude Code Full - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

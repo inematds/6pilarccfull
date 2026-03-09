@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 4.7 - Outcome Delegation (Tecnica 2026) | 6 Pilares CC Full</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span>
+            <span class="font-bold text-lg hidden sm:inline">6 Pilares CC Full</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Atalhos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">CLAUDE.md</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Workflows</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-400 bg-amber-500/10">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Prompts</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Skills</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">MCPs</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-amber-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-amber-400">Trilha 4</a>
+      <span>/</span>
+      <span class="text-amber-400">Modulo 4.7</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 4.7
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🎯 Outcome Delegation (Tecnica 2026)</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        A tecnica mais avancada de prompting para Claude Code em 2026. Em vez de dizer ao Claude COMO fazer, voce diz O QUE quer como resultado. Mude de prompts imperativos para declarativos e deixe o Claude escolher a melhor abordagem.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">35</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">Avancado</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">Teoria + Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 1: O que e Outcome Delegation -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🧠 O que e Outcome Delegation (vs Imperativo)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Outcome Delegation e uma mudanca fundamental na forma como voce escreve prompts. Em vez de dar instrucoes passo a passo (imperativo), voce <strong class="text-amber-400">descreve o resultado final desejado e os criterios de sucesso</strong> (declarativo). O Claude escolhe o caminho. E como a diferenca entre dizer a um taxi "vire a direita, depois a esquerda" versus "me leve ao aeroporto".
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          A diferenca fundamental entre os dois estilos:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-neutral-500">// IMPERATIVO (como a maioria faz):</div>
+          <div class="text-red-400">"Create a file called auth.ts. Add a function called</div>
+          <div class="text-red-400">login that takes email and password. Use bcrypt to</div>
+          <div class="text-red-400">hash. Return a JWT token."</div>
+          <br>
+          <div class="text-neutral-500">// OUTCOME DELEGATION (tecnica 2026):</div>
+          <div class="text-amber-400">"I need user authentication in this project.</div>
+          <div class="text-amber-400">Outcome: users can register, login, and access</div>
+          <div class="text-amber-400">protected routes. Sessions persist across browser</div>
+          <div class="text-amber-400">restarts. Failed logins are rate-limited.</div>
+          <div class="text-amber-400">Success criteria: all auth tests pass, no OWASP</div>
+          <div class="text-amber-400">vulnerabilities, follows project conventions."</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Por que funciona melhor:</strong> O Claude em 2026 conhece milhoes de implementacoes. Quando voce descreve o resultado, ele escolhe a melhor abordagem para SEU projeto especifico</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Imperativo limita:</strong> Ao dizer "use bcrypt", voce impede o Claude de sugerir argon2 se for mais adequado. Ao dizer "crie auth.ts", voce impede uma estrutura de arquivos melhor</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Outcome liberta:</strong> Voce define O QUE e as restricoes. O Claude decide COMO, usando seu conhecimento do projeto, das convencoes e das melhores praticas</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Nao e "faca qualquer coisa":</strong> Outcome Delegation e preciso no resultado. O que muda e que voce nao microgerencia o caminho</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Comece praticando com tarefas que voce ja sabe resolver. Escreva o prompt imperativo como faria normalmente, depois <strong class="text-white">reescreva como outcome delegation</strong>. Compare os resultados. Na maioria dos casos, o outcome delegation gera codigo melhor porque o Claude tem liberdade para aplicar patterns que voce talvez nao conheca.
+        </p>
+        <p class="text-neutral-300">
+          Regra pratica: se voce esta dizendo ao Claude QUAL funcao criar e QUAL biblioteca usar, voce esta sendo imperativo demais. Descreva o comportamento, nao a implementacao.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 2: De imperativo para declarativo -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">🔄 De Imperativo para Declarativo (Rewriting)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A transicao de imperativo para declarativo nao acontece da noite para o dia. Existe uma <strong class="text-amber-400">tecnica de rewriting em 3 passos</strong> que facilita a conversao. Voce pega qualquer prompt imperativo e transforma sistematicamente em outcome delegation.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Os 3 passos para converter qualquer prompt imperativo em outcome delegation:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-neutral-500">// Passo 1: Identifique o RESULTADO</div>
+          <div class="text-amber-400">Imperativo: "Add a debounce to the search input"</div>
+          <div class="text-amber-400">Resultado: "Search doesn't fire on every keystroke"</div>
+          <br>
+          <div class="text-neutral-500">// Passo 2: Defina criterios de SUCESSO</div>
+          <div class="text-amber-400">"Search fires only after user stops typing for 300ms.</div>
+          <div class="text-amber-400">No duplicate requests. Loading state visible."</div>
+          <br>
+          <div class="text-neutral-500">// Passo 3: Adicione RESTRICOES (nao implementacao)</div>
+          <div class="text-amber-400">"Must work with existing search component.</div>
+          <div class="text-amber-400">No new dependencies unless justified."</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Passo 1 - Resultado:</strong> Pergunte "o que muda para o usuario final?" Em vez de "add debounce", o resultado e "search nao dispara em cada tecla"</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Passo 2 - Criterios:</strong> Como voce sabe que funcionou? Definicoes mensuráveis e observaveis. "300ms de delay" e um criterio. "Funciona bem" nao e</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Passo 3 - Restricoes:</strong> Nao diga COMO resolver (use lodash debounce). Diga o que NAO pode acontecer (no new dependencies). O Claude encontra o melhor caminho dentro das restricoes</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Quando voce pegar um prompt imperativo para reescrever, faca o <strong class="text-white">"teste do taxi"</strong>: imagine que voce esta delegando para um developer senior que conhece o projeto. Voce diria "crie um arquivo auth.ts com funcao login usando bcrypt"? Ou diria "preciso de autenticacao segura, os usuarios devem poder fazer login e acessar rotas protegidas"?
+        </p>
+        <p class="text-neutral-300">
+          O segundo e outcome delegation. Voce confia na competencia do Claude e foca no resultado, nao no passo-a-passo.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 3: Definindo resultados esperados -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">📋 Definindo Resultados Esperados</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A qualidade do outcome delegation depende diretamente da <strong class="text-amber-400">clareza com que voce descreve o resultado</strong>. Um resultado vago gera codigo vago. Um resultado preciso gera codigo preciso. Neste topico, voce aprende a estruturar resultados que nao deixam margem para interpretacao errada.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Use o framework OSCAR para definir resultados claros:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">O - Outcome (o que muda no sistema)</div>
+          <div class="text-amber-400">S - Scope (quais partes do sistema sao afetadas)</div>
+          <div class="text-amber-400">C - Constraints (o que NAO deve mudar)</div>
+          <div class="text-amber-400">A - Acceptance (como verificar que esta correto)</div>
+          <div class="text-amber-400">R - Risks (o que pode dar errado)</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Outcome preciso:</strong> "Users can reset their password via email" e claro. "Improve password functionality" e vago. Quanto mais especifico o outcome, melhor o resultado</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Scope definido:</strong> "Affects auth module and email service. Does not touch user profile or settings." Isso evita que o Claude modifique areas que voce nao quer</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Constraints explicitas:</strong> "Existing login flow must not change. Token expiration stays at 24h." Constraints previnem efeitos colaterais indesejados</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Acceptance verificavel:</strong> "Test: request reset, receive email within 30s, click link, set new password, login with new password succeeds." O Claude pode auto-verificar</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Voce nao precisa usar o framework OSCAR completo em toda tarefa. Para tarefas simples, <strong class="text-white">Outcome + Acceptance</strong> ja e suficiente. Reserve o framework completo para features complexas que tocam multiplos modulos.
+        </p>
+        <p class="text-neutral-300">
+          Dica: adicione OSCAR como template no seu CLAUDE.md. O Claude aprendera a pedir essas informacoes quando voce der prompts vagos, criando um loop de feedback positivo.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 4: Criterios de sucesso embutidos -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">✅ Criterios de Sucesso Embutidos</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Criterios de sucesso embutidos sao a arma secreta do outcome delegation. Em vez de verificar manualmente se o Claude fez certo, voce <strong class="text-amber-400">inclui os criterios no proprio prompt</strong> e o Claude se auto-verifica. Isso reduz dramaticamente o ciclo de "faz, revisa, pede correcao, revisa de novo".
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Criterios de sucesso podem ser funcionais, tecnicos e negativos (o que NAO deve acontecer):
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">Outcome: [describe what you want]</div>
+          <br>
+          <div class="text-amber-400">Success criteria:</div>
+          <div class="text-amber-400">Functional:</div>
+          <div class="text-amber-400">- User can [action] and sees [result]</div>
+          <div class="text-amber-400">- Edge case [X] is handled gracefully</div>
+          <br>
+          <div class="text-amber-400">Technical:</div>
+          <div class="text-amber-400">- All existing tests still pass</div>
+          <div class="text-amber-400">- New tests cover happy path + 2 edge cases</div>
+          <div class="text-amber-400">- No new linting errors</div>
+          <br>
+          <div class="text-amber-400">Must NOT:</div>
+          <div class="text-amber-400">- Break existing [feature]</div>
+          <div class="text-amber-400">- Add dependencies without justification</div>
+          <div class="text-amber-400">- Expose [sensitive data] in logs</div>
+          <br>
+          <div class="text-amber-400">Verify all criteria before marking complete.</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Criterios funcionais:</strong> O que o usuario final observa. Sao os mais importantes e os mais faceis de verificar</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Criterios tecnicos:</strong> Testes, linting, performance. O Claude pode verificar automaticamente rodando os comandos</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Criterios negativos:</strong> "Must NOT" e tao importante quanto "must". Previne regressoes e efeitos colaterais</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          A frase magica e <strong class="text-white">"Verify all criteria before marking complete"</strong>. Isso faz o Claude rodar testes, checar linting e verificar cada criterio antes de dizer que terminou. Sem essa frase, ele pode pular a verificacao.
+        </p>
+        <p class="text-neutral-300">
+          Comece com 3-5 criterios por tarefa. Muitos criterios sobrecarregam o contexto. Poucos criterios deixam margem para erros. O sweet spot e suficiente para cobrir o essencial sem ser excessivo.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 5: Exemplos praticos de conversao -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🔀 Exemplos Praticos de Conversao (Before/After)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Nada ensina melhor que exemplos reais. Aqui estao conversoes praticas de prompts imperativos para outcome delegation, cobrindo <strong class="text-amber-400">cenarios comuns do dia-a-dia</strong> com Claude Code.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          5 conversoes do mundo real, do imperativo para outcome delegation:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-neutral-500">// 1. CRUD Feature</div>
+          <div class="text-red-400">ANTES: "Create a users CRUD with Express routes,</div>
+          <div class="text-red-400">Prisma models, and Jest tests"</div>
+          <div class="text-amber-400">DEPOIS: "I need full user management. Users can be</div>
+          <div class="text-amber-400">created, listed, updated, deleted. All operations</div>
+          <div class="text-amber-400">validated. All endpoints tested. Follow project patterns."</div>
+          <br>
+          <div class="text-neutral-500">// 2. Bug Fix</div>
+          <div class="text-red-400">ANTES: "Add a null check on line 42 of UserService"</div>
+          <div class="text-amber-400">DEPOIS: "UserService crashes when user has no profile.</div>
+          <div class="text-amber-400">Outcome: service handles missing profiles gracefully.</div>
+          <div class="text-amber-400">No user-facing errors. Logged for debugging."</div>
+          <br>
+          <div class="text-neutral-500">// 3. Performance</div>
+          <div class="text-red-400">ANTES: "Add Redis caching to the products endpoint"</div>
+          <div class="text-amber-400">DEPOIS: "Products endpoint takes 2s. Needs to be under</div>
+          <div class="text-amber-400">200ms. Cache invalidation on product updates. Stale</div>
+          <div class="text-amber-400">data acceptable for 60s."</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">CRUD:</strong> Note que o "depois" nao menciona Express, Prisma ou Jest. O Claude usa o que ja esta no projeto. Se o projeto usa Fastify e Drizzle, ele usa Fastify e Drizzle</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Bug Fix:</strong> Em vez de "add null check" (que pode nao ser a melhor solucao), o outcome descreve o comportamento desejado. O Claude pode resolver com null check, default value, ou reestruturacao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Performance:</strong> Em vez de "use Redis" (pode nao ser a melhor opcao), o outcome define o target de performance. O Claude pode usar Redis, in-memory cache, CDN, ou otimizar a query</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Pratique o "rewrite mental" sempre que for escrever um prompt. Antes de enviar, pergunte: <strong class="text-white">"Estou descrevendo o resultado ou o caminho?"</strong> Se voce esta dizendo ao Claude qual funcao criar, qual biblioteca usar ou qual arquivo editar, voce esta sendo imperativo.
+        </p>
+        <p class="text-neutral-300">
+          Excecao: se voce tem uma razao especifica para uma tecnologia ("use Redis because we already have it in production"), inclua como constraint, nao como instrucao. "Constraint: we already run Redis in production, prefer it for caching."
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 6: Quando usar e quando nao usar -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">⚖️ Quando Usar e Quando Nao Usar</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Outcome Delegation nao e a resposta para tudo. Existem situacoes onde o estilo imperativo e mais eficiente e situacoes onde o declarativo brilha. Saber <strong class="text-amber-400">quando usar cada estilo</strong> e o que separa um usuario avancado de um intermediario.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Guia de decisao para escolher o estilo certo:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">USE Outcome Delegation quando:</strong> A tarefa e complexa (multiplos arquivos), voce nao tem certeza da melhor implementacao, quer que o Claude use convencoes do projeto, ou quer resultados de nível senior</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">USE Imperativo quando:</strong> Voce sabe EXATAMENTE o que quer (rename de variavel, fix pontual), a tarefa e trivial (menos de 5 linhas), ou voce precisa de uma implementacao especifica por razoes tecnicas</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">USE Hibrido quando:</strong> Voce quer outcome delegation mas com restricoes especificas. "Outcome: X. Constraint: must use Y approach because Z." Isso combina liberdade com direcao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">EVITE Outcome para:</strong> Tarefas de infraestrutura muito especificas (configuracao de CI/CD), mudancas que exigem formato exato (migrations SQL), ou quando voce tem um padrao obrigatorio do time</span>
+          </li>
+        </ul>
+        <p class="text-neutral-300 mt-4">
+          <strong class="text-white">Regra geral:</strong> Se a tarefa leva mais de 10 minutos para descrever imperativamente, use outcome delegation. Se leva menos de 1 minuto, use imperativo. No meio? Use hibrido.
+        </p>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Na pratica, a maioria dos seus prompts sera <strong class="text-white">hibrida</strong>. Voce define o outcome (declarativo) mas inclui constraints importantes (diretivas). "I need a notification system. Users get notified of new messages in real-time. Constraint: use WebSocket because we already have the infrastructure. Must NOT use polling."
+        </p>
+        <p class="text-neutral-300">
+          O objetivo nao e eliminar o imperativo. E ter mais uma ferramenta no seu arsenal. Com o tempo, voce vai sentir naturalmente qual estilo e mais adequado para cada situacao.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- EXERCICIO PRATICO -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="exercicio" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">&#9998;</span>
+        <h2 class="text-2xl font-bold">Exercicio Pratico</h2>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Reescrever 5 prompts imperativos como outcome delegation</h3>
+        <p class="text-neutral-300 mb-4">
+          Pegue 5 prompts que voce ja usou com Claude Code (ou invente cenarios reais) e converta:
+        </p>
+        <ol class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">1.</span>
+            <span>Escreva 5 prompts no estilo <strong class="text-white">imperativo</strong> (como voce normalmente faria). Tente cobrir: feature nova, bug fix, refactoring, performance e teste</span>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">2.</span>
+            <span>Reescreva cada um usando os <strong class="text-white">3 passos de conversao</strong> (Resultado, Criterios, Restricoes)</span>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">3.</span>
+            <span>Rode os 5 prompts imperativos e os 5 declarativos no Claude Code no mesmo projeto. <strong class="text-white">Compare os resultados</strong></span>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">4.</span>
+            <span>Para cada par, anote: qual gerou codigo melhor? Qual foi mais facil de escrever? Qual exigiu menos correcoes depois?</span>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">5.</span>
+            <span>Identifique quais dos 5 cenarios funcionaram melhor com <strong class="text-white">outcome delegation</strong> e quais com imperativo</span>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Criterios de Sucesso -->
+      <div class="bg-amber-900/20 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">Escreveu 5 prompts imperativos originais</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">Converteu todos para outcome delegation</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">Rodou ambos e comparou resultados</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">Identificou quando cada estilo funciona melhor</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">Documentou aprendizados para uso futuro</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESUMO FINAL -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-amber-900/40 via-dark-800 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Outcome Delegation descreve resultado, nao caminho</strong>
+              <span class="text-neutral-400"> - Diga O QUE quer, nao COMO fazer. O Claude escolhe a melhor implementacao.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">3 passos para converter: Resultado, Criterios, Restricoes</strong>
+              <span class="text-neutral-400"> - Framework sistematico para transformar qualquer prompt imperativo em declarativo.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Framework OSCAR estrutura resultados claros</strong>
+              <span class="text-neutral-400"> - Outcome, Scope, Constraints, Acceptance, Risks. Use completo para tarefas complexas.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Criterios de sucesso embutidos eliminam retrabalho</strong>
+              <span class="text-neutral-400"> - Funcionais, tecnicos e negativos. "Verify all criteria before marking complete."</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Before/After mostra o poder da conversao</strong>
+              <span class="text-neutral-400"> - CRUD, bug fix, performance. O declarativo gera codigo melhor na maioria dos cenarios.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Use o estilo certo para cada situacao</strong>
+              <span class="text-neutral-400"> - Outcome para complexo, imperativo para trivial, hibrido para o meio-termo.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-amber-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">4.8 - Verificacao e Prompts Auto-validantes</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-4-6.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors justify-start">
+            ← Modulo Anterior
+          </a>
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha
+          </a>
+          <a href="modulo-4-8.html" class="flex-1 text-center px-6 py-3 bg-amber-600/40 text-amber-100 rounded-lg font-semibold hover:bg-amber-600/60 transition-colors">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>6 Pilares do Claude Code Full - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

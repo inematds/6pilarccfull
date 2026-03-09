@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 4.5 - Prompts de Code Quality e Auditoria | 6 Pilares CC Full</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span>
+            <span class="font-bold text-lg hidden sm:inline">6 Pilares CC Full</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Atalhos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">CLAUDE.md</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Workflows</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-400 bg-amber-500/10">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Prompts</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Skills</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">MCPs</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-amber-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-amber-400">Trilha 4</a>
+      <span>/</span>
+      <span class="text-amber-400">Modulo 4.5</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 4.5
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🔍 Prompts de Code Quality e Auditoria</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Transforme o Claude Code no seu auditor pessoal de codigo. Aprenda prompts especializados para seguranca, performance, code review e refactoring seguro. Cada prompt e uma ferramenta cirurgica para encontrar e corrigir problemas antes que cheguem a producao.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">40</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">Avancado</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">Teoria + Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 1: Brutal Audit em detalhe -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🔬 Brutal Audit em Detalhe (Full Audit Prompt)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        No modulo 4.1 voce conheceu o Brutal Audit como Daily Driver. Agora vamos dissecar o prompt completo, entender cada dimensao de auditoria e aprender a <strong class="text-amber-400">personalizar o audit para diferentes contextos</strong>. O full audit e o prompt mais poderoso para garantir qualidade de codigo antes de um merge ou deploy.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O Full Audit Prompt expande as 5 dimensoes originais para uma auditoria completa com output estruturado. Voce pede ao Claude para categorizar cada finding por severidade e fornecer fix sugerido:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">I just built [feature/module]. Perform a brutal audit.</div>
+          <br>
+          <div class="text-amber-400">For each finding, provide:</div>
+          <div class="text-amber-400">- Severity: CRITICAL / HIGH / MEDIUM / LOW</div>
+          <div class="text-amber-400">- Category: security | performance | edge-case | crash | maintainability</div>
+          <div class="text-amber-400">- File and line number</div>
+          <div class="text-amber-400">- Description of the issue</div>
+          <div class="text-amber-400">- Suggested fix</div>
+          <br>
+          <div class="text-amber-400">Be brutally honest. I want zero surprises in production.</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Output estruturado:</strong> A categorizacao por severidade permite priorizar. Resolva CRITICALs imediatamente, HIGHs antes do merge, MEDIUMs no proximo sprint</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">File e line number:</strong> O Claude aponta exatamente onde esta o problema. Voce pode ir direto ao ponto sem procurar</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Suggested fix:</strong> Cada finding ja vem com sugestao de correcao. Voce pode pedir "fix all CRITICALs" e o Claude aplica as correcoes</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Escopo focado:</strong> Audite um modulo por vez. Auditar o projeto inteiro gera output longo demais e perde foco</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Crie o habito de rodar o Full Audit <strong class="text-white">antes de cada Pull Request</strong>. Inclua o output do audit como comentario no PR. Isso demonstra diligencia e economiza tempo do reviewer. Muitas equipes em 2026 ja adotam isso como parte do workflow padrao.
+        </p>
+        <p class="text-neutral-300">
+          Dica avancada: adicione contexto do projeto ao audit. "This is a financial application handling real money" muda completamente o nivel de rigor que o Claude aplica na auditoria de seguranca.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 2: Security Audit -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">🛡️ Security Audit (OWASP, Vulnerabilities)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O Security Audit e um prompt especializado que foca exclusivamente em vulnerabilidades de seguranca. Ele referencia o <strong class="text-amber-400">OWASP Top 10</strong> e checa contra as vulnerabilidades mais comuns e perigosas. Ideal para aplicacoes que lidam com dados sensiveis, pagamentos ou autenticacao.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O prompt de Security Audit e especifico e direcionado. Voce lista as categorias de vulnerabilidade que quer checar:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">Perform a security audit on [module/feature].</div>
+          <br>
+          <div class="text-amber-400">Check against OWASP Top 10:</div>
+          <div class="text-amber-400">- Injection (SQL, NoSQL, OS command)</div>
+          <div class="text-amber-400">- Broken authentication/session management</div>
+          <div class="text-amber-400">- Sensitive data exposure</div>
+          <div class="text-amber-400">- XSS (stored, reflected, DOM)</div>
+          <div class="text-amber-400">- Insecure deserialization</div>
+          <div class="text-amber-400">- CSRF vulnerabilities</div>
+          <div class="text-amber-400">- Missing rate limiting</div>
+          <br>
+          <div class="text-amber-400">For each finding, rate as CRITICAL/HIGH/MEDIUM/LOW</div>
+          <div class="text-amber-400">and provide the exact fix.</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">OWASP como framework:</strong> Usar o OWASP Top 10 como referencia da ao Claude um checklist claro e abrangente para seguir</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Injection e o #1:</strong> O Claude checa todas as queries de banco, chamadas de sistema e qualquer ponto onde input do usuario chega sem sanitizacao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Rate limiting:</strong> Frequentemente esquecido, mas critico. Endpoints sem rate limiting sao convites para ataques de brute force e DDoS</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Rode o Security Audit separadamente do Brutal Audit geral. A auditoria de seguranca merece <strong class="text-white">foco total</strong>. Quando voce mistura seguranca com performance e edge cases, os findings de seguranca tendem a se diluir.
+        </p>
+        <p class="text-neutral-300">
+          Para apps financeiras ou de saude, adicione: "This handles PII/financial data. Apply maximum security scrutiny. Assume attacker has access to client-side code."
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 3: Performance Audit -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">⚡ Performance Audit (N+1, Memory, Bundle)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Problemas de performance sao silenciosos. Tudo funciona perfeitamente com 10 usuarios e colapsa com 10.000. O Performance Audit prompt forca o Claude a <strong class="text-amber-400">pensar em escala</strong> e identificar gargalos antes que se tornem incendios em producao.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O Performance Audit cobre as categorias mais comuns de gargalos em aplicacoes modernas:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">Perform a performance audit on [module/feature].</div>
+          <br>
+          <div class="text-amber-400">Check for:</div>
+          <div class="text-amber-400">1. N+1 query problems</div>
+          <div class="text-amber-400">2. Missing database indexes</div>
+          <div class="text-amber-400">3. Memory leaks (event listeners, closures, caches)</div>
+          <div class="text-amber-400">4. Unnecessary re-renders (React/Vue)</div>
+          <div class="text-amber-400">5. Bundle size issues (large imports)</div>
+          <div class="text-amber-400">6. Missing caching opportunities</div>
+          <div class="text-amber-400">7. Blocking operations on main thread</div>
+          <br>
+          <div class="text-amber-400">Estimate impact: how many ms/MB each fix would save.</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">N+1 queries:</strong> O problema mais comum em ORMs. O Claude identifica loops que fazem uma query por iteracao e sugere eager loading ou batch queries</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Memory leaks:</strong> Event listeners nao removidos, closures que referenciam objetos grandes, caches sem limite. O Claude rastreia o ciclo de vida dos objetos</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Bundle size:</strong> Importar a biblioteca inteira quando so precisa de uma funcao. O Claude sugere tree-shaking e imports seletivos</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Estimativa de impacto:</strong> Pedir "estimate impact" forca o Claude a quantificar o ganho. Isso ajuda a priorizar quais otimizacoes valem o esforco</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Rode o Performance Audit <strong class="text-white">depois de features que envolvem listas, tabelas ou dashboards</strong>. Essas sao as areas onde N+1 queries e re-renders desnecessarios causam mais estrago. Uma tabela com 100 linhas fazendo 100 queries extras pode transformar uma pagina de 200ms em 5 segundos.
+        </p>
+        <p class="text-neutral-300">
+          Combine com dados reais: "This endpoint currently takes 800ms. Find what's causing the bottleneck and suggest optimizations to get it under 200ms."
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 4: Code Review prompt -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">📝 Code Review Prompt (PR-Level Review)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O Code Review prompt simula um <strong class="text-amber-400">reviewer senior examinando seu Pull Request</strong>. Ele olha nao so para bugs, mas para legibilidade, convencoes, naming, separacao de concerns e tudo que um bom reviewer checaria. Use antes de abrir o PR ou enquanto espera a review humana.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O prompt de Code Review e diferente do Brutal Audit. Enquanto o audit foca em bugs e seguranca, a review foca em <strong class="text-white">qualidade, legibilidade e manutencao</strong>:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">Review these changes as a senior engineer would review a PR.</div>
+          <br>
+          <div class="text-amber-400">Check for:</div>
+          <div class="text-amber-400">1. Code clarity and readability</div>
+          <div class="text-amber-400">2. Naming conventions consistency</div>
+          <div class="text-amber-400">3. Single responsibility violations</div>
+          <div class="text-amber-400">4. Missing error handling</div>
+          <div class="text-amber-400">5. Test coverage gaps</div>
+          <div class="text-amber-400">6. Documentation needs</div>
+          <br>
+          <div class="text-amber-400">Use the format: [file:line] comment (must-fix | suggestion | nit)</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Tres niveis de feedback:</strong> must-fix (bloqueia o merge), suggestion (melhoria recomendada), nit (nitpick estetico). Isso espelha como reviews reais funcionam</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Single responsibility:</strong> O Claude identifica funcoes que fazem coisas demais e sugere como extrair responsabilidades</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Test coverage gaps:</strong> Ele identifica caminhos de codigo que nao tem testes e sugere quais testes escrever</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          O melhor momento para rodar o Code Review e <strong class="text-white">antes de abrir o PR</strong>. Corrija os must-fixes e considere as suggestions. Quando o reviewer humano olhar, o PR ja esta limpo e a review humana pode focar em decisoes de design e arquitetura, que e onde o valor humano realmente esta.
+        </p>
+        <p class="text-neutral-300">
+          Adicione contexto do time: "Our team follows Airbnb style guide and uses domain-driven design. Review with these conventions in mind."
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 5: Refactor Guardrails -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🛤️ Refactor Guardrails (Safe Refactoring)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Refactoring e uma das tarefas mais perigosas em desenvolvimento. Voce muda a estrutura sem mudar o comportamento, mas qualquer erro silencioso pode quebrar coisas em producao. O Refactor Guardrails prompt garante que o Claude faca <strong class="text-amber-400">refactoring seguro com verificacao embutida</strong>.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O prompt de Refactor Guardrails tem uma estrutura que previne regressoes durante o refactoring:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">I want to refactor [describe what].</div>
+          <br>
+          <div class="text-amber-400">Before refactoring:</div>
+          <div class="text-amber-400">1. List all current behaviors that MUST be preserved</div>
+          <div class="text-amber-400">2. Identify all callers/consumers of this code</div>
+          <div class="text-amber-400">3. Note any implicit contracts or side effects</div>
+          <br>
+          <div class="text-amber-400">Then refactor with these guardrails:</div>
+          <div class="text-amber-400">- Zero behavior change (same inputs → same outputs)</div>
+          <div class="text-amber-400">- Run existing tests after each step</div>
+          <div class="text-amber-400">- Flag any test that needs updating and why</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Comportamentos preservados:</strong> Antes de tocar em codigo, o Claude lista tudo que o codigo faz atualmente. Isso cria um "contrato" explicito</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Callers/consumers:</strong> Quem usa esse codigo? Mudar a assinatura de uma funcao pode quebrar 20 outros arquivos se voce nao mapear as dependencias</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Contratos implicitos:</strong> Side effects, ordem de execucao, state mutations. O Claude identifica comportamentos que nao estao na assinatura mas que outros codigos dependem</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Testes a cada passo:</strong> Refactoring incremental com verificacao continua. Se um teste quebra, voce sabe exatamente qual mudanca causou</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Use Refactor Guardrails especialmente para <strong class="text-white">legacy code e codigo sem testes</strong>. Nesse caso, adicione: "This code has no tests. Before refactoring, write characterization tests that capture current behavior. Then refactor." O Claude cria os testes primeiro e depois refatora com seguranca.
+        </p>
+        <p class="text-neutral-300">
+          Nunca refatore e adicione feature ao mesmo tempo. Sao duas operacoes distintas. Primeiro refatore (sem mudar comportamento), depois adicione a feature no codigo ja limpo.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 6: Quality Pipeline Completo -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🔄 Quality Pipeline Completo</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Agora que voce conhece cada tipo de audit individualmente, vamos montar o <strong class="text-amber-400">pipeline completo de qualidade</strong>. Este e o workflow que equipes profissionais usam com Claude Code em 2026 para garantir que todo codigo que chega a producao passou por multiplas camadas de verificacao.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O Quality Pipeline completo segue 5 etapas sequenciais. Cada etapa usa um prompt diferente e foca em uma dimensao especifica:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Etapa 1 - Code Review:</strong> Legibilidade, convencoes, estrutura. Corrija antes de auditar funcionalidade</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Etapa 2 - Security Audit:</strong> OWASP Top 10, vulnerabilidades, exposicao de dados. Corrija todos os CRITICALs</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Etapa 3 - Performance Audit:</strong> N+1, memory leaks, bundle size. Otimize os gargalos significativos</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Etapa 4 - Brutal Audit geral:</strong> Edge cases, crash scenarios, tudo que os audits especificos nao pegaram</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Etapa 5 - Final verification:</strong> "Verify that all CRITICAL and HIGH issues from previous audits have been resolved. List any remaining concerns."</span>
+          </li>
+        </ul>
+        <p class="text-neutral-300 mt-4">
+          <strong class="text-white">Dica de eficiencia:</strong> Voce nao precisa rodar o pipeline inteiro em todo codigo. Para hotfixes, use so Security + Brutal Audit. Para features visuais, use Code Review + Performance. Reserve o pipeline completo para features criticas e releases.
+        </p>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Documente os resultados do pipeline no seu <strong class="text-white">CLAUDE.md</strong>. Adicione uma secao "Quality Standards" com os prompts que voce usa. Quando o Claude le isso no inicio de cada sessao, ele ja aplica os padroes automaticamente durante o desenvolvimento, reduzindo findings nos audits.
+        </p>
+        <p class="text-neutral-300">
+          Em equipes, padronize o pipeline como parte do Definition of Done. Nenhum PR e aprovado sem pelo menos Security Audit + Code Review rodados com Claude Code.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- EXERCICIO PRATICO -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="exercicio" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">&#9998;</span>
+        <h2 class="text-2xl font-bold">Exercicio Pratico</h2>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Rodar Brutal Audit em codigo proprio e corrigir issues</h3>
+        <p class="text-neutral-300 mb-4">
+          Pegue um modulo real do seu projeto (ou use um projeto open source) e aplique o pipeline de qualidade:
+        </p>
+        <ol class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">1.</span>
+            <span>Escolha um modulo ou feature recente do seu projeto. De preferencia algo com pelo menos 3 arquivos envolvidos</span>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">2.</span>
+            <span>Rode o <strong class="text-white">Full Brutal Audit</strong> com output estruturado (severity + category + file/line + fix)</span>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">3.</span>
+            <span>Corrija todos os findings <strong class="text-white">CRITICAL</strong> e pelo menos 2 findings <strong class="text-white">HIGH</strong></span>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">4.</span>
+            <span>Rode o <strong class="text-white">Security Audit</strong> separadamente e compare os findings com o Brutal Audit</span>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">5.</span>
+            <span>Rode a verificacao final para confirmar que os CRITICALs foram resolvidos</span>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Criterios de Sucesso -->
+      <div class="bg-amber-900/20 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">Rodou Full Brutal Audit com output estruturado</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">Corrigiu todos os findings CRITICAL</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">Rodou Security Audit separado com OWASP</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">Verificacao final confirmou resolucao dos CRITICALs</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">Entendeu a diferenca entre cada tipo de audit</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESUMO FINAL -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-amber-900/40 via-dark-800 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Full Brutal Audit com output estruturado</strong>
+              <span class="text-neutral-400"> - Severity + category + file/line + fix sugerido. Priorizacao clara de issues.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Security Audit com OWASP Top 10</strong>
+              <span class="text-neutral-400"> - Injection, XSS, CSRF, auth, data exposure. Auditoria focada em vulnerabilidades.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Performance Audit identifica gargalos</strong>
+              <span class="text-neutral-400"> - N+1, memory leaks, bundle size, missing caching. Estimativa de impacto.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Code Review simula reviewer senior</strong>
+              <span class="text-neutral-400"> - Legibilidade, convencoes, SRP, test gaps. Tres niveis: must-fix, suggestion, nit.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Refactor Guardrails previne regressoes</strong>
+              <span class="text-neutral-400"> - Lista comportamentos, mapeia callers, zero behavior change, testes a cada passo.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Quality Pipeline combina tudo em workflow</strong>
+              <span class="text-neutral-400"> - Review → Security → Performance → Brutal → Verification. Adapte ao tipo de mudanca.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-amber-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">4.6 - Prompts de Arquitetura e API Design</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-4-4.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors justify-start">
+            ← Modulo Anterior
+          </a>
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha
+          </a>
+          <a href="modulo-4-6.html" class="flex-1 text-center px-6 py-3 bg-amber-600/40 text-amber-100 rounded-lg font-semibold hover:bg-amber-600/60 transition-colors">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>6 Pilares do Claude Code Full - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
