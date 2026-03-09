@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 5.7 - Hooks: 12 Eventos do Ciclo de Vida | 6 Pilares CC Full</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span>
+            <span class="font-bold text-lg hidden sm:inline">6 Pilares CC Full</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Atalhos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">CLAUDE.md</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Workflows</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Prompts</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-teal-400 bg-teal-500/10">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Skills</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">MCPs</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-teal-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-teal-400">Trilha 5</a>
+      <span>/</span>
+      <span class="text-teal-400">Modulo 5.7</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 5.7
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🪝 Hooks: 12 Eventos do Ciclo de Vida</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Domine os hooks do Claude Code: comandos shell executados automaticamente em eventos especificos do ciclo de vida. De PreToolUse a NotificationSend, aprenda a automatizar formatacao, lint, notificacoes e validacoes.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">35</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">Avancado</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">Teoria + Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 1: O que sao hooks -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">⚡ O que sao Hooks (Event-Driven Shell Commands)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Hooks sao <strong class="text-teal-400">comandos shell executados automaticamente</strong> quando eventos especificos ocorrem durante o ciclo de vida de uma sessao do Claude Code. Diferente de skills (que voce invoca manualmente), hooks sao <strong class="text-white">reativos e automaticos</strong> - disparam sem intervencao do usuario.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O modelo mental para hooks e simples: <strong class="text-white">"Quando X acontecer, execute Y"</strong>. Eles seguem o padrao event-driven:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Event-driven:</strong> Hooks respondem a eventos do ciclo de vida do Claude Code. Cada evento tem um nome especifico (PreToolUse, PostToolUse, SessionStart, etc.)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Shell commands:</strong> O que executa e um comando shell normal - qualquer coisa que voce rodaria no terminal pode ser um hook</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Automaticos:</strong> Uma vez configurados, hooks disparam sozinhos. Nao e necessario lembrar de rodar nada manualmente</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Encadeamento:</strong> Voce pode ter multiplos hooks para o mesmo evento. Eles executam em sequencia na ordem em que foram definidos</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Pense em hooks como <strong class="text-white">git hooks para o Claude Code</strong>. Assim como pre-commit e post-commit no Git executam scripts automaticamente, hooks do Claude Code executam comandos em pontos especificos do ciclo de vida da sessao. Se voce ja usa git hooks, a logica e identica.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 2: PreToolUse e PostToolUse -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">🔄 PreToolUse e PostToolUse</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Os hooks <strong class="text-teal-400">PreToolUse e PostToolUse</strong> sao os mais usados e poderosos. Eles disparam antes e depois que o Claude executa qualquer ferramenta (tool), permitindo interceptar, validar e reagir a cada acao do agente.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O fluxo de execucao com hooks de tool:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4 space-y-1">
+          <div class="text-neutral-500"># Fluxo completo de uma tool call</div>
+          <div class="text-neutral-300">1. Claude decide usar uma tool (ex: Write)</div>
+          <div class="text-teal-400">2. → PreToolUse hook dispara</div>
+          <div class="text-neutral-300">   - Pode BLOQUEAR a execucao (exit code != 0)</div>
+          <div class="text-neutral-300">   - Pode modificar parametros</div>
+          <div class="text-neutral-300">3. Tool executa normalmente</div>
+          <div class="text-teal-400">4. → PostToolUse hook dispara</div>
+          <div class="text-neutral-300">   - Pode formatar o output</div>
+          <div class="text-neutral-300">   - Pode executar acoes complementares</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">PreToolUse - validacao:</strong> Use para validar antes da execucao. Exemplo: bloquear Write em arquivos protegidos, prevenir rm em diretorios criticos</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">PostToolUse - reacao:</strong> Use para reagir apos a execucao. Exemplo: rodar prettier depois de Write, executar testes depois de Edit</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Filtragem por tool:</strong> Voce pode configurar hooks para dispararar apenas para tools especificas (Write, Edit, Bash) ou para todas</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          O caso de uso mais comum e <strong class="text-white">auto-format apos write</strong>: configure um PostToolUse que roda <code class="bg-dark-700 px-2 py-1 rounded text-teal-400">prettier --write</code> no arquivo modificado. Assim, todo codigo gerado pelo Claude ja sai formatado. Outro classico: <strong class="text-white">PreToolUse para bloquear escrita em .env</strong> e prevenir vazamento de segredos.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 3: Hooks de sessao -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🚀 Hooks de Sessao (SessionStart, SessionEnd)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Os hooks <strong class="text-teal-400">SessionStart e SessionEnd</strong> disparam no inicio e no fim de cada sessao do Claude Code. Sao ideais para setup de ambiente, logging, metricas e limpeza automatica.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Casos de uso para hooks de sessao:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">SessionStart - setup:</strong> Verificar pre-requisitos (Node, Docker rodando), carregar variaveis de ambiente, iniciar servicos necessarios, registrar inicio da sessao em um log</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">SessionEnd - cleanup:</strong> Salvar metricas da sessao (tokens usados, arquivos modificados), parar servicos temporarios, enviar resumo por Slack ou email</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Logging:</strong> Registrar cada sessao com timestamp, duracao e acoes realizadas para auditoria e analise de produtividade</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Metricas:</strong> Coletar dados sobre uso do Claude Code para otimizar workflows e justificar investimento na ferramenta</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Um SessionStart simples mas poderoso: <strong class="text-white">verificar se o branch atual e o correto</strong> antes de comecar a trabalhar. Isso previne o erro classico de modificar codigo no branch errado. Outro uso: exibir um lembrete das tasks pendentes do projeto ao iniciar uma nova sessao.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 4: Hooks de notificacao -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🔔 Hooks de Notificacao (NotificationSend)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O hook <strong class="text-teal-400">NotificationSend</strong> permite interceptar e customizar as notificacoes que o Claude Code envia. Voce pode redirecionar notificacoes para Slack, Discord, email ou qualquer outro sistema de comunicacao da sua equipe.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O NotificationSend dispara quando o Claude precisa notificar o usuario sobre algo. Voce pode interceptar e redirecionar:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4 space-y-1">
+          <div class="text-neutral-500"># Exemplo: enviar notificacao para Slack</div>
+          <div class="text-teal-400">"NotificationSend": {</div>
+          <div class="text-teal-400 ml-4">"command": "curl -X POST $SLACK_WEBHOOK -d '{\"text\": \"$NOTIFICATION_MESSAGE\"}'",</div>
+          <div class="text-teal-400 ml-4">"description": "Envia notificacoes do Claude para Slack"</div>
+          <div class="text-teal-400">}</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Redirecionamento:</strong> Envie notificacoes para Slack, Discord, Telegram, email ou qualquer webhook. Ideal para tarefas longas em background</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Filtragem:</strong> Filtre notificacoes por tipo ou conteudo. Receba apenas alertas criticos no celular e o resto no desktop</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Enriquecimento:</strong> Adicione contexto extra as notificacoes, como nome do projeto, branch atual ou duracao da tarefa</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          O caso de uso mais valioso: <strong class="text-white">notificacao quando uma tarefa longa termina</strong>. Se voce pediu ao Claude para refatorar 50 arquivos e foi tomar cafe, o hook de notificacao avisa no Slack quando terminou. Isso transforma o Claude Code de uma ferramenta interativa em um <strong class="text-white">assistente assincrono</strong>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 5: Configurando hooks em settings.json -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">⚙️ Configurando Hooks em settings.json</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Hooks sao configurados no arquivo <strong class="text-teal-400">settings.json</strong> do Claude Code. A estrutura e declarativa: voce define o evento, o comando e opcoes adicionais como filtros e timeouts.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Estrutura completa de configuracao de hooks no settings.json:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-neutral-500">// .claude/settings.json</div>
+          <div class="text-teal-400">{</div>
+          <div class="text-teal-400 ml-4">"hooks": {</div>
+          <div class="text-teal-400 ml-8">"PreToolUse": [</div>
+          <div class="text-teal-400 ml-12">{</div>
+          <div class="text-neutral-300 ml-16">"matcher": "Write",</div>
+          <div class="text-neutral-300 ml-16">"command": "echo 'Validando escrita...'",</div>
+          <div class="text-neutral-300 ml-16">"timeout": 5000</div>
+          <div class="text-teal-400 ml-12">}</div>
+          <div class="text-teal-400 ml-8">],</div>
+          <div class="text-teal-400 ml-8">"PostToolUse": [</div>
+          <div class="text-teal-400 ml-12">{</div>
+          <div class="text-neutral-300 ml-16">"matcher": "Write",</div>
+          <div class="text-neutral-300 ml-16">"command": "npx prettier --write $FILE_PATH"</div>
+          <div class="text-teal-400 ml-12">}</div>
+          <div class="text-teal-400 ml-8">],</div>
+          <div class="text-teal-400 ml-8">"SessionStart": [</div>
+          <div class="text-teal-400 ml-12">{</div>
+          <div class="text-neutral-300 ml-16">"command": "git status --short"</div>
+          <div class="text-teal-400 ml-12">}</div>
+          <div class="text-teal-400 ml-8">]</div>
+          <div class="text-teal-400 ml-4">}</div>
+          <div class="text-teal-400">}</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">matcher:</strong> Filtra por nome da tool. Use "Write", "Edit", "Bash" ou deixe vazio para todas</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">command:</strong> O comando shell a executar. Variaveis de ambiente do contexto estao disponiveis ($FILE_PATH, $TOOL_NAME, etc.)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">timeout:</strong> Tempo maximo de execucao em milissegundos. Hooks que demoram muito podem travar a sessao</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Sempre defina um <strong class="text-white">timeout para hooks</strong>. Um hook sem timeout que trava pode congelar toda a sessao do Claude Code. Comece com timeouts generosos (10s) e reduza conforme necessario. Para hooks de formatacao, 5 segundos e suficiente. Para hooks que fazem requests HTTP, use 15-30 segundos.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 6: Casos de uso praticos -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🎯 Casos de Uso Praticos (Auto-Format, Auto-Lint, Notifications)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Os tres casos de uso mais populares de hooks sao <strong class="text-teal-400">auto-format, auto-lint e notificacoes</strong>. Juntos, eles transformam o Claude Code em um agente que nao apenas gera codigo, mas garante qualidade e mantém voce informado automaticamente.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <!-- Tabela de Casos -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-dark-600">
+                <th class="text-left py-3 pr-4 text-neutral-400 font-medium">Caso de Uso</th>
+                <th class="text-left py-3 px-4 text-neutral-400 font-medium">Hook</th>
+                <th class="text-left py-3 pl-4 text-neutral-400 font-medium">Comando</th>
+              </tr>
+            </thead>
+            <tbody class="text-neutral-300">
+              <tr class="border-b border-dark-700">
+                <td class="py-3 pr-4 font-medium text-white">Auto-format</td>
+                <td class="py-3 px-4 text-teal-400">PostToolUse (Write)</td>
+                <td class="py-3 pl-4"><code class="text-sm">prettier --write $FILE</code></td>
+              </tr>
+              <tr class="border-b border-dark-700">
+                <td class="py-3 pr-4 font-medium text-white">Auto-lint</td>
+                <td class="py-3 px-4 text-teal-400">PostToolUse (Write/Edit)</td>
+                <td class="py-3 pl-4"><code class="text-sm">eslint --fix $FILE</code></td>
+              </tr>
+              <tr class="border-b border-dark-700">
+                <td class="py-3 pr-4 font-medium text-white">Notificacao</td>
+                <td class="py-3 px-4 text-teal-400">NotificationSend</td>
+                <td class="py-3 pl-4"><code class="text-sm">curl $SLACK_WEBHOOK</code></td>
+              </tr>
+              <tr class="border-b border-dark-700">
+                <td class="py-3 pr-4 font-medium text-white">Bloquear .env</td>
+                <td class="py-3 px-4 text-teal-400">PreToolUse (Write)</td>
+                <td class="py-3 pl-4"><code class="text-sm">test ! "$FILE" = ".env"</code></td>
+              </tr>
+              <tr>
+                <td class="py-3 pr-4 font-medium text-white">Auto-test</td>
+                <td class="py-3 px-4 text-teal-400">PostToolUse (Write)</td>
+                <td class="py-3 pl-4"><code class="text-sm">npm test -- --related $FILE</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Comece com <strong class="text-white">auto-format apenas</strong>. E o hook de menor risco e maior retorno. Depois de validar que funciona bem, adicione auto-lint. Por ultimo, configure notificacoes. Essa progressao gradual evita surpresas e permite debugar cada hook isoladamente.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- EXERCICIO PRATICO -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="exercicio" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">🏋️</span>
+        <h2 class="text-2xl font-bold">Exercicio Pratico</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Hora de implementar hooks funcionais. Voce vai criar um par PreToolUse + PostToolUse que valida e formata codigo automaticamente.
+      </p>
+
+      <!-- Box Principal do Exercicio -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border-2 border-teal-500/40 p-8 mb-6">
+        <div class="flex items-center space-x-3 mb-6">
+          <span class="text-3xl">🏋️</span>
+          <div>
+            <h3 class="text-xl font-bold text-teal-400">Exercicio: Criar Hook PreToolUse + PostToolUse Funcional</h3>
+            <p class="text-neutral-400 text-sm">Tempo estimado: 20-30 minutos</p>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Criar o settings.json com hooks</h4>
+              <p class="text-neutral-300 text-sm mb-3">Configure um PreToolUse que bloqueia escrita em .env e um PostToolUse que formata:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-neutral-500">$</span> <span class="text-teal-400">mkdir -p .claude && cat > .claude/settings.json << 'EOF'</span><br>
+                <span class="text-neutral-300">{</span><br>
+                <span class="text-neutral-300">  "hooks": {</span><br>
+                <span class="text-neutral-300">    "PreToolUse": [{"matcher": "Write", "command": "echo $FILE_PATH | grep -qv '.env'"}],</span><br>
+                <span class="text-neutral-300">    "PostToolUse": [{"matcher": "Write", "command": "npx prettier --write $FILE_PATH"}]</span><br>
+                <span class="text-neutral-300">  }</span><br>
+                <span class="text-neutral-300">}</span><br>
+                <span class="text-neutral-300">EOF</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Testar o PreToolUse (bloqueio)</h4>
+              <p class="text-neutral-300 text-sm mb-3">Peca ao Claude para escrever em .env e verifique se o hook bloqueia:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-teal-400">></span> <span class="text-neutral-300">crie um arquivo .env com DATABASE_URL=test</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Testar o PostToolUse (formatacao)</h4>
+              <p class="text-neutral-300 text-sm mb-3">Peca ao Claude para criar um arquivo JS sem formatacao e verifique se prettier roda automaticamente:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-teal-400">></span> <span class="text-neutral-300">crie um arquivo test.js com uma funcao mal formatada</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">4</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Validar os resultados</h4>
+              <p class="text-neutral-300 text-sm">Confirme que: 1) .env foi bloqueado pelo PreToolUse, 2) test.js foi formatado automaticamente pelo PostToolUse apos a criacao.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Criterios de Sucesso -->
+      <div class="bg-teal-900/20 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span class="text-neutral-300">settings.json configurado com hooks</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span class="text-neutral-300">PreToolUse bloqueia escrita em .env</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span class="text-neutral-300">PostToolUse formata arquivos automaticamente</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span class="text-neutral-300">Ambos os hooks funcionam em conjunto</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESUMO FINAL -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-teal-900/40 via-dark-800 to-dark-800 rounded-xl border border-teal-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Hooks sao comandos shell event-driven</strong>
+              <span class="text-neutral-400"> - Executam automaticamente em eventos do ciclo de vida, sem intervencao manual.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">PreToolUse e PostToolUse sao os mais poderosos</strong>
+              <span class="text-neutral-400"> - Interceptam e reagem a cada tool call do Claude, antes e depois da execucao.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">SessionStart/End para setup e cleanup</strong>
+              <span class="text-neutral-400"> - Configuracao de ambiente no inicio e logging/limpeza no fim de cada sessao.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">NotificationSend para alertas</strong>
+              <span class="text-neutral-400"> - Redirecione notificacoes para Slack, Discord ou qualquer webhook.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Configuracao em settings.json</strong>
+              <span class="text-neutral-400"> - Estrutura declarativa com matcher, command e timeout.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Auto-format, auto-lint e notificacoes</strong>
+              <span class="text-neutral-400"> - Os tres casos de uso mais populares que transformam o Claude Code em agente autonomo.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-teal-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">5.8 - Subagentes e /simplify /batch (2026)</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-5-6.html" class="flex-1 text-left px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors justify-start">
+            ← Modulo Anterior
+          </a>
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha
+          </a>
+          <a href="modulo-5-8.html" class="flex-1 text-left px-6 py-3 bg-teal-600/40 text-teal-100 rounded-lg font-semibold hover:bg-teal-600/60 transition-colors justify-start">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>6 Pilares do Claude Code Full - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

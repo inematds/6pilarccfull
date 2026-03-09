@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 5.5 - Onde Encontrar Skills Prontas | 6 Pilares CC Full</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span>
+            <span class="font-bold text-lg hidden sm:inline">6 Pilares CC Full</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Atalhos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">CLAUDE.md</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Workflows</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Prompts</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-teal-400 bg-teal-500/10">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Skills</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">MCPs</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-teal-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-teal-400">Trilha 5</a>
+      <span>/</span>
+      <span class="text-teal-400">Modulo 5.5</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 5.5
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🔎 Onde Encontrar Skills Prontas</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Descubra as melhores fontes de skills prontas para Claude Code: repositorios curados no GitHub, frameworks especializados, marketplaces dedicados e como avaliar qualidade e seguranca antes de instalar.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">30</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">Intermediario</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">Pesquisa + Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 1: awesome-claude-code -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">📋 awesome-claude-code (Lista Curada no GitHub)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O repositorio <strong class="text-teal-400">awesome-claude-code</strong> no GitHub e o ponto de partida obrigatorio para quem busca skills prontas. E uma lista curada pela comunidade que reune as melhores skills, ferramentas e recursos para Claude Code, organizada por categorias e constantemente atualizada.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O <strong class="text-white">awesome-claude-code</strong> segue o padrao "awesome lists" do GitHub, uma tradicao consagrada para curar os melhores recursos de qualquer tecnologia. No contexto de Claude Code, ele cataloga:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Skills individuais:</strong> Arquivos .md prontos para copiar e usar, organizados por finalidade (code review, testes, documentacao, refatoracao)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Colecoes de skills:</strong> Pacotes tematicos criados por power users que resolvem workflows completos de desenvolvimento</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Ferramentas complementares:</strong> CLIs, extensoes e integradores que ampliam as capacidades das skills no dia a dia</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Atualizacao comunitaria:</strong> Qualquer pessoa pode contribuir via PR, e os mantenedores verificam qualidade antes de aceitar</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Faca um star no repositorio awesome-claude-code e ative as notificacoes de releases. A lista e atualizada frequentemente e voce sera avisado quando novas skills de alta qualidade forem adicionadas.
+        </p>
+        <p class="text-neutral-300">
+          Dica extra: <strong class="text-white">comece pelas skills com mais stars e forks</strong> - elas foram validadas por mais pessoas e tendem a ter melhor documentacao e menos bugs.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 2: awesome-agent-skills e awesome-claude-skills -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">📂 awesome-agent-skills e awesome-claude-skills</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Alem do awesome-claude-code generalista, existem repositorios <strong class="text-teal-400">especializados exclusivamente em skills</strong>. O awesome-agent-skills foca em skills agnosticas (funcionam com varios agentes de IA) e o awesome-claude-skills e dedicado a skills otimizadas especificamente para Claude.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Esses repositorios complementam o awesome-claude-code com foco mais estreito e profundo:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">awesome-agent-skills:</strong> Skills que funcionam com Claude Code, Cursor, Windsurf e outros agentes. Uteis se voce trabalha com multiplas ferramentas ou quer portabilidade</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">awesome-claude-skills:</strong> Skills otimizadas exclusivamente para o ecossistema Claude. Aproveitam features especificas como slash commands, subagentes e hooks</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Categorizacao detalhada:</strong> Ambos organizam por dominio (frontend, backend, DevOps, data science, documentacao) facilitando encontrar exatamente o que voce precisa</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Contribuicao ativa:</strong> A comunidade Claude Code em 2026 e extremamente ativa, com centenas de novas skills publicadas mensalmente</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Prefira skills do <strong class="text-white">awesome-claude-skills</strong> quando possivel, pois sao otimizadas para Claude Code e aproveitam todo o potencial da ferramenta. Use skills do awesome-agent-skills quando precisar de compatibilidade com outros agentes ou quando nao encontrar equivalente no repositorio Claude-especifico.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 3: Frameworks: Superpowers, everything-claude-code -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">⚡ Frameworks: Superpowers, everything-claude-code</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Frameworks vao alem de skills individuais. Sao <strong class="text-teal-400">pacotes completos que instalam dezenas de skills de uma vez</strong>, configurando automaticamente o ambiente para produtividade maxima. Os dois mais populares em 2026 sao Superpowers e everything-claude-code.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Frameworks de skills sao como "starter kits" que transformam seu Claude Code em uma maquina de produtividade:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Superpowers:</strong> Framework que adiciona skills avancadas de produtividade, incluindo workflows automatizados, templates de projeto, geracao de documentacao e pipelines de CI/CD assistidos por IA</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">everything-claude-code:</strong> Colecao abrangente que cobre desde skills basicas ate workflows avancados. Ideal para quem quer um setup completo sem montar skill por skill</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Instalacao simples:</strong> Geralmente basta clonar o repositorio e copiar a pasta de commands para o seu projeto ou diretorio global</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Customizacao:</strong> Frameworks bem projetados permitem ativar/desativar skills individuais e personalizar comportamentos sem modificar o codigo-fonte</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Nao instale tudo de uma vez. Comece com um framework e <strong class="text-white">ative apenas as skills que voce realmente vai usar</strong>. Skills desnecessarias podem poluir o autocomplete e dificultar encontrar os comandos que importam. A regra e: menos e mais, desde que cubra seus workflows criticos.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 4: Marketplaces -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🏪 Marketplaces: SkillsMP, SkillHub, awesomeclaude.ai</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Em 2026, o ecossistema amadureceu a ponto de surgirem <strong class="text-teal-400">marketplaces dedicados para skills de Claude Code</strong>. Esses sites oferecem busca avancada, avaliacoes de usuarios, instalacao com um clique e ate skills premium de alta qualidade.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Os principais marketplaces e suas caracteristicas:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">SkillsMP:</strong> Marketplace comunitario com sistema de rating e reviews. Skills gratuitas e premium. Filtros por linguagem, framework e caso de uso. Instalacao via CLI integrada</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">SkillHub:</strong> Focado em skills para times e empresas. Oferece skills com SLAs de qualidade, suporte e atualizacoes garantidas. Ideal para uso corporativo</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">awesomeclaude.ai:</strong> Diretorio web com interface visual para explorar, comparar e instalar skills. Inclui previews, exemplos de uso e metricas de popularidade</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Vantagem sobre GitHub:</strong> Marketplaces oferecem busca semantica, categorias mais granulares, verificacao de compatibilidade e instalacao automatizada</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Use os marketplaces para <strong class="text-white">descobrir</strong> e o GitHub para <strong class="text-white">auditar</strong>. Quando encontrar uma skill interessante no marketplace, sempre verifique o repositorio fonte no GitHub antes de instalar. Confira issues abertas, frequencia de commits e se o autor e ativo na comunidade.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 5: Avaliando qualidade de skills -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">⭐ Avaliando Qualidade de Skills (Audit Criteria)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Nem toda skill publicada e boa. Saber <strong class="text-teal-400">avaliar qualidade antes de adotar</strong> e essencial para evitar problemas, outputs inconsistentes e desperdicio de tokens com skills mal escritas.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Checklist de auditoria para avaliar uma skill antes de usar:
+        </p>
+        <!-- Tabela de Criterios -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-dark-600">
+                <th class="text-left py-3 pr-4 text-neutral-400 font-medium">Criterio</th>
+                <th class="text-left py-3 px-4 text-neutral-400 font-medium">O que verificar</th>
+                <th class="text-left py-3 pl-4 text-neutral-400 font-medium">Red Flag</th>
+              </tr>
+            </thead>
+            <tbody class="text-neutral-300">
+              <tr class="border-b border-dark-700">
+                <td class="py-3 pr-4 font-medium text-white">Estrutura</td>
+                <td class="py-3 px-4">Purpose, Steps, Quality Checks definidos</td>
+                <td class="py-3 pl-4 text-red-400">Sem secoes claras</td>
+              </tr>
+              <tr class="border-b border-dark-700">
+                <td class="py-3 pr-4 font-medium text-white">Especificidade</td>
+                <td class="py-3 px-4">Instrucoes detalhadas e sem ambiguidade</td>
+                <td class="py-3 pl-4 text-red-400">Instrucoes vagas</td>
+              </tr>
+              <tr class="border-b border-dark-700">
+                <td class="py-3 pr-4 font-medium text-white">Verificacao</td>
+                <td class="py-3 px-4">Criterios de sucesso mensuráveis</td>
+                <td class="py-3 pl-4 text-red-400">Sem quality checks</td>
+              </tr>
+              <tr class="border-b border-dark-700">
+                <td class="py-3 pr-4 font-medium text-white">Comunidade</td>
+                <td class="py-3 px-4">Stars, forks, issues respondidas</td>
+                <td class="py-3 pl-4 text-red-400">Zero engajamento</td>
+              </tr>
+              <tr>
+                <td class="py-3 pr-4 font-medium text-white">Manutencao</td>
+                <td class="py-3 px-4">Commits recentes, changelog</td>
+                <td class="py-3 pl-4 text-red-400">Abandonado ha meses</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Crie um <strong class="text-white">ambiente de teste</strong> para avaliar skills antes de usa-las em projetos reais. Abra um projeto temporario, instale a skill e execute-a com inputs conhecidos. Compare o output com o que voce produziria manualmente. Se a skill gerar resultado consistente em 3 testes seguidos, ela passa no criterio minimo de qualidade.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 6: Seguranca: auditando antes de instalar -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🔒 Seguranca: Auditando Antes de Instalar</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Skills sao arquivos markdown que instruem uma IA poderosa. Uma skill maliciosa pode <strong class="text-teal-400">instruir o Claude a executar comandos perigosos</strong>, exfiltrar dados ou modificar codigo de formas sutis. A auditoria de seguranca e obrigatoria antes de instalar qualquer skill de terceiros.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Pontos criticos de seguranca ao avaliar skills de terceiros:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Leia o markdown inteiro:</strong> Nunca instale uma skill sem ler cada linha do arquivo. Procure por instrucoes que pedem ao Claude para executar comandos shell, acessar rede ou modificar arquivos fora do escopo</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Cuidado com prompt injection:</strong> Skills podem conter instrucoes ocultas em comentarios HTML ou formatacao que instrui o Claude a ignorar restricoes de seguranca</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Verifique o autor:</strong> Confira o historico do autor no GitHub. Perfis novos sem historico sao mais arriscados. Prefira skills de autores conhecidos na comunidade</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Principio do menor privilegio:</strong> Skills nao devem pedir mais permissoes do que o necessario para a tarefa. Uma skill de "code review" nao precisa acessar o sistema de arquivos ou fazer requests HTTP</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Antes de instalar qualquer skill de terceiros, rode este checklist mental:
+        </p>
+        <p class="text-neutral-300">
+          <strong class="text-white">1)</strong> Li o markdown inteiro? <strong class="text-white">2)</strong> Conhego o autor ou o repo tem boa reputacao? <strong class="text-white">3)</strong> A skill pede apenas as permissoes necessarias? <strong class="text-white">4)</strong> Testei em um ambiente isolado? Se qualquer resposta for "nao", <strong class="text-white">nao instale</strong>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- EXERCICIO PRATICO -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="exercicio" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">🏋️</span>
+        <h2 class="text-2xl font-bold">Exercicio Pratico</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Hora de aplicar os criterios de avaliacao e seguranca em skills reais. Voce vai auditar 10 skills do awesome-claude-code e documentar suas descobertas.
+      </p>
+
+      <!-- Box Principal do Exercicio -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border-2 border-teal-500/40 p-8 mb-6">
+        <div class="flex items-center space-x-3 mb-6">
+          <span class="text-3xl">🏋️</span>
+          <div>
+            <h3 class="text-xl font-bold text-teal-400">Exercicio: Auditar 10 Skills de awesome-claude-code</h3>
+            <p class="text-neutral-400 text-sm">Tempo estimado: 30-45 minutos</p>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Acessar o repositorio awesome-claude-code</h4>
+              <p class="text-neutral-300 text-sm mb-3">Abra o GitHub e navegue ate o repositorio. Escolha 10 skills de categorias diferentes:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-neutral-500"># Acesse o repositorio e explore as categorias</span><br>
+                <span class="text-teal-400">gh repo view awesome-claude-code --web</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Para cada skill, avaliar os criterios de qualidade</h4>
+              <p class="text-neutral-300 text-sm mb-3">Documente em uma tabela: Estrutura, Especificidade, Verificacao, Comunidade, Manutencao:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-neutral-500"># Crie uma tabela de auditoria</span><br>
+                <span class="text-neutral-300">| Skill | Estrutura | Especif. | Verif. | Comunid. | Manut. | Nota |</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Auditar seguranca das 3 melhores</h4>
+              <p class="text-neutral-300 text-sm mb-3">Para as 3 skills com melhor nota, faca a auditoria de seguranca completa:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-neutral-500"># Leia o markdown completo de cada skill</span><br>
+                <span class="text-teal-400">cat skill-name.md | grep -i "exec\|curl\|wget\|rm \|chmod"</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">4</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Instalar e testar a melhor skill</h4>
+              <p class="text-neutral-300 text-sm">Instale a skill com melhor nota em um projeto de teste e execute-a 3 vezes para validar consistencia dos resultados.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Criterios de Sucesso -->
+      <div class="bg-teal-900/20 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span class="text-neutral-300">10 skills avaliadas com criterios</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span class="text-neutral-300">Tabela de auditoria preenchida</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span class="text-neutral-300">3 skills auditadas em seguranca</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span class="text-neutral-300">1 skill instalada e testada com sucesso</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESUMO FINAL -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-teal-900/40 via-dark-800 to-dark-800 rounded-xl border border-teal-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">awesome-claude-code e o ponto de partida</strong>
+              <span class="text-neutral-400"> - Lista curada no GitHub com as melhores skills, ferramentas e recursos da comunidade.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Repositorios especializados complementam</strong>
+              <span class="text-neutral-400"> - awesome-agent-skills (agnostico) e awesome-claude-skills (Claude-especifico).</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Frameworks instalam pacotes completos</strong>
+              <span class="text-neutral-400"> - Superpowers e everything-claude-code oferecem dezenas de skills prontas.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Marketplaces facilitam a descoberta</strong>
+              <span class="text-neutral-400"> - SkillsMP, SkillHub e awesomeclaude.ai com busca, ratings e instalacao automatizada.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Qualidade se avalia com criterios objetivos</strong>
+              <span class="text-neutral-400"> - Estrutura, especificidade, verificacao, comunidade e manutencao.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Seguranca e obrigatoria</strong>
+              <span class="text-neutral-400"> - Leia o markdown, verifique o autor, teste isolado e aplique menor privilegio.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-teal-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">5.6 - Plugins: Arquitetura e Ecossistema (9000+)</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-5-4.html" class="flex-1 text-left px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors justify-start">
+            ← Modulo Anterior
+          </a>
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha
+          </a>
+          <a href="modulo-5-6.html" class="flex-1 text-left px-6 py-3 bg-teal-600/40 text-teal-100 rounded-lg font-semibold hover:bg-teal-600/60 transition-colors justify-start">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>6 Pilares do Claude Code Full - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

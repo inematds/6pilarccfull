@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 5.6 - Plugins: Arquitetura e Ecossistema (9000+) | 6 Pilares CC Full</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span>
+            <span class="font-bold text-lg hidden sm:inline">6 Pilares CC Full</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Atalhos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">CLAUDE.md</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Workflows</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Prompts</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-teal-400 bg-teal-500/10">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Skills</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">MCPs</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-teal-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-teal-400">Trilha 5</a>
+      <span>/</span>
+      <span class="text-teal-400">Modulo 5.6</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 5.6
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🧩 Plugins: Arquitetura e Ecossistema (9000+)</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Entenda o que sao plugins no Claude Code, como eles combinam skills, MCPs e tools em pacotes completos, e como navegar o ecossistema de mais de 9000 plugins disponiveis em 2026.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">35</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">Intermediario</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">Teoria + Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 1: O que sao plugins -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">📦 O que sao Plugins (Bundles de Skills + MCPs + Tools)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Plugins sao o <strong class="text-teal-400">nivel mais alto de extensibilidade</strong> do Claude Code. Enquanto uma skill e um workflow individual e um MCP e uma integracao de ferramenta, um plugin e um <strong class="text-white">pacote completo que combina tudo</strong>: skills, servidores MCP, ferramentas customizadas e configuracoes pre-definidas.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Pense em plugins como <strong class="text-white">"apps" para o seu Claude Code</strong>. Assim como voce instala apps no celular para adicionar funcionalidades, plugins adicionam capacidades completas:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Skills incluidas:</strong> O plugin traz skills pre-escritas e otimizadas para o dominio especifico (ex: plugin de database traz skills de query, migracao, seed)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">MCPs integrados:</strong> Servidores MCP necessarios ja vem configurados e prontos para uso, sem setup manual</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Tools customizadas:</strong> Ferramentas especializadas que expandem o que o Claude pode fazer no contexto do plugin</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Configuracao zero:</strong> Instalar um plugin e suficiente. Ele configura tudo automaticamente e ja funciona na proxima sessao</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          A regra de decisao e simples: <strong class="text-white">se voce precisa de uma funcionalidade completa num dominio</strong> (database, design, deploy, monitoramento), procure um plugin. Se precisa apenas de um workflow especifico, use uma skill. Plugins economizam tempo de setup mas adicionam mais peso ao ambiente.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 2: O ecossistema de 9000+ plugins -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">🌐 O Ecossistema de 9000+ Plugins</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Em 2026, o ecossistema de plugins do Claude Code ultrapassou a marca de <strong class="text-teal-400">9000 plugins disponiveis</strong>. Essa explosao de crescimento reflete a maturidade da plataforma e a forca da comunidade de desenvolvedores que contribuem ativamente.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O ecossistema se organiza em camadas de maturidade e confiabilidade:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Plugins oficiais (Anthropic):</strong> Criados e mantidos pela Anthropic. Qualidade garantida, atualizacoes constantes, suporte oficial. Exemplos: integracoes com GitHub, Jira, Slack</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Plugins verificados:</strong> Criados pela comunidade mas revisados e aprovados. Sao auditados em qualidade e seguranca antes de receber o selo de verificacao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Plugins comunitarios:</strong> Criados por qualquer desenvolvedor. Variam muito em qualidade. Requerem auditoria manual antes de usar em producao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Crescimento exponencial:</strong> De ~200 plugins no inicio de 2025 para 9000+ em 2026. A taxa de crescimento continua acelerando com a popularizacao do Claude Code</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Com 9000+ opcoes, <strong class="text-white">nao tente explorar tudo</strong>. Comece pelos plugins oficiais e verificados na categoria do seu trabalho. Use os filtros de popularidade e avaliacao dos marketplaces. Um bom ponto de partida: instale os 5 plugins mais populares da sua area (ex: frontend, backend, data) e explore a partir deles.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 3: Instalando plugins -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">⬇️ Instalando Plugins (Marketplace, CLI)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Existem duas formas principais de instalar plugins no Claude Code: via <strong class="text-teal-400">marketplace com interface visual</strong> ou via <strong class="text-teal-400">CLI diretamente no terminal</strong>. Ambas sao igualmente validas e o resultado final e identico.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Os metodos de instalacao e seus fluxos:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4 space-y-3">
+          <div class="text-neutral-500"># Via CLI - instalacao direta</div>
+          <div><span class="text-neutral-500">$</span> <span class="text-teal-400">claude plugin install supabase</span></div>
+          <div class="mt-2 text-neutral-500"># Via CLI - buscar antes de instalar</div>
+          <div><span class="text-neutral-500">$</span> <span class="text-teal-400">claude plugin search "database"</span></div>
+          <div class="mt-2 text-neutral-500"># Via CLI - listar plugins instalados</div>
+          <div><span class="text-neutral-500">$</span> <span class="text-teal-400">claude plugin list</span></div>
+          <div class="mt-2 text-neutral-500"># Via CLI - remover plugin</div>
+          <div><span class="text-neutral-500">$</span> <span class="text-teal-400">claude plugin remove supabase</span></div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Marketplace:</strong> Interface web com preview, documentacao e botao de instalar. Ideal para explorar e comparar opcoes antes de decidir</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">CLI:</strong> Mais rapido para quem ja sabe o que quer. Um comando e o plugin esta instalado e pronto para uso</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Auto-configuracao:</strong> Plugins bem feitos detectam seu ambiente e se configuram automaticamente. Se voce tem um projeto Supabase, o plugin detecta e ja conecta</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Depois de instalar um plugin, sempre rode <code class="bg-dark-700 px-2 py-1 rounded text-teal-400">claude plugin list</code> para confirmar que foi instalado corretamente. Em seguida, abra uma nova sessao do Claude Code e digite <code class="text-teal-400">/</code> para ver os novos slash commands disponiveis. Se nada aparecer, verifique se ha erros de configuracao.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 4: Plugin Supabase -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🗄️ Plugin Supabase (Database Integration)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O plugin Supabase e um dos <strong class="text-teal-400">melhores exemplos de plugin bem implementado</strong>. Ele integra o Claude Code diretamente com o Supabase, permitindo gerenciar banco de dados, autenticacao, storage e edge functions sem sair do terminal.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O que o plugin Supabase inclui e como funciona na pratica:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">MCP Server integrado:</strong> Conecta diretamente ao seu projeto Supabase, permitindo queries SQL, criacao de tabelas e gerenciamento de dados em tempo real</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Skills de database:</strong> Skills prontas para migracoes, seeds, backups e queries complexas. Voce descreve o que precisa e o Claude gera e executa</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Deteccao automatica:</strong> Se voce tem um <code class="bg-dark-700 px-2 py-1 rounded text-teal-400">supabase/</code> na raiz do projeto, o plugin detecta e configura a conexao automaticamente</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Slash commands:</strong> Comandos como <code class="text-teal-400">/supabase-query</code>, <code class="text-teal-400">/supabase-migrate</code>, <code class="text-teal-400">/supabase-seed</code> ficam disponiveis automaticamente</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          O plugin Supabase e um modelo de como plugins devem ser construidos. Ao estudar sua arquitetura, voce aprende os padroes que os melhores plugins seguem: <strong class="text-white">deteccao automatica de ambiente, skills bem documentadas, MCP com escopo limitado e configuracao zero</strong>. Use-o como referencia ao avaliar outros plugins.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 5: Categorias principais -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">📊 Categorias Principais de Plugins</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O ecossistema de 9000+ plugins se organiza em <strong class="text-teal-400">categorias bem definidas</strong>. Conhecer essas categorias e fundamental para navegar o marketplace de forma eficiente e encontrar exatamente o que voce precisa.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <!-- Tabela de Categorias -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-dark-600">
+                <th class="text-left py-3 pr-4 text-neutral-400 font-medium">Categoria</th>
+                <th class="text-left py-3 px-4 text-neutral-400 font-medium">Exemplos</th>
+                <th class="text-left py-3 pl-4 text-neutral-400 font-medium">Qtd. Aprox.</th>
+              </tr>
+            </thead>
+            <tbody class="text-neutral-300">
+              <tr class="border-b border-dark-700">
+                <td class="py-3 pr-4 font-medium text-white">Productivity</td>
+                <td class="py-3 px-4">Task management, note-taking, templates, automation</td>
+                <td class="py-3 pl-4 text-teal-400">2500+</td>
+              </tr>
+              <tr class="border-b border-dark-700">
+                <td class="py-3 pr-4 font-medium text-white">Database</td>
+                <td class="py-3 px-4">Supabase, PostgreSQL, MongoDB, Redis, Firebase</td>
+                <td class="py-3 pl-4 text-teal-400">1200+</td>
+              </tr>
+              <tr class="border-b border-dark-700">
+                <td class="py-3 pr-4 font-medium text-white">Design</td>
+                <td class="py-3 px-4">Figma, screenshot-to-code, UI generation, Tailwind</td>
+                <td class="py-3 pl-4 text-teal-400">800+</td>
+              </tr>
+              <tr class="border-b border-dark-700">
+                <td class="py-3 pr-4 font-medium text-white">Dev Tools</td>
+                <td class="py-3 px-4">Testing, CI/CD, Docker, Kubernetes, monitoring</td>
+                <td class="py-3 pl-4 text-teal-400">3000+</td>
+              </tr>
+              <tr>
+                <td class="py-3 pr-4 font-medium text-white">Integracao</td>
+                <td class="py-3 px-4">Slack, GitHub, Jira, Notion, Linear, Discord</td>
+                <td class="py-3 pl-4 text-teal-400">1500+</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Monte seu <strong class="text-white">"stack de plugins"</strong> baseado no seu fluxo de trabalho diario. Um desenvolvedor fullstack tipico precisa de: 1 plugin de database, 1 de testing, 1 de design/UI e 1-2 de integracao. Nao instale mais do que 5-7 plugins simultaneamente para evitar conflitos e manter a performance.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 6: Criando seu proprio plugin -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🛠️ Criando seu Proprio Plugin (/skill-creator)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O Claude Code inclui o comando <strong class="text-teal-400">/skill-creator</strong> que facilita a criacao de plugins customizados. Voce descreve o que o plugin deve fazer e o Claude gera a estrutura completa, incluindo skills, configuracao de MCP e manifest do plugin.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          A estrutura de um plugin e composta por:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-teal-400">meu-plugin/</div>
+          <div class="text-neutral-300 ml-4">manifest.json          <span class="text-neutral-500"># Metadados e configuracao</span></div>
+          <div class="text-neutral-300 ml-4">commands/              <span class="text-neutral-500"># Skills do plugin</span></div>
+          <div class="text-neutral-300 ml-8">skill-1.md</div>
+          <div class="text-neutral-300 ml-8">skill-2.md</div>
+          <div class="text-neutral-300 ml-4">mcp/                   <span class="text-neutral-500"># Servidores MCP</span></div>
+          <div class="text-neutral-300 ml-8">server.js</div>
+          <div class="text-neutral-300 ml-4">tools/                 <span class="text-neutral-500"># Ferramentas extras</span></div>
+          <div class="text-neutral-300 ml-8">helper.sh</div>
+          <div class="text-neutral-300 ml-4">README.md              <span class="text-neutral-500"># Documentacao</span></div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">manifest.json:</strong> Define nome, versao, descricao, dependencias, skills incluidas e configuracao de MCPs do plugin</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">/skill-creator:</strong> Comando built-in que guia voce na criacao da estrutura completa. Informe o dominio e ele gera o esqueleto</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Publicacao:</strong> Plugins podem ser publicados no marketplace ou compartilhados via GitHub. O processo de verificacao leva de 2 a 5 dias uteis</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Antes de criar um plugin do zero, verifique se ja existe algo similar. Com 9000+ plugins, ha grande chance de alguem ja ter resolvido seu problema. Se voce decidir criar, <strong class="text-white">comece com o /skill-creator e itere a partir do esqueleto gerado</strong>. Nao tente construir tudo manualmente - o Claude faz 80% do trabalho pesado para voce.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- EXERCICIO PRATICO -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="exercicio" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">🏋️</span>
+        <h2 class="text-2xl font-bold">Exercicio Pratico</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Hora de experimentar o ecossistema de plugins na pratica. Voce vai instalar, configurar e testar dois plugins do marketplace.
+      </p>
+
+      <!-- Box Principal do Exercicio -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border-2 border-teal-500/40 p-8 mb-6">
+        <div class="flex items-center space-x-3 mb-6">
+          <span class="text-3xl">🏋️</span>
+          <div>
+            <h3 class="text-xl font-bold text-teal-400">Exercicio: Instalar e Configurar 2 Plugins do Marketplace</h3>
+            <p class="text-neutral-400 text-sm">Tempo estimado: 20-30 minutos</p>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Buscar plugins no marketplace</h4>
+              <p class="text-neutral-300 text-sm mb-3">Explore o marketplace e escolha 2 plugins de categorias diferentes:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-neutral-500">$</span> <span class="text-teal-400">claude plugin search "database"</span><br>
+                <span class="text-neutral-500">$</span> <span class="text-teal-400">claude plugin search "productivity"</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Instalar os 2 plugins escolhidos</h4>
+              <p class="text-neutral-300 text-sm mb-3">Use o CLI para instalar e confirmar:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-neutral-500">$</span> <span class="text-teal-400">claude plugin install nome-plugin-1</span><br>
+                <span class="text-neutral-500">$</span> <span class="text-teal-400">claude plugin install nome-plugin-2</span><br>
+                <span class="text-neutral-500">$</span> <span class="text-teal-400">claude plugin list</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Testar os slash commands de cada plugin</h4>
+              <p class="text-neutral-300 text-sm mb-3">Abra uma nova sessao e teste os comandos disponiveis:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-teal-400">></span> <span class="text-neutral-300">/  (listar todos os comandos disponiveis)</span><br>
+                <span class="text-teal-400">></span> <span class="text-neutral-300">/nome-do-comando-do-plugin</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">4</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Documentar a experiencia</h4>
+              <p class="text-neutral-300 text-sm">Anote quais plugins instalou, quais comandos testou, se a configuracao foi automatica e se o resultado atendeu suas expectativas.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Criterios de Sucesso -->
+      <div class="bg-teal-900/20 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span class="text-neutral-300">2 plugins instalados com sucesso</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span class="text-neutral-300">Slash commands aparecem no autocomplete</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span class="text-neutral-300">Pelo menos 1 comando testado por plugin</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-teal-400">☐</span>
+            <span class="text-neutral-300">Documentacao da experiencia completa</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESUMO FINAL -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-teal-900/40 via-dark-800 to-dark-800 rounded-xl border border-teal-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Plugins sao bundles completos</strong>
+              <span class="text-neutral-400"> - Combinam skills, MCPs e tools em pacotes prontos para uso, como apps para o Claude Code.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">9000+ plugins disponiveis em 2026</strong>
+              <span class="text-neutral-400"> - Ecossistema maduro com plugins oficiais, verificados e comunitarios.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Instalacao via marketplace ou CLI</strong>
+              <span class="text-neutral-400"> - claude plugin install, search, list e remove para gerenciamento completo.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Plugin Supabase como referencia</strong>
+              <span class="text-neutral-400"> - Modelo de plugin bem implementado com MCP integrado, skills prontas e deteccao automatica.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">5 categorias principais</strong>
+              <span class="text-neutral-400"> - Productivity, Database, Design, Dev Tools e Integracao cobrem a maioria dos casos de uso.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">/skill-creator para plugins customizados</strong>
+              <span class="text-neutral-400"> - Crie seu proprio plugin com a ajuda do Claude e publique no marketplace.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-teal-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">5.7 - Hooks: 12 Eventos do Ciclo de Vida</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-5-5.html" class="flex-1 text-left px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors justify-start">
+            ← Modulo Anterior
+          </a>
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha
+          </a>
+          <a href="modulo-5-7.html" class="flex-1 text-left px-6 py-3 bg-teal-600/40 text-teal-100 rounded-lg font-semibold hover:bg-teal-600/60 transition-colors justify-start">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>6 Pilares do Claude Code Full - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
