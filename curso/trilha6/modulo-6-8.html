@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 6.8 - Claude Cowork e Desktop Agent (2026) | 6 Pilares CC Full</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">&#129504;</span>
+            <span class="font-bold text-lg hidden sm:inline">6 Pilares CC Full</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Atalhos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">CLAUDE.md</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Workflows</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Prompts</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Skills</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-rose-400 bg-rose-500/10">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">MCPs</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-rose-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-rose-400">Trilha 6</a>
+      <span>/</span>
+      <span class="text-rose-400">Modulo 6.8</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-rose-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-rose-500/20 text-rose-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 6.8
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">&#129302; Claude Cowork e Desktop Agent (2026)</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Explore o Claude Cowork - o desktop agent da Anthropic que vai alem do terminal, com skills nativas para documentos, scheduling, connectors e o futuro da automacao desktop.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-rose-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-rose-400">30</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-rose-400">Avancado</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-rose-400">Teoria + Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">&#128187; O que e Claude Cowork (Desktop Agent)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Claude Cowork e o <strong class="text-rose-400">desktop agent da Anthropic lancado em 2026</strong> que expande o Claude para alem do terminal. Enquanto o Claude Code opera no terminal com arquivos e codigo, o Cowork opera na area de trabalho inteira - documentos, planilhas, apresentacoes, navegador e ate agendamento de tarefas.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border border-rose-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-rose-400 mb-4 flex items-center">
+          <span class="mr-2">&#127919;</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O <strong class="text-white">Claude Cowork</strong> e um agente de desktop que roda como aplicacao nativa no seu computador. Ele pode ver sua tela, interagir com aplicacoes e executar tarefas complexas que envolvem multiplos programas.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Agente visual:</strong> Diferente do Claude Code (terminal), o Cowork ve e interage com a interface grafica do seu computador</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Skills nativas:</strong> Vem com habilidades prontas para criar e editar documentos, planilhas, PDFs e apresentacoes</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Scheduling:</strong> Pode agendar tarefas para executar automaticamente em horarios especificos</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Connectors:</strong> Integra com servicos como Google Drive, Slack, Notion e outros via conectores nativos</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">&#128161;</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Pense no Claude Code e no Cowork como <strong class="text-white">complementares, nao substitutos</strong>. O Code e para desenvolvimento (terminal, codigo, git). O Cowork e para tarefas de escritorio (documentos, emails, planilhas, agendamento). O desenvolvedor completo de 2026 usa os dois.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">&#128196; Skills Nativas (/pdf, /docx, /pptx, /xlsx, /visuals)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Uma das funcionalidades mais poderosas do Cowork sao as <strong class="text-rose-400">skills nativas para manipulacao de documentos</strong>. Com comandos simples de slash, voce cria, edita e transforma documentos profissionais sem sair do Claude.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border border-rose-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-rose-400 mb-4 flex items-center">
+          <span class="mr-2">&#127919;</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          As skills nativas do Cowork cobrem os formatos de documento mais usados:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">/pdf:</strong> Cria PDFs formatados com cabecalho, rodape, tabelas e graficos. Perfeito para relatorios e documentacao tecnica</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">/docx:</strong> Gera documentos Word com formatacao profissional, estilos, sumario automatico e controle de versao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">/pptx:</strong> Cria apresentacoes PowerPoint com slides, layouts, transicoes e notas do apresentador</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">/xlsx:</strong> Gera planilhas Excel com formulas, graficos, tabelas dinamicas e formatacao condicional</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">/visuals:</strong> Cria diagramas, fluxogramas, wireframes e outros visuais diretamente no Claude</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">&#128161;</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Essas skills tambem funcionam no Claude Code (via slash commands). Experimente <code class="bg-dark-700 px-2 py-1 rounded text-rose-400">/pdf</code> seguido de "Crie um relatorio de sprint com as mudancas dos ultimos 10 commits". O Claude vai analisar o repositorio e gerar um PDF profissional automaticamente.
+        </p>
+        <p class="text-neutral-300">
+          Caso de uso poderoso: <strong class="text-white">gerar documentacao de API em PDF</strong> a partir do codigo-fonte. Um unico comando substitui horas de trabalho manual.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">&#9200; Scheduling e Tarefas Agendadas</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O Cowork introduz o conceito de <strong class="text-rose-400">tarefas agendadas com IA</strong>. Voce define o que quer que o Claude faca e quando, e ele executa automaticamente - como um cron job inteligente que entende linguagem natural e toma decisoes.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border border-rose-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-rose-400 mb-4 flex items-center">
+          <span class="mr-2">&#127919;</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O <strong class="text-white">scheduling do Cowork</strong> permite agendar tarefas complexas que seriam impossiveis com cron jobs tradicionais:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Relatorios diarios:</strong> "Toda manha as 8h, gere um resumo dos PRs abertos e envie no Slack"</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Monitoramento:</strong> "A cada 4 horas, verifique se os testes do CI estao passando e alerte se houver falhas"</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Manutencao:</strong> "Toda sexta as 17h, faca backup do banco de dados e gere relatorio de metricas semanal"</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Decisoes inteligentes:</strong> Diferente de cron jobs, o Claude pode adaptar a execucao baseado no contexto e tomar decisoes</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">&#128161;</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Comece agendando uma tarefa simples: <strong class="text-white">"Todo dia as 9h, liste os issues abertos no GitHub e me envie um resumo."</strong> Depois, va adicionando complexidade. O scheduling e mais util quando combinado com connectors - por exemplo, ler dados do GitHub e postar resumo no Slack automaticamente.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">&#128279; Connectors e Integracoes</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Os <strong class="text-rose-400">connectors do Cowork</strong> sao integracoes nativas com servicos populares. Diferente dos MCPs (que sao servidores locais), connectors sao gerenciados pelo proprio Cowork e oferecem autenticacao simplificada e sincronizacao automatica.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border border-rose-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-rose-400 mb-4 flex items-center">
+          <span class="mr-2">&#127919;</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Os connectors mais relevantes para desenvolvedores:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Google Workspace:</strong> Acesso direto a Google Docs, Sheets, Drive e Calendar. Crie e edite documentos via linguagem natural</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Slack:</strong> Leia e envie mensagens, crie canais, busque em historico de conversas. Ideal para relatorios automaticos</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Notion:</strong> Sincronize com databases, crie paginas, atualize wikis do time automaticamente</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Linear/Jira:</strong> Gerencie issues, sprints e roadmaps. Crie tickets a partir de bugs encontrados no codigo</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Figma:</strong> Acesse designs, exporte assets e compare implementacao com o mockup original</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">&#128161;</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          A diferenca entre <strong class="text-white">connectors e MCPs</strong>: connectors sao mantidos pela Anthropic, tem autenticacao OAuth integrada e sincronizacao automatica. MCPs sao servidores locais que voce instala e configura. Para servicos populares, prefira connectors. Para ferramentas nichadas ou customizadas, use MCPs.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">&#128260; Sincronizando Skills Code e Cowork (3 Opcoes)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Uma das perguntas mais comuns e: <strong class="text-rose-400">"Como compartilho minhas skills entre Claude Code e Cowork?"</strong>. Existem tres abordagens, cada uma com vantagens e desvantagens. A escolha depende do seu workflow e nivel de automacao desejado.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border border-rose-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-rose-400 mb-4 flex items-center">
+          <span class="mr-2">&#127919;</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          As 3 formas de sincronizar skills entre Claude Code e Cowork:
+        </p>
+
+        <!-- Opcao 1 -->
+        <div class="bg-dark-700 rounded-lg p-4 mb-4">
+          <h4 class="text-white font-semibold mb-2">Opcao 1: Diretorio compartilhado</h4>
+          <p class="text-neutral-400 text-sm mb-2">Ambos apontam para o mesmo diretorio de skills:</p>
+          <div class="font-mono text-sm text-neutral-300">
+            <span class="text-neutral-500"># Symlink do Cowork para skills do Code</span><br>
+            <span class="text-rose-400">ln -s</span> ~/.claude/commands ~/.cowork/skills
+          </div>
+          <p class="text-neutral-500 text-xs mt-2">Simples, mas pode causar conflitos se os formatos divergirem.</p>
+        </div>
+
+        <!-- Opcao 2 -->
+        <div class="bg-dark-700 rounded-lg p-4 mb-4">
+          <h4 class="text-white font-semibold mb-2">Opcao 2: Repositorio Git de skills</h4>
+          <p class="text-neutral-400 text-sm mb-2">Skills versionadas num repo que ambos consomem:</p>
+          <div class="font-mono text-sm text-neutral-300">
+            <span class="text-neutral-500"># Repo central de skills</span><br>
+            <span class="text-rose-400">git clone</span> github.com/meu-time/claude-skills ~/.claude-skills<br>
+            <span class="text-neutral-500"># Ambos referenciam o mesmo repo</span>
+          </div>
+          <p class="text-neutral-500 text-xs mt-2">Melhor para times. Versionamento e revisao de skills via PR.</p>
+        </div>
+
+        <!-- Opcao 3 -->
+        <div class="bg-dark-700 rounded-lg p-4">
+          <h4 class="text-white font-semibold mb-2">Opcao 3: Sincronizacao automatica via Cowork</h4>
+          <p class="text-neutral-400 text-sm mb-2">O Cowork detecta e importa skills do Code automaticamente:</p>
+          <div class="font-mono text-sm text-neutral-300">
+            <span class="text-neutral-500"># No Cowork, habilite sincronizacao</span><br>
+            <span class="text-rose-400">Configuracoes</span> > Integracao Code > Auto-sync skills
+          </div>
+          <p class="text-neutral-500 text-xs mt-2">Mais pratico, mas depende de compatibilidade entre versoes.</p>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">&#128161;</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Para uso pessoal, a <strong class="text-white">Opcao 1 (diretorio compartilhado)</strong> e a mais simples e funcional. Para times, a <strong class="text-white">Opcao 2 (repo Git)</strong> e a melhor porque permite code review de skills, versionamento e rollback. Comece com a mais simples e migre conforme a necessidade cresce.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">&#128302; O Futuro da Automacao Desktop (2026+)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O Claude Cowork e apenas o comeco de uma nova era. <strong class="text-rose-400">Desktop agents vao transformar fundamentalmente como interagimos com computadores</strong>. Em vez de aprender ferramentas, vamos descrever intencoes. Em vez de clicar em menus, vamos conversar com agentes.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border border-rose-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-rose-400 mb-4 flex items-center">
+          <span class="mr-2">&#127919;</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Tendencias que estao moldando o futuro da automacao desktop:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Agentes autonomos:</strong> Em 2026+, agentes vao completar tarefas inteiras sem supervisao - "Prepare o deploy de sexta" e voce so valida no final</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Multi-agente:</strong> Claude Code e Cowork trabalhando juntos - o Code comita, o Cowork atualiza a documentacao e notifica o time</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Contexto persistente:</strong> Agentes que lembram suas preferencias, padroes e decisoes anteriores entre sessoes</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Integracao nativa com OS:</strong> Desktop agents integrados diretamente no sistema operacional, com acesso a todas as aplicacoes</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Skills marketplace:</strong> Comunidade criando e compartilhando skills especializadas para diferentes industrias e workflows</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">&#128161;</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          A melhor forma de se preparar para o futuro e <strong class="text-white">dominar os fundamentos agora</strong>. Quem entende profundamente como Skills, MCPs e pipelines funcionam no Claude Code de 2026 vai se adaptar naturalmente as evolucoes futuras. A base e a mesma: prompts claros, contexto gerenciado e automacao intencional.
+        </p>
+        <p class="text-neutral-300">
+          Invista tempo em criar skills reutilizaveis e documentar seus workflows. Essas habilidades sao transferiveis para qualquer agente futuro - o Claude de 2027, 2028 e alem.
+        </p>
+      </div>
+    </section>
+
+    <!-- EXERCICIO -->
+    <section id="exercicio" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">&#9997;</span>
+        <h2 class="text-2xl font-bold">Exercicio Pratico</h2>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Explorar Cowork: scheduling, connectors e skills</h3>
+        <p class="text-neutral-300 mb-4">
+          Neste exercicio, voce vai explorar as funcionalidades do Claude Cowork e planejar como integra-lo ao seu workflow de desenvolvimento.
+        </p>
+
+        <div class="space-y-4 mb-6">
+          <div class="bg-dark-900 rounded-lg p-4">
+            <h4 class="text-rose-400 font-semibold mb-2">Passo 1: Testar skills de documentos</h4>
+            <p class="text-neutral-400 text-sm mb-2">Use as skills nativas para gerar documentacao do seu projeto:</p>
+            <div class="bg-dark-700 rounded-lg p-3 font-mono text-sm">
+              <span class="text-neutral-500">$</span> <span class="text-rose-400">claude</span><br>
+              <span class="text-neutral-500">&gt;</span> <span class="text-neutral-300">/pdf Gere um relatorio tecnico do estado atual deste projeto, incluindo arquitetura, dependencias e proximos passos</span>
+            </div>
+          </div>
+
+          <div class="bg-dark-900 rounded-lg p-4">
+            <h4 class="text-rose-400 font-semibold mb-2">Passo 2: Planejar tarefas agendadas</h4>
+            <p class="text-neutral-400 text-sm mb-2">Liste 3 tarefas que voce faz manualmente e que poderiam ser agendadas:</p>
+            <div class="bg-dark-700 rounded-lg p-3 font-mono text-sm">
+              <span class="text-neutral-500">$</span> <span class="text-rose-400">claude</span><br>
+              <span class="text-neutral-500">&gt;</span> <span class="text-neutral-300">Analise meu workflow e sugira 3 tarefas repetitivas que poderiam ser agendadas no Cowork com scheduling</span>
+            </div>
+          </div>
+
+          <div class="bg-dark-900 rounded-lg p-4">
+            <h4 class="text-rose-400 font-semibold mb-2">Passo 3: Mapear connectors uteis</h4>
+            <p class="text-neutral-400 text-sm mb-2">Identifique quais servicos do seu dia a dia se beneficiariam de connectors:</p>
+            <div class="bg-dark-700 rounded-lg p-3 font-mono text-sm">
+              <span class="text-neutral-500">$</span> <span class="text-rose-400">claude</span><br>
+              <span class="text-neutral-500">&gt;</span> <span class="text-neutral-300">Quais servicos eu uso (baseado nos configs deste projeto) que tem connectors no Cowork? Liste e explique o beneficio de cada um</span>
+            </div>
+          </div>
+        </div>
+
+        <h4 class="text-white font-semibold mb-3">Checklist de Conclusao:</h4>
+        <div class="space-y-2">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-rose-400">&#9744;</span>
+            <span class="text-neutral-300">Testou pelo menos uma skill de documento (/pdf, /docx, etc.)</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-rose-400">&#9744;</span>
+            <span class="text-neutral-300">Identificou 3 tarefas que poderiam ser agendadas</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-rose-400">&#9744;</span>
+            <span class="text-neutral-300">Mapeou connectors relevantes para seu workflow</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-rose-400">&#9744;</span>
+            <span class="text-neutral-300">Entendeu as 3 opcoes de sincronizacao Code/Cowork</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-rose-900/40 via-dark-800 to-dark-800 rounded-xl border border-rose-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">&#128203;</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">Cowork e o desktop agent da Anthropic</strong>
+              <span class="text-neutral-400"> - Expande o Claude para alem do terminal, operando na area de trabalho inteira.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">Skills nativas para documentos</strong>
+              <span class="text-neutral-400"> - /pdf, /docx, /pptx, /xlsx e /visuals criam documentos profissionais instantaneamente.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">Scheduling inteligente</strong>
+              <span class="text-neutral-400"> - Agende tarefas complexas com linguagem natural. Mais poderoso que cron jobs.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">Connectors vs MCPs</strong>
+              <span class="text-neutral-400"> - Connectors sao integracoes nativas gerenciadas. MCPs sao servidores locais customizaveis.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">O futuro e multi-agente</strong>
+              <span class="text-neutral-400"> - Code + Cowork trabalhando juntos, com contexto persistente e automacao completa.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-rose-400 mb-2">Parabens!</h3>
+          <p class="text-neutral-300">Voce completou a Trilha 6 - MCPs e Ferramentas Externas! Volte para a pagina principal para revisar todo o conteudo.</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-6-7.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors justify-start">
+            &#8592; Modulo Anterior
+          </a>
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha
+          </a>
+          <a href="../../index.html" class="flex-1 text-center px-6 py-3 bg-rose-600/40 text-rose-100 rounded-lg font-semibold hover:bg-rose-600/60 transition-colors">
+            Pagina Inicial &#8594;
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>6 Pilares do Claude Code Full - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 6.6 - Estrategia de Rotacao Ativa | 6 Pilares CC Full</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">&#129504;</span>
+            <span class="font-bold text-lg hidden sm:inline">6 Pilares CC Full</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Atalhos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">CLAUDE.md</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Workflows</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Prompts</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Skills</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-rose-400 bg-rose-500/10">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">MCPs</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-rose-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-rose-400">Trilha 6</a>
+      <span>/</span>
+      <span class="text-rose-400">Modulo 6.6</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-rose-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-rose-500/20 text-rose-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 6.6
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">&#128260; Estrategia de Rotacao Ativa</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Aprenda a rotacionar MCPs de forma intencional por tipo de tarefa, automatizar a troca com scripts e monitorar custos para manter o contexto sempre otimizado.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-rose-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-rose-400">30</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-rose-400">Avancado</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-rose-400">Teoria + Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">&#9888;&#65039; Por que nao rodar todos os MCPs (Token Waste)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Um dos erros mais comuns de quem comeca com MCPs e instalar todos de uma vez e deixar tudo ativo permanentemente. Parece logico - "quanto mais ferramentas, melhor, certo?". Errado. <strong class="text-rose-400">Cada MCP ativo consome tokens mesmo quando nao esta sendo usado</strong>, e esse desperdicio silencioso degrada a qualidade de tudo que o Claude faz.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border border-rose-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-rose-400 mb-4 flex items-center">
+          <span class="mr-2">&#127919;</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O <strong class="text-white">Token Waste</strong> acontece quando MCPs estao ativos sem necessidade. Cada MCP registra suas ferramentas no contexto do Claude no inicio de cada mensagem. Com 10 MCPs ativos, voce pode estar desperdicando 30%+ do contexto com descricoes de ferramentas que nao vai usar naquela tarefa.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Custo por mensagem:</strong> O overhead nao e unico - ele se repete em CADA mensagem da conversa, multiplicando o desperdicio</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Confusao de ferramentas:</strong> Com muitos MCPs, o Claude pode escolher a ferramenta errada ou ficar "confuso" sobre qual usar</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Latencia aumentada:</strong> Mais MCPs = mais processos rodando = respostas mais lentas e maior consumo de memoria</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Custo financeiro:</strong> Tokens desperdicados sao dinheiro jogado fora - cada mensagem custa mais sem nenhum beneficio</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">&#128161;</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Faca o teste: abra uma sessao com todos os MCPs e rode <code class="bg-dark-700 px-2 py-1 rounded text-rose-400">/cost</code> logo na primeira mensagem. Depois, abra outra sessao com apenas 2 MCPs e compare. A diferenca vai ser chocante - voce vai ver tokens sendo consumidos antes mesmo de pedir qualquer coisa.
+        </p>
+        <p class="text-neutral-300">
+          Regra de ouro: <strong class="text-white">se voce nao vai usar um MCP nos proximos 10 minutos, desconecte-o</strong>. Reconectar leva 2 segundos. Desperdicar contexto custa dinheiro e qualidade.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">&#128203; Tabela de Rotacao por Tarefa</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A solucao para o Token Waste e a <strong class="text-rose-400">rotacao intencional por tipo de tarefa</strong>. Cada atividade que voce faz no dia a dia tem um conjunto ideal de MCPs. Usar a combinacao certa maximiza o poder do Claude enquanto minimiza o custo de contexto.
+      </p>
+
+      <!-- Tabela de Rotacao -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6 overflow-x-auto">
+        <h3 class="text-lg font-semibold text-white mb-4">Rotacao Recomendada por Tipo de Tarefa</h3>
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-dark-600">
+              <th class="text-left py-3 pr-4 text-neutral-400 font-medium">Tarefa</th>
+              <th class="text-left py-3 px-4 text-neutral-400 font-medium">MCPs Ativos</th>
+              <th class="text-left py-3 pl-4 text-neutral-400 font-medium">Overhead</th>
+            </tr>
+          </thead>
+          <tbody class="text-neutral-300">
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-medium text-white">Building (codigo)</td>
+              <td class="py-3 px-4 text-rose-400">Filesystem + GitHub</td>
+              <td class="py-3 pl-4 text-emerald-400">~8%</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-medium text-white">UI/Frontend</td>
+              <td class="py-3 px-4 text-rose-400">Filesystem + Browser</td>
+              <td class="py-3 pl-4 text-emerald-400">~10%</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-medium text-white">DevOps/Deploy</td>
+              <td class="py-3 px-4 text-rose-400">GitHub + Docker</td>
+              <td class="py-3 pl-4 text-yellow-400">~12%</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-medium text-white">Pesquisa/Docs</td>
+              <td class="py-3 px-4 text-rose-400">Browser + Notion</td>
+              <td class="py-3 pl-4 text-yellow-400">~12%</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-medium text-white">Database</td>
+              <td class="py-3 px-4 text-rose-400">Filesystem + PostgreSQL</td>
+              <td class="py-3 pl-4 text-emerald-400">~9%</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 font-medium text-white">Code Review</td>
+              <td class="py-3 px-4 text-rose-400">GitHub + Linear</td>
+              <td class="py-3 pl-4 text-emerald-400">~10%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border border-rose-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-rose-400 mb-4 flex items-center">
+          <span class="mr-2">&#127919;</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          A chave e <strong class="text-white">pensar em "kits" de MCPs por atividade</strong>. Assim como um mecanico troca de caixa de ferramentas dependendo do servico, voce troca o kit de MCPs dependendo da tarefa. Maximo recomendado: 2-3 MCPs por kit.
+        </p>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">&#128161;</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Crie um arquivo <code class="bg-dark-700 px-2 py-1 rounded text-rose-400">mcp-kits.md</code> na raiz do seu projeto documentando seus kits. Quando comecar uma nova sessao, consulte o arquivo e ative apenas o kit relevante. Depois de uma semana, voce vai fazer isso automaticamente.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">&#9881;&#65039; Setup Minimo por Contexto</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Nem toda sessao precisa de MCPs. Na verdade, <strong class="text-rose-400">a maioria das tarefas do dia a dia pode ser feita com zero MCPs</strong>. O Claude Code ja vem com ferramentas nativas poderosas (Read, Write, Edit, Bash, Grep, Glob) que cobrem 80% dos casos de uso. MCPs sao para os outros 20%.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border border-rose-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-rose-400 mb-4 flex items-center">
+          <span class="mr-2">&#127919;</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O <strong class="text-white">setup minimo por contexto</strong> significa usar o menor numero possivel de MCPs para cada tipo de trabalho. Antes de ativar qualquer MCP, pergunte: "O Claude consegue fazer isso com as ferramentas nativas?"
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Nivel 0 (Zero MCPs):</strong> Codificar, editar arquivos, rodar testes, buscar no codigo. Ferramentas nativas dao conta</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Nivel 1 (1 MCP):</strong> Precisa de GitHub para PRs? Adicione so GitHub. Precisa de browser? So browser</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Nivel 2 (2-3 MCPs):</strong> Tarefas complexas que envolvem multiplas ferramentas externas simultaneamente</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Nivel 3 (4+ MCPs):</strong> Rarissimo. So em pipelines automatizados ou sessoes muito especificas</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">&#128161;</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Comece toda sessao com <strong class="text-white">zero MCPs</strong>. So adicione quando sentir a necessidade real. Voce vai descobrir que 70% das vezes nao precisa de nenhum. Quando precisar, use <code class="bg-dark-700 px-2 py-1 rounded text-rose-400">claude mcp add</code> sob demanda e remova com <code class="bg-dark-700 px-2 py-1 rounded text-rose-400">claude mcp remove</code> quando terminar.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">&#128295; Automatizando Rotacao (Scripts Enable/Disable)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Trocar MCPs manualmente funciona, mas e tedioso. A solucao profissional e <strong class="text-rose-400">criar scripts de rotacao que ativam e desativam kits inteiros com um unico comando</strong>. Voce define os kits uma vez e depois so chama o script.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border border-rose-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-rose-400 mb-4 flex items-center">
+          <span class="mr-2">&#127919;</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Scripts de rotacao sao <strong class="text-white">shell scripts simples</strong> que removem todos os MCPs ativos e adicionam apenas os do kit desejado. A estrutura basica:
+        </p>
+        <div class="bg-dark-700 rounded-lg p-4 font-mono text-sm mb-4">
+          <span class="text-neutral-500">#!/bin/bash</span><br>
+          <span class="text-neutral-500"># mcp-kit-building.sh</span><br><br>
+          <span class="text-neutral-500"># Remove todos os MCPs ativos</span><br>
+          <span class="text-rose-400">claude mcp remove</span> <span class="text-neutral-300">--all 2>/dev/null</span><br><br>
+          <span class="text-neutral-500"># Adiciona kit Building</span><br>
+          <span class="text-rose-400">claude mcp add</span> <span class="text-neutral-300">filesystem -- npx @anthropic-ai/mcp-filesystem .</span><br>
+          <span class="text-rose-400">claude mcp add</span> <span class="text-neutral-300">github -- npx @anthropic-ai/mcp-github</span><br><br>
+          <span class="text-emerald-400">echo</span> <span class="text-neutral-300">"Kit Building ativo: Filesystem + GitHub"</span>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Um script por kit:</strong> <code class="bg-dark-700 px-2 py-1 rounded text-rose-400">mcp-kit-building.sh</code>, <code class="bg-dark-700 px-2 py-1 rounded text-rose-400">mcp-kit-ui.sh</code>, <code class="bg-dark-700 px-2 py-1 rounded text-rose-400">mcp-kit-devops.sh</code></span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Alias no .bashrc:</strong> <code class="bg-dark-700 px-2 py-1 rounded text-rose-400">alias mcp-build="bash ~/scripts/mcp-kit-building.sh"</code></span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Script reset:</strong> Crie um <code class="bg-dark-700 px-2 py-1 rounded text-rose-400">mcp-reset.sh</code> que remove todos os MCPs de uma vez</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">&#128161;</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Guarde seus scripts de rotacao em <code class="bg-dark-700 px-2 py-1 rounded text-rose-400">~/.claude/scripts/</code> e adicione aliases no <code class="bg-dark-700 px-2 py-1 rounded text-rose-400">.bashrc</code>. Assim, antes de cada sessao, basta digitar <code class="bg-dark-700 px-2 py-1 rounded text-rose-400">mcp-build</code> ou <code class="bg-dark-700 px-2 py-1 rounded text-rose-400">mcp-ui</code> e o kit correto sera ativado em segundos. Automatizacao elimina a preguica de rotacionar.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">&#128176; Monitorando Custo com /cost</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Voce nao pode otimizar o que nao mede. O comando <code class="bg-dark-700 px-2 py-1 rounded text-rose-400">/cost</code> e sua ferramenta principal para <strong class="text-rose-400">monitorar o consumo real de tokens em cada sessao</strong> e tomar decisoes baseadas em dados sobre quais MCPs manter.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border border-rose-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-rose-400 mb-4 flex items-center">
+          <span class="mr-2">&#127919;</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O <strong class="text-white">/cost</strong> mostra o consumo acumulado de tokens na sessao atual. Usando-o estrategicamente, voce consegue:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Medir baseline:</strong> Rode /cost logo no inicio da sessao para saber o custo fixo dos MCPs ativos</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Comparar kits:</strong> Abra sessoes com kits diferentes e compare o custo base de cada um</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Detectar anomalias:</strong> Se o custo subir muito rapido, algum MCP pode estar consumindo mais do que deveria</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">Historico pessoal:</strong> Anote os custos de cada tipo de sessao para criar sua propria tabela de referencia</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">&#128161;</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Crie o habito de rodar <code class="bg-dark-700 px-2 py-1 rounded text-rose-400">/cost</code> no inicio e no final de cada sessao. Anote os valores num arquivo ou planilha. Em uma semana, voce tera dados concretos para decidir quais MCPs valem o custo e quais estao so desperdicando contexto. Dados > intuicao.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">&#128221; Criando sua Tabela Pessoal</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A tabela generica que mostramos no topico 2 e um ponto de partida, mas <strong class="text-rose-400">cada desenvolvedor tem um workflow unico</strong>. O objetivo final e voce criar sua propria tabela de rotacao personalizada, baseada nas suas tarefas reais e nos custos que voce mediu.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border border-rose-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-rose-400 mb-4 flex items-center">
+          <span class="mr-2">&#127919;</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Para construir sua tabela pessoal, siga estes passos:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">1. Liste suas tarefas:</strong> Anote tudo que voce faz num dia normal de trabalho (codar, review, deploy, docs, etc.)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">2. Mapeie os MCPs necessarios:</strong> Para cada tarefa, identifique quais MCPs realmente precisa</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">3. Meca o custo:</strong> Use /cost para medir o overhead real de cada combinacao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">4. Crie os scripts:</strong> Automatize cada kit com um script de rotacao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&bull;</span>
+            <span><strong class="text-white">5. Itere semanalmente:</strong> Revise a tabela toda semana. Remova MCPs que nao usa, adicione novos que descobriu</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">&#128161;</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Use o proprio Claude para criar sua tabela. Abra uma sessao e diga: <strong class="text-white">"Analise meu workflow dos ultimos 5 commits e sugira quais MCPs eu deveria ter ativo para cada tipo de tarefa."</strong> O Claude vai analisar seu historico e gerar uma tabela personalizada.
+        </p>
+        <p class="text-neutral-300">
+          Guarde a tabela no seu <code class="bg-dark-700 px-2 py-1 rounded text-rose-400">CLAUDE.md</code> como referencia permanente. Assim, mesmo em sessoes futuras, voce e o Claude terao acesso rapido a estrategia de rotacao.
+        </p>
+      </div>
+    </section>
+
+    <!-- EXERCICIO -->
+    <section id="exercicio" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">&#9997;</span>
+        <h2 class="text-2xl font-bold">Exercicio Pratico</h2>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Criar tabela pessoal de rotacao por tipo de tarefa</h3>
+        <p class="text-neutral-300 mb-4">
+          Neste exercicio, voce vai construir sua propria tabela de rotacao baseada no seu workflow real. O objetivo e sair daqui com um documento pronto para usar no dia a dia.
+        </p>
+
+        <div class="space-y-4 mb-6">
+          <div class="bg-dark-900 rounded-lg p-4">
+            <h4 class="text-rose-400 font-semibold mb-2">Passo 1: Listar suas tarefas diarias</h4>
+            <p class="text-neutral-400 text-sm mb-2">Abra uma sessao do Claude e liste suas atividades:</p>
+            <div class="bg-dark-700 rounded-lg p-3 font-mono text-sm">
+              <span class="text-neutral-500">$</span> <span class="text-rose-400">claude</span><br>
+              <span class="text-neutral-500">&gt;</span> <span class="text-neutral-300">Liste minhas tarefas tipicas baseado nos commits recentes e sugira kits de MCPs para cada uma</span>
+            </div>
+          </div>
+
+          <div class="bg-dark-900 rounded-lg p-4">
+            <h4 class="text-rose-400 font-semibold mb-2">Passo 2: Medir custo de cada kit</h4>
+            <p class="text-neutral-400 text-sm mb-2">Para cada kit sugerido, meca o overhead:</p>
+            <div class="bg-dark-700 rounded-lg p-3 font-mono text-sm">
+              <span class="text-neutral-500">$</span> <span class="text-rose-400">claude mcp remove</span> <span class="text-neutral-300">--all</span><br>
+              <span class="text-neutral-500">$</span> <span class="text-rose-400">claude mcp add</span> <span class="text-neutral-300">filesystem -- npx @anthropic-ai/mcp-filesystem .</span><br>
+              <span class="text-neutral-500">$</span> <span class="text-rose-400">claude mcp add</span> <span class="text-neutral-300">github -- npx @anthropic-ai/mcp-github</span><br>
+              <span class="text-neutral-500">$</span> <span class="text-rose-400">claude</span><br>
+              <span class="text-neutral-500">&gt;</span> <span class="text-neutral-300">/cost</span>
+            </div>
+            <p class="text-neutral-500 text-xs mt-2">Repita para cada kit e anote os valores.</p>
+          </div>
+
+          <div class="bg-dark-900 rounded-lg p-4">
+            <h4 class="text-rose-400 font-semibold mb-2">Passo 3: Criar scripts de rotacao</h4>
+            <p class="text-neutral-400 text-sm mb-2">Crie um script para cada kit e adicione aliases:</p>
+            <div class="bg-dark-700 rounded-lg p-3 font-mono text-sm">
+              <span class="text-neutral-500">$</span> <span class="text-rose-400">mkdir -p</span> <span class="text-neutral-300">~/.claude/scripts</span><br>
+              <span class="text-neutral-500">$</span> <span class="text-rose-400">claude</span> <span class="text-neutral-300">"Crie scripts de rotacao MCP em ~/.claude/scripts/ para cada kit da minha tabela"</span>
+            </div>
+          </div>
+        </div>
+
+        <h4 class="text-white font-semibold mb-3">Checklist de Conclusao:</h4>
+        <div class="space-y-2">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-rose-400">&#9744;</span>
+            <span class="text-neutral-300">Listou pelo menos 4 tipos de tarefas do seu dia a dia</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-rose-400">&#9744;</span>
+            <span class="text-neutral-300">Mapeou os MCPs ideais para cada tarefa</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-rose-400">&#9744;</span>
+            <span class="text-neutral-300">Mediu o custo de pelo menos 2 kits com /cost</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-rose-400">&#9744;</span>
+            <span class="text-neutral-300">Criou scripts de rotacao automatizados</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-rose-900/40 via-dark-800 to-dark-800 rounded-xl border border-rose-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">&#128203;</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">Token Waste e real e cumulativo</strong>
+              <span class="text-neutral-400"> - MCPs ociosos consomem contexto em cada mensagem, multiplicando o desperdicio.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">Tabela de rotacao por tarefa</strong>
+              <span class="text-neutral-400"> - Building=FS+GH, UI=FS+Browser, DevOps=GH+Docker. Maximo 2-3 por kit.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">Setup minimo: comece com zero</strong>
+              <span class="text-neutral-400"> - 80% das tarefas nao precisam de MCPs. Adicione sob demanda.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">Scripts automatizam a rotacao</strong>
+              <span class="text-neutral-400"> - Um script por kit + aliases no .bashrc = troca em segundos.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">Monitore com /cost e crie sua tabela pessoal</strong>
+              <span class="text-neutral-400"> - Dados concretos permitem decisoes inteligentes sobre quais MCPs manter.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-rose-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">6.7 - Pipelines CI/CD com Claude Headless</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-6-5.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors justify-start">
+            &#8592; Modulo Anterior
+          </a>
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha
+          </a>
+          <a href="modulo-6-7.html" class="flex-1 text-center px-6 py-3 bg-rose-600/40 text-rose-100 rounded-lg font-semibold hover:bg-rose-600/60 transition-colors">
+            Proximo Modulo &#8594;
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>6 Pilares do Claude Code Full - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
