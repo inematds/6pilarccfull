@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 5.8 - Subagentes e /simplify /batch (2026) | 6 Pilares CC Full</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span>
+            <span class="font-bold text-lg hidden sm:inline">6 Pilares CC Full</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Atalhos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">CLAUDE.md</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Workflows</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Prompts</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-teal-400 bg-teal-500/10">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Skills</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">MCPs</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-teal-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-teal-400">Trilha 5</a>
+      <span>/</span>
+      <span class="text-teal-400">Modulo 5.8</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 5.8
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🤖 Subagentes e /simplify /batch (2026)</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Domine o sistema de subagentes do Claude Code para delegar tarefas complexas, simplificar codigo automaticamente e processar operacoes em lote com eficiencia maxima.
+      </p>
+
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">30</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">Avancado</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">Teoria + Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🧩 O que sao Subagentes</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Subagentes sao <strong class="text-teal-400">processos filhos autonomos</strong> que o Claude Code pode lancar para executar tarefas em paralelo. Em vez de fazer tudo sequencialmente no mesmo contexto, o agente principal delega partes do trabalho para subagentes especializados, cada um com seu proprio contexto e ferramentas.
+      </p>
+
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Pense em subagentes como <strong class="text-white">membros de uma equipe</strong>. O agente principal e o lider que distribui tarefas. Cada subagente recebe uma missao especifica, executa de forma independente e retorna o resultado. Isso permite paralelismo real e protecao do contexto principal.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Contexto isolado:</strong> Cada subagente tem seu proprio contexto, o que significa que pesquisas pesadas nao poluem a janela principal</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Paralelismo:</strong> Multiplos subagentes podem rodar simultaneamente, acelerando tarefas complexas</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Especializacao:</strong> Cada tipo de subagente tem ferramentas e capacidades otimizadas para seu proposito</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Resultado consolidado:</strong> O agente principal recebe os resultados e toma decisoes informadas</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Voce ja usa subagentes sem perceber. Quando o Claude Code faz uma pesquisa profunda no codebase, ele internamente lanca um subagente Explore. Quando planeja uma implementacao complexa, usa um subagente Plan. Entender esse mecanismo permite que voce tire proveito maximo da ferramenta.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">🔧 Tipos de Subagentes</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O Claude Code oferece diferentes tipos de subagentes, cada um otimizado para um tipo especifico de tarefa. Escolher o tipo certo e fundamental para <strong class="text-teal-400">eficiencia e qualidade do resultado</strong>.
+      </p>
+
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Cada tipo de subagente tem acesso a ferramentas diferentes e e otimizado para um proposito:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Explore:</strong> Rapido para navegacao de codebase. Usa Glob, Grep, Read. Ideal para encontrar arquivos, buscar padroes, responder perguntas sobre o codigo. Nao pode editar</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Plan:</strong> Arquiteto de software. Analisa o codebase e cria planos de implementacao. Identifica arquivos criticos, considera tradeoffs. Nao pode editar</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">General-purpose:</strong> Agente completo com todas as ferramentas. Pode ler, escrever, executar comandos. Usado para tarefas complexas e multi-step</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6 overflow-x-auto">
+        <h3 class="text-lg font-semibold text-white mb-4">Comparacao de Subagentes</h3>
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-dark-600">
+              <th class="text-left py-3 pr-4 text-neutral-400 font-medium">Tipo</th>
+              <th class="text-left py-3 px-4 text-neutral-400 font-medium">Velocidade</th>
+              <th class="text-left py-3 px-4 text-neutral-400 font-medium">Pode editar</th>
+              <th class="text-left py-3 pl-4 text-neutral-400 font-medium">Melhor para</th>
+            </tr>
+          </thead>
+          <tbody class="text-neutral-300">
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-medium text-white">Explore</td>
+              <td class="py-3 px-4 text-teal-300">Rapido</td>
+              <td class="py-3 px-4">Nao</td>
+              <td class="py-3 pl-4">Busca, navegacao, pesquisa</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4 font-medium text-white">Plan</td>
+              <td class="py-3 px-4">Moderado</td>
+              <td class="py-3 px-4">Nao</td>
+              <td class="py-3 pl-4">Arquitetura, planejamento</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 font-medium text-white">General-purpose</td>
+              <td class="py-3 px-4">Variavel</td>
+              <td class="py-3 px-4 text-teal-300">Sim</td>
+              <td class="py-3 pl-4">Tarefas complexas, multi-step</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Use <strong class="text-white">Explore</strong> para perguntas rapidas sobre o codigo ("onde esta a funcao X?"). Use <strong class="text-white">Plan</strong> quando precisa de uma estrategia antes de implementar. Use <strong class="text-white">General-purpose</strong> apenas quando a tarefa exige edicao ou execucao de comandos no subagente.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">✨ /simplify - Revisao e Simplificacao Automatica</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O comando <code class="bg-dark-700 px-2 py-1 rounded text-teal-400">/simplify</code> e uma das adicoes mais poderosas de 2026. Ele analisa o codigo que voce acabou de escrever ou modificar e <strong class="text-teal-400">busca oportunidades de simplificacao</strong>: reuso, qualidade e eficiencia.
+      </p>
+
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O /simplify funciona em tres etapas automaticas:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Analise de reuso:</strong> Identifica codigo duplicado ou padroes que poderiam ser extraidos em funcoes/componentes reutilizaveis</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Verificacao de qualidade:</strong> Busca anti-patterns, complexidade desnecessaria, imports nao usados, variaveis mortas</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Otimizacao de eficiencia:</strong> Sugere alternativas mais performaticas ou idiomaticas para a linguagem</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-dark-700 rounded-xl p-6 mb-6">
+        <h3 class="text-sm font-semibold text-neutral-400 mb-3">EXEMPLO DE USO</h3>
+        <pre class="text-sm text-neutral-300 overflow-x-auto"><code><span class="text-neutral-500"># Apos escrever ou modificar codigo, rode:</span>
+<span class="text-teal-400">/simplify</span>
+
+<span class="text-neutral-500"># Claude vai:</span>
+<span class="text-neutral-500"># 1. Analisar todas as mudancas recentes</span>
+<span class="text-neutral-500"># 2. Identificar oportunidades de melhoria</span>
+<span class="text-neutral-500"># 3. Aplicar simplificacoes com sua aprovacao</span>
+
+<span class="text-neutral-500"># Para simplificar arquivo especifico:</span>
+<span class="text-teal-400">Simplify the code in src/utils/helpers.ts</span></code></pre>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Use <code class="bg-dark-700 px-2 py-1 rounded text-teal-400">/simplify</code> como ultimo passo antes de commitar. E como ter um colega senior fazendo uma revisao rapida do seu codigo. A regra de ouro: se tres linhas similares aparecem no codigo, provavelmente podem ser uma funcao. O /simplify encontra isso automaticamente.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">📦 /batch - Processamento em Lote</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O <code class="bg-dark-700 px-2 py-1 rounded text-teal-400">/batch</code> permite executar a mesma operacao em multiplos alvos de uma vez. Imagine precisar adicionar tratamento de erro em 20 endpoints, ou atualizar imports em 50 arquivos. Em vez de fazer um por um, o /batch <strong class="text-teal-400">paraleliza e automatiza</strong>.
+      </p>
+
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O /batch funciona como um <strong class="text-white">map() sobre arquivos ou tarefas</strong>. Voce define a operacao e os alvos, e o Claude executa em paralelo usando subagentes:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Alvos por glob:</strong> "aplique X em todos os *.test.ts" - seleciona arquivos por padrao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Alvos por lista:</strong> "aplique X nestes 5 arquivos: [lista]" - selecao manual</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Execucao paralela:</strong> Cada arquivo e processado por um subagente independente</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Relatorio consolidado:</strong> Ao final, voce recebe um resumo de todas as mudancas</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-dark-700 rounded-xl p-6 mb-6">
+        <h3 class="text-sm font-semibold text-neutral-400 mb-3">EXEMPLOS DE USO</h3>
+        <pre class="text-sm text-neutral-300 overflow-x-auto"><code><span class="text-neutral-500"># Adicionar error handling em todos os endpoints</span>
+<span class="text-teal-400">Add try/catch error handling to all route handlers in src/routes/*.ts</span>
+
+<span class="text-neutral-500"># Migrar imports de CommonJS para ESM</span>
+<span class="text-teal-400">Convert all require() to import statements in src/**/*.js</span>
+
+<span class="text-neutral-500"># Adicionar JSDoc a todas as funcoes exportadas</span>
+<span class="text-teal-400">Add JSDoc comments to all exported functions in src/utils/</span></code></pre>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Antes de usar /batch em todo o projeto, <strong class="text-white">teste em 2-3 arquivos primeiro</strong>. Verifique se o resultado esta correto, depois aplique em lote. Isso evita ter que reverter dezenas de mudancas incorretas. Sempre faca um <code class="bg-dark-700 px-2 py-1 rounded text-teal-400">git stash</code> ou commit antes de operacoes em lote.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🌳 Paralelismo e Worktrees</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Uma das inovacoes mais importantes para subagentes e o conceito de <strong class="text-teal-400">git worktrees isolados</strong>. Quando um subagente precisa fazer mudancas no codigo, ele pode trabalhar numa copia isolada do repositorio, evitando conflitos com o trabalho principal.
+      </p>
+
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Worktrees resolvem um problema classico: <strong class="text-white">como ter multiplos agentes editando o mesmo repositorio sem conflitos</strong>. Cada worktree e uma copia de trabalho independente:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Isolamento total:</strong> Cada subagente trabalha em sua propria branch e diretorio temporario</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Sem conflitos:</strong> Mudancas nao interferem entre si ate o momento de merge</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Cleanup automatico:</strong> Se o subagente nao fez mudancas, o worktree e removido automaticamente</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Merge controlado:</strong> Voce decide quais mudancas de quais subagentes incorporar ao branch principal</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Worktrees sao especialmente uteis quando voce quer <strong class="text-white">testar duas abordagens diferentes</strong> para resolver o mesmo problema. Lance dois subagentes com isolation: "worktree", cada um implementando uma solucao diferente. Compare os resultados e faca merge da melhor abordagem.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🎯 Quando Delegar para Subagentes</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Subagentes sao poderosos, mas <strong class="text-teal-400">nem toda tarefa precisa de delegacao</strong>. Usar subagentes desnecessariamente adiciona overhead de contexto e pode tornar as coisas mais lentas. O segredo e saber quando delegar e quando fazer diretamente.
+      </p>
+
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Framework de decisao para subagentes:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">DELEGAR quando:</strong> A tarefa exige pesquisa profunda que poluiria o contexto, ou quando multiplas tarefas independentes podem rodar em paralelo</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">DELEGAR quando:</strong> Voce precisa de isolamento (worktree) para testar mudancas sem afetar o branch atual</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">NAO delegar quando:</strong> A tarefa e simples e direta (editar um arquivo, rodar um comando)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">NAO delegar quando:</strong> O resultado do subagente depende do contexto da conversa atual</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-teal-900/20 rounded-xl border border-teal-500/30 p-6">
+          <h4 class="font-bold text-teal-400 mb-4">✓ Bons casos para subagentes</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">✓</span>
+              <span>Pesquisa ampla no codebase (Explore)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">✓</span>
+              <span>Planejamento de implementacao (Plan)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">✓</span>
+              <span>Operacoes em lote (/batch)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">✓</span>
+              <span>Testes de abordagens alternativas (worktree)</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ Maus casos para subagentes</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Editar um unico arquivo</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Rodar um comando simples</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Tarefas que dependem do historico da conversa</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Busca simples por nome de arquivo (use Glob)</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Regra simples: se a tarefa leva <strong class="text-white">menos de 30 segundos</strong> no agente principal, faca direto. Se leva mais, considere delegar. Se sao <strong class="text-white">multiplas tarefas independentes</strong>, sempre delegue em paralelo. O ganho de tempo compensa o overhead de lancamento do subagente.
+        </p>
+      </div>
+    </section>
+
+    <!-- EXERCICIO PRATICO -->
+    <section id="exercicio" class="mb-16">
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-4 flex items-center">
+          <span class="mr-3">🏋️</span> Exercicio Pratico
+        </h2>
+        <p class="text-neutral-300 mb-6">
+          Use /simplify num projeto real e analise os resultados. Este exercicio vai consolidar seu entendimento de subagentes e comandos de simplificacao.
+        </p>
+
+        <div class="space-y-4">
+          <div class="flex items-start space-x-3">
+            <span class="flex items-center justify-center w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xs mt-0.5">1</span>
+            <div>
+              <p class="text-white font-medium">Preparar o ambiente</p>
+              <p class="text-neutral-400 text-sm">Navegue ate um projeto seu com pelo menos 5 arquivos de codigo. Faca um commit limpo antes de comecar.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex items-center justify-center w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xs mt-0.5">2</span>
+            <div>
+              <p class="text-white font-medium">Rodar /simplify</p>
+              <p class="text-neutral-400 text-sm">Execute o comando /simplify e observe quais sugestoes o Claude faz. Anote quantas oportunidades de reuso, qualidade e eficiencia ele encontra.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex items-center justify-center w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xs mt-0.5">3</span>
+            <div>
+              <p class="text-white font-medium">Analisar as sugestoes</p>
+              <p class="text-neutral-400 text-sm">Para cada sugestao, avalie: e uma melhoria real? Mantem o comportamento? Simplifica de verdade? Aceite as boas, rejeite as desnecessarias.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex items-center justify-center w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xs mt-0.5">4</span>
+            <div>
+              <p class="text-white font-medium">Testar uma operacao em lote</p>
+              <p class="text-neutral-400 text-sm">Identifique uma mudanca repetitiva (ex: adicionar um import em varios arquivos) e peca ao Claude para aplicar em lote.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex items-center justify-center w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xs mt-0.5">5</span>
+            <div>
+              <p class="text-white font-medium">Verificar e commitar</p>
+              <p class="text-neutral-400 text-sm">Rode os testes, verifique que nada quebrou, e faca o commit das melhorias.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 p-4 bg-dark-800 rounded-lg border border-dark-600">
+          <h3 class="text-sm font-semibold text-neutral-400 mb-2">CHECKLIST DE CONCLUSAO</h3>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li class="flex items-center space-x-2">
+              <span class="text-teal-400">☐</span>
+              <span>Rodou /simplify em pelo menos 1 projeto</span>
+            </li>
+            <li class="flex items-center space-x-2">
+              <span class="text-teal-400">☐</span>
+              <span>Analisou e aceitou/rejeitou sugestoes criticamente</span>
+            </li>
+            <li class="flex items-center space-x-2">
+              <span class="text-teal-400">☐</span>
+              <span>Executou uma operacao em lote com sucesso</span>
+            </li>
+            <li class="flex items-center space-x-2">
+              <span class="text-teal-400">☐</span>
+              <span>Testes passando apos as mudancas</span>
+            </li>
+            <li class="flex items-center space-x-2">
+              <span class="text-teal-400">☐</span>
+              <span>Commit limpo com as melhorias</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER NAV -->
+  <footer class="border-t border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="flex justify-start items-center space-x-4">
+        <a href="modulo-5-7.html" class="flex items-center space-x-2 text-teal-400 hover:text-teal-300 transition-colors">
+          <span>←</span>
+          <span>Modulo 5.7</span>
+        </a>
+        <span class="text-neutral-600">|</span>
+        <a href="../trilha6/index.html" class="flex items-center space-x-2 text-teal-400 hover:text-teal-300 transition-colors">
+          <span>Trilha 6: MCPs</span>
+          <span>→</span>
+        </a>
+      </div>
+    </div>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center text-neutral-500 text-sm border-t border-dark-700">
+      <p>6 Pilares do Claude Code - Edicao Completa 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
