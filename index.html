@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>6 Pilares do Claude Code - Edicao Completa 2026 | INEMA.CLUB</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <!-- Logo + INEMA.CLUB -->
+        <div class="flex items-center space-x-4">
+          <a href="index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span>
+            <span class="font-bold text-lg hidden sm:inline">6 Pilares CC Full</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+
+        <!-- Trilhas + Theme Toggle -->
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="curso/trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="curso/trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Memoria</span>
+          </a>
+          <a href="curso/trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Workflows</span>
+          </a>
+          <a href="curso/trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Prompts</span>
+          </a>
+          <a href="curso/trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Skills</span>
+          </a>
+          <a href="curso/trilha6/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">MCPs</span>
+          </a>
+
+          <!-- Theme Toggle -->
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="bg-gradient-to-br from-primary/10 via-dark-800 to-dark-800 py-16 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="inline-block px-4 py-1.5 bg-primary/20 text-primary text-xs font-semibold rounded-full mb-6">
+        EDICAO COMPLETA 2026
+      </span>
+      <h1 class="text-4xl sm:text-5xl font-bold mb-6">🧠 6 Pilares do Claude Code</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl mx-auto mb-4">
+        Edicao Completa 2026
+      </p>
+      <p class="text-neutral-400 max-w-3xl mx-auto mb-8">
+        Domine o Claude Code do zero ao avancado. 6 trilhas praticas cobrindo fundamentos, memoria, workflows, prompts estrategicos, skills e automacao com MCPs.
+      </p>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl mx-auto">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-primary">6</div>
+          <div class="text-xs text-neutral-400">Trilhas</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-primary">49</div>
+          <div class="text-xs text-neutral-400">Modulos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-primary">294</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-primary">49</div>
+          <div class="text-xs text-neutral-400">Exercicios</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- TRILHAS -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <h2 class="text-2xl font-bold mb-8 text-center">Trilhas do Curso</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- T1 - Atalhos e Fundamentos (Emerald) - DISPONIVEL -->
+      <a href="curso/trilha1/index.html" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/50 transition-all duration-300 overflow-hidden">
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full">TRILHA 1</span>
+            <span class="text-xs text-neutral-500">8 modulos</span>
+          </div>
+          <h3 class="text-2xl font-bold mb-2 group-hover:text-emerald-400 transition-colors">⌨️ Atalhos e Fundamentos</h3>
+          <p class="text-neutral-400 text-sm mb-4">Do zero ao terminal produtivo. Instalacao, comandos essenciais, slash commands, flags CLI, pipe de dados, aliases e modo headless.</p>
+          <div class="flex items-center space-x-4 text-xs text-neutral-500">
+            <span>~48 topicos</span>
+            <span>~3h</span>
+            <span>Basico</span>
+            <span class="text-emerald-400">Disponivel</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- T2 - CLAUDE.md e Memoria (Blue) - DISPONIVEL -->
+      <a href="curso/trilha2/index.html" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/50 transition-all duration-300 overflow-hidden">
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full">TRILHA 2</span>
+            <span class="text-xs text-neutral-500">8 modulos</span>
+          </div>
+          <h3 class="text-2xl font-bold mb-2 group-hover:text-blue-400 transition-colors">📋 CLAUDE.md e Memoria</h3>
+          <p class="text-neutral-400 text-sm mb-4">Configure o Claude pra entender seu projeto em 60 segundos. CLAUDE.md, escopos, regras modulares, auto-memory e templates por stack.</p>
+          <div class="flex items-center space-x-4 text-xs text-neutral-500">
+            <span>~48 topicos</span>
+            <span>~3h</span>
+            <span>Basico-Intermediario</span>
+            <span class="text-blue-400">Disponivel</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- T3 - Workflows (Purple) - DISPONIVEL -->
+      <a href="curso/trilha3/index.html" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/50 transition-all duration-300 overflow-hidden">
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full">TRILHA 3</span>
+            <span class="text-xs text-neutral-500">9 modulos</span>
+          </div>
+          <h3 class="text-2xl font-bold mb-2 group-hover:text-purple-400 transition-colors">🔄 Workflows</h3>
+          <p class="text-neutral-400 text-sm mb-4">Os 9 fluxos de trabalho que cobrem 90% do trabalho real. Bug fix, features, refactoring, testes, code review, PRs e Agent Teams 2026.</p>
+          <div class="flex items-center space-x-4 text-xs text-neutral-500">
+            <span>~54 topicos</span>
+            <span>~4h</span>
+            <span>Intermediario</span>
+            <span class="text-purple-400">Disponivel</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- T4 - Prompts Estrategicos (Amber) - DISPONIVEL -->
+      <a href="curso/trilha4/index.html" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-amber-500/50 transition-all duration-300 overflow-hidden">
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full">TRILHA 4</span>
+            <span class="text-xs text-neutral-500">8 modulos</span>
+          </div>
+          <h3 class="text-2xl font-bold mb-2 group-hover:text-amber-400 transition-colors">🎯 Prompts Estrategicos</h3>
+          <p class="text-neutral-400 text-sm mb-4">Os prompts que separam amador de operador. 5 daily drivers, outcome delegation, prompts auto-validantes e engenharia avancada 2026.</p>
+          <div class="flex items-center space-x-4 text-xs text-neutral-500">
+            <span>~48 topicos</span>
+            <span>~3h</span>
+            <span>Intermediario</span>
+            <span class="text-amber-400">Disponivel</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- T5 - Skills e Plugins (Teal) - DISPONIVEL -->
+      <a href="curso/trilha5/index.html" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-teal-500/50 transition-all duration-300 overflow-hidden">
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full">TRILHA 5</span>
+            <span class="text-xs text-neutral-500">8 modulos</span>
+          </div>
+          <h3 class="text-2xl font-bold mb-2 group-hover:text-teal-400 transition-colors">🧩 Skills e Plugins</h3>
+          <p class="text-neutral-400 text-sm mb-4">Construa uma vez, use pra sempre. Skills reutilizaveis, 9000+ plugins, hooks de ciclo de vida, subagentes e /simplify.</p>
+          <div class="flex items-center space-x-4 text-xs text-neutral-500">
+            <span>~48 topicos</span>
+            <span>~3h</span>
+            <span>Avancado</span>
+            <span class="text-teal-400">Disponivel</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- T6 - MCPs e Automacao (Rose) - DISPONIVEL -->
+      <a href="curso/trilha6/index.html" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-rose-500/50 transition-all duration-300 overflow-hidden">
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <span class="inline-block px-3 py-1 bg-rose-500/20 text-rose-400 text-xs font-semibold rounded-full">TRILHA 6</span>
+            <span class="text-xs text-neutral-500">8 modulos</span>
+          </div>
+          <h3 class="text-2xl font-bold mb-2 group-hover:text-rose-400 transition-colors">🔌 MCPs e Automacao</h3>
+          <p class="text-neutral-400 text-sm mb-4">USB ports pro Claude. Filesystem, GitHub, Browser, Database, rotacao ativa, pipelines CI/CD headless e Claude Cowork 2026.</p>
+          <div class="flex items-center space-x-4 text-xs text-neutral-500">
+            <span>~48 topicos</span>
+            <span>~3h</span>
+            <span>Avancado</span>
+            <span class="text-rose-400">Disponivel</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- DADOS DO CURSO (MARCO 2026) -->
+    <section class="mt-16">
+      <h2 class="text-2xl font-bold mb-4 text-center">Dados do Curso (Marco 2026)</h2>
+      <p class="text-neutral-400 text-sm text-center mb-8 max-w-2xl mx-auto">Numeros que justificam investir no dominio do Claude Code agora.</p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="text-2xl font-bold text-primary mb-2">29M</div>
+          <div class="text-sm text-neutral-300 font-medium mb-1">Installs diarios VS Code</div>
+          <p class="text-xs text-neutral-500">Volume que mostra a escala do ecossistema de ferramentas dev.</p>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="text-2xl font-bold text-primary mb-2">9.000+</div>
+          <div class="text-sm text-neutral-300 font-medium mb-1">Plugins no ecossistema</div>
+          <p class="text-xs text-neutral-500">O catalogo de plugins disponivel para o Claude Code ja ultrapassa 9 mil.</p>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="text-2xl font-bold text-primary mb-2">85-95%</div>
+          <div class="text-sm text-neutral-300 font-medium mb-1">Reducao de tokens com MCP Tool Search</div>
+          <p class="text-xs text-neutral-500">MCP Tool Search reduz drasticamente o consumo de tokens por sessao.</p>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="text-2xl font-bold text-primary mb-2">92%</div>
+          <div class="text-sm text-neutral-300 font-medium mb-1">Reducao no tempo de tarefas</div>
+          <p class="text-xs text-neutral-500">Tarefas que levavam horas agora levam minutos com Claude Code.</p>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="text-2xl font-bold text-primary mb-2">42.8%</div>
+          <div class="text-sm text-neutral-300 font-medium mb-1">Taxa de adocao entre devs</div>
+          <p class="text-xs text-neutral-500">Quase metade dos desenvolvedores ja usam ferramentas de AI coding.</p>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="text-2xl font-bold text-primary mb-2">4%</div>
+          <div class="text-sm text-neutral-300 font-medium mb-1">Dos commits GitHub sao do Claude Code</div>
+          <p class="text-xs text-neutral-500">Claude Code ja responde por 4% de todos os commits no GitHub.</p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>6 Pilares do Claude Code - Edicao Completa 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
