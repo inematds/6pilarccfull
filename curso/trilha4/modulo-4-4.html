@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 4.4 - Prompts de Debugging e Log Analysis | 6 Pilares CC Full</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    html:not(.dark) body { background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%); }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span>
+            <span class="font-bold text-lg hidden sm:inline">6 Pilares CC Full</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Atalhos</span></a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="sm:hidden">T2</span><span class="hidden sm:inline">CLAUDE.md</span></a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Workflows</span></a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-400 bg-amber-500/10"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Prompts</span></a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Skills</span></a>
+          <a href="../trilha6/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"><span class="sm:hidden">T6</span><span class="hidden sm:inline">MCPs</span></a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-amber-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-amber-400">Trilha 4</a>
+      <span>/</span>
+      <span class="text-amber-400">Modulo 4.4</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full mb-4">MODULO 4.4</span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🐛 Prompts de Debugging e Log Analysis</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Do Structured Bug Report a analise de logs e diagnostico de incidentes em producao. Os prompts que transformam horas de debugging em minutos de diagnostico preciso.
+      </p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">6</div><div class="text-xs text-neutral-400">Topicos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">35</div><div class="text-xs text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">Avancado</div><div class="text-xs text-neutral-400">Nivel</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">Teoria + Pratica</div><div class="text-xs text-neutral-400">Tipo</div></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- TOPICO 1: Structured Bug Report -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">📝 Structured Bug Report (Template Completo)</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Voce ja conhece o Structured Bug Report do modulo 4.1. Agora vamos aprofundar o <strong class="text-amber-400">template completo com todas as variacoes</strong>: bugs visuais, bugs de dados, bugs de integracao e bugs de performance. Cada tipo tem nuances que mudam o diagnostico.
+      </p>
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center"><span class="mr-2">🎯</span> Conceito Principal</h3>
+        <p class="text-neutral-300 mb-4">O template base com extensoes para tipos especificos de bug:</p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">Bug type: [visual | data | integration | performance]</div>
+          <div class="text-amber-400">When I do [action], I get [error].</div>
+          <div class="text-amber-400">Expected: [...]</div>
+          <div class="text-amber-400">Actual: [...]</div>
+          <div class="text-amber-400">Environment: [browser/OS/version]</div>
+          <div class="text-amber-400">Reproducibility: [always | sometimes | rare]</div>
+          <div class="text-amber-400">Stack trace: [paste]</div>
+          <br>
+          <div class="text-amber-400">Investigate root cause before attempting a fix.</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong class="text-white">Bug type:</strong> Classificar o tipo ajuda o Claude a focar na area certa. Bugs visuais requerem inspecao de CSS/layout. Bugs de dados requerem analise de queries e transformacoes</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong class="text-white">Environment:</strong> Bugs que so acontecem em Safari, ou so em mobile, ou so no Windows. Essa informacao muda completamente o diagnostico</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong class="text-white">Reproducibility:</strong> "Sempre" e facil de debugar. "As vezes" sugere race condition ou state management. "Raro" pode ser memory leak ou edge case</span></li>
+        </ul>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica Pratica</h3>
+        <p class="text-neutral-300">Para bugs visuais, <strong class="text-white">descreva o layout esperado vs o atual em palavras</strong>. "O botao deveria estar alinhado a direita do container, mas aparece no centro" e muito mais util do que "o layout esta errado". Se possivel, inclua dimensoes de tela e breakpoints.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 2: Log Analysis -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">📊 Log Analysis Prompt</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Logs de aplicacao podem ter centenas de linhas. O Log Analysis prompt faz o Claude <strong class="text-amber-400">parsear, agrupar e priorizar erros automaticamente</strong>. Em vez de voce ler linha por linha, ele identifica padroes, agrupa erros relacionados e aponta a causa raiz dos mais criticos.
+      </p>
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center"><span class="mr-2">🎯</span> Conceito Principal</h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">Here are logs:</div>
+          <div class="text-amber-400">[paste]</div>
+          <br>
+          <div class="text-amber-400">1. Identify distinct errors</div>
+          <div class="text-amber-400">2. Group related ones</div>
+          <div class="text-amber-400">3. Rank by severity</div>
+          <div class="text-amber-400">4. Trace root cause of critical ones</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong class="text-white">Agrupamento inteligente:</strong> 50 erros de "connection refused" nao sao 50 problemas - sao 1 problema que se manifestou 50 vezes. O Claude identifica isso</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong class="text-white">Ranking por severidade:</strong> Critical (sistema fora do ar), High (funcionalidade quebrada), Medium (degradacao), Low (warning cosmético). Voce sabe o que atacar primeiro</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong class="text-white">Root cause dos criticos:</strong> O Claude nao so identifica o erro - ele traceia de volta a causa. "Connection refused em PostgreSQL indica que o pool de conexoes esgotou, provavelmente por queries N+1 no endpoint /users"</span></li>
+        </ul>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica Pratica</h3>
+        <p class="text-neutral-300">Para logs muito grandes, <strong class="text-white">use o Claude Code para ler os arquivos de log diretamente</strong> em vez de copiar e colar. Diga: "Read the file /var/log/app.log and analyze errors from the last hour." O Claude usa as tools Read e Grep para processar o arquivo no servidor.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 3: Stack Trace Diagnosis -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🔍 Stack Trace Diagnosis</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Stack traces sao a melhor pista para encontrar bugs, mas muitos desenvolvedores nao sabem le-los completamente. O Claude Code <strong class="text-amber-400">le stack traces com precisao cirurgica</strong>: identifica a linha exata do problema, navega ate o arquivo, e entende o contexto ao redor.
+      </p>
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center"><span class="mr-2">🎯</span> Conceito Principal</h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">I'm getting this error:</div>
+          <div class="text-amber-400">[paste full stack trace]</div>
+          <br>
+          <div class="text-amber-400">1. Identify the exact line causing the error</div>
+          <div class="text-amber-400">2. Read that file and surrounding context</div>
+          <div class="text-amber-400">3. Explain why this error occurs</div>
+          <div class="text-amber-400">4. Suggest fix with explanation</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong class="text-white">Navegacao automatica:</strong> O Claude le o stack trace, encontra os arquivos mencionados no seu projeto, e abre eles para entender o contexto. Nao precisa de nada manual</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong class="text-white">Contexto ao redor:</strong> Nao basta ver a linha do erro. O Claude analisa as funcoes que chamam, os dados que chegam, e as condicoes que levaram ao erro</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong class="text-white">Fix com explicacao:</strong> O Claude nao so corrige - explica por que o erro aconteceu e por que o fix funciona. Isso constroi entendimento para a proxima vez</span></li>
+        </ul>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica Pratica</h3>
+        <p class="text-neutral-300">Sempre cole o <strong class="text-white">stack trace completo</strong>, nao so a ultima linha. As linhas intermediarias mostram a cadeia de chamadas e frequentemente revelam o problema real, que pode estar muito acima da linha onde o erro efetivamente aconteceu.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 4: Intermittent Bug -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">👻 Intermittent Bug Prompt</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Bugs que acontecem "as vezes" sao os mais dificeis de resolver. Race conditions, state leaks, cache stale, timing issues. O Intermittent Bug prompt guia o Claude a <strong class="text-amber-400">investigar as causas mais comuns de bugs nao-deterministicos</strong>.
+      </p>
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center"><span class="mr-2">🎯</span> Conceito Principal</h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">I have an intermittent bug: [describe]</div>
+          <div class="text-amber-400">It happens approximately [frequency].</div>
+          <br>
+          <div class="text-amber-400">Investigate these common causes:</div>
+          <div class="text-amber-400">1. Race conditions (async/concurrent operations)</div>
+          <div class="text-amber-400">2. Stale cache or state</div>
+          <div class="text-amber-400">3. Timing-dependent logic</div>
+          <div class="text-amber-400">4. Resource exhaustion (connections, memory)</div>
+          <div class="text-amber-400">5. External dependency flakiness</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong class="text-white">Race conditions:</strong> Duas operacoes async que dependem uma da outra mas nao tem sincronizacao. O Claude procura por promisses nao-awaited, shared state sem lock, e operacoes de banco sem transacao</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong class="text-white">State/cache stale:</strong> Dados em cache que ficam desatualizados, state do React que nao atualiza quando deveria, localStorage com dados velhos</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong class="text-white">Resource exhaustion:</strong> Pool de conexoes que esgota sob carga, memory leaks que so aparecem depois de horas de uso, file descriptors que nao sao fechados</span></li>
+        </ul>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica Pratica</h3>
+        <p class="text-neutral-300">Para bugs intermitentes, <strong class="text-white">adicione logs temporarios antes de tentar fixes</strong>. Peca ao Claude: "Add debug logging to [area] so we can capture the state when this bug occurs next." Depois de reproduzir com logs, voce tem dados concretos para o diagnostico.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 5: Performance Debugging -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">⚡ Performance Debugging</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        "Ta lento" nao e um bug report. Performance debugging requer <strong class="text-amber-400">metricas especificas e investigacao sistematica</strong>. O Performance Debugging prompt guia o Claude a encontrar queries N+1, gargalos de I/O, renderizacoes desnecessarias e bottlenecks de rede.
+      </p>
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center"><span class="mr-2">🎯</span> Conceito Principal</h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">[endpoint/page/function] is slow. Takes [X]ms, should be under [Y]ms.</div>
+          <br>
+          <div class="text-amber-400">Investigate:</div>
+          <div class="text-amber-400">1. Database queries (N+1, missing indexes, full table scans)</div>
+          <div class="text-amber-400">2. Unnecessary computations or re-renders</div>
+          <div class="text-amber-400">3. Network waterfalls (sequential API calls)</div>
+          <div class="text-amber-400">4. Memory allocation patterns</div>
+          <div class="text-amber-400">5. Missing caching opportunities</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong class="text-white">N+1 queries:</strong> O problema de performance mais comum. O Claude analisa o codigo e identifica loops que fazem queries individuais em vez de batch/join</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong class="text-white">Network waterfalls:</strong> Chamadas de API sequenciais que poderiam ser paralelas. Transformar 5 requests sequenciais em Promise.all() pode cortar o tempo em 80%</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong class="text-white">Metricas concretas:</strong> Sempre diga quanto tempo leva e quanto deveria levar. "500ms mas deveria ser 50ms" da ao Claude um target claro</span></li>
+        </ul>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica Pratica</h3>
+        <p class="text-neutral-300">Apos o Claude identificar o gargalo, peca para ele <strong class="text-white">medir o antes e depois</strong>: "Fix this performance issue and add a console.time/timeEnd to verify the improvement." Assim voce tem prova concreta de que o fix funcionou.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 6: Production Incident Workflow -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🚨 Production Incident Workflow</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Quando algo quebra em producao, voce esta sob pressao. O Production Incident workflow e uma <strong class="text-amber-400">sequencia de prompts otimizada para diagnostico rapido sob stress</strong>. Triagem, diagnostico, fix, validacao e post-mortem - tudo estruturado.
+      </p>
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center"><span class="mr-2">🎯</span> Conceito Principal</h3>
+        <p class="text-neutral-300 mb-4">O workflow de incidente em producao segue 5 etapas:</p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong class="text-white">1. Triagem rapida:</strong> "Production is down. Error: [error]. Read recent changes (git log -5) and identify the most likely cause. Be fast." - Foco em velocidade, nao perfeccao</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong class="text-white">2. Diagnostico focado:</strong> Use o Log Analysis ou Stack Trace Diagnosis no erro especifico. Nao tente entender tudo, so a causa imediata</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong class="text-white">3. Fix minimo:</strong> "Fix this with the smallest possible change. No refactoring. Just stop the bleeding." - Em producao, fix minimo e rei</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong class="text-white">4. Validacao:</strong> "Verify this fix resolves the issue without introducing new problems." - O Claude checa side effects</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong class="text-white">5. Post-mortem:</strong> Depois da crise, use Teach Me para entender o que aconteceu e como prevenir no futuro</span></li>
+        </ul>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica Pratica</h3>
+        <p class="text-neutral-300">Em incidentes de producao, <strong class="text-white">resista a tentacao de refatorar</strong>. O Claude pode sugerir um fix elegante que muda 10 arquivos. Em producao, voce quer a mudanca de 1 linha que para o sangramento. O refactoring vem depois, na calma, com testes.</p>
+      </div>
+    </section>
+
+    <!-- EXERCICIO -->
+    <section id="exercicio" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">&#9998;</span>
+        <h2 class="text-2xl font-bold">Exercicio Pratico</h2>
+      </div>
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Diagnosticar 3 bugs usando prompts estruturados</h3>
+        <p class="text-neutral-300 mb-4">Encontre 3 bugs no seu projeto (ou crie bugs intencionais) e diagnostique cada um com o prompt adequado:</p>
+        <ol class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-3"><span class="text-amber-400 font-bold">1.</span><span>Use o <strong class="text-white">Structured Bug Report</strong> para um bug funcional (algo que nao funciona como esperado)</span></li>
+          <li class="flex items-start space-x-3"><span class="text-amber-400 font-bold">2.</span><span>Use o <strong class="text-white">Stack Trace Diagnosis</strong> para um erro com stack trace (um crash ou exception)</span></li>
+          <li class="flex items-start space-x-3"><span class="text-amber-400 font-bold">3.</span><span>Use o <strong class="text-white">Performance Debugging</strong> para identificar um gargalo (query lenta, renderizacao pesada)</span></li>
+        </ol>
+      </div>
+      <div class="bg-amber-900/20 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center"><span class="mr-2">✅</span> Criterios de Sucesso</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg"><span class="text-amber-400">☐</span><span class="text-neutral-300">Bug funcional diagnosticado com causa raiz identificada</span></div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg"><span class="text-amber-400">☐</span><span class="text-neutral-300">Stack trace analisado e fix aplicado</span></div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg"><span class="text-amber-400">☐</span><span class="text-neutral-300">Gargalo de performance identificado e corrigido</span></div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg"><span class="text-amber-400">☐</span><span class="text-neutral-300">Todos os 3 bugs resolvidos com diagnostico antes do fix</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-amber-900/40 via-dark-800 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📋</span> Resumo do Modulo</h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Structured Bug Report com variantes por tipo</strong><span class="text-neutral-400"> - Visual, data, integration, performance. Cada tipo tem nuances especificas.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Log Analysis agrupa e prioriza automaticamente</strong><span class="text-neutral-400"> - Erros distintos, agrupamento, ranking por severidade e root cause.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Stack Trace Diagnosis navega ate o codigo</strong><span class="text-neutral-400"> - Identifica linha, le contexto, explica causa e sugere fix.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Intermittent Bug cobre causas nao-deterministicas</strong><span class="text-neutral-400"> - Race conditions, stale cache, timing, resource exhaustion.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Performance Debugging com metricas concretas</strong><span class="text-neutral-400"> - N+1, waterfalls, re-renders, caching. Sempre com antes/depois.</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Production Incident Workflow para crises</strong><span class="text-neutral-400"> - Triagem → Diagnostico → Fix minimo → Validacao → Post-mortem.</span></div></div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-amber-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">4.5 - Prompts de Code Quality e Auditoria</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-4-3.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Modulo Anterior</a>
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">Voltar para Trilha</a>
+          <a href="modulo-4-5.html" class="flex-1 text-center px-6 py-3 bg-amber-600/40 text-amber-100 rounded-lg font-semibold hover:bg-amber-600/60 transition-colors">Proximo Modulo →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>6 Pilares do Claude Code Full - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) { themeToggleDarkIcon.classList.remove('hidden'); html.classList.remove('dark'); } else { themeToggleLightIcon.classList.remove('hidden'); }
+    themeToggle.addEventListener('click', () => { themeToggleDarkIcon.classList.toggle('hidden'); themeToggleLightIcon.classList.toggle('hidden'); html.classList.toggle('dark'); localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light'); });
+  </script>
+</body>
+</html>

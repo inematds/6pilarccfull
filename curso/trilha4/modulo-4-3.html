@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 4.3 - Prompts de Building e TDD | 6 Pilares CC Full</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span>
+            <span class="font-bold text-lg hidden sm:inline">6 Pilares CC Full</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Atalhos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">CLAUDE.md</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Workflows</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-400 bg-amber-500/10">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Prompts</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Skills</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">MCPs</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-amber-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-amber-400">Trilha 4</a>
+      <span>/</span>
+      <span class="text-amber-400">Modulo 4.3</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 4.3
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🏗️ Prompts de Building e TDD</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        De Plan Mode a Test-Driven Development com Claude Code. Aprenda os prompts que garantem codigo de qualidade desde a primeira linha, com testes antes da implementacao.
+      </p>
+
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">35</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">Avancado</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">Teoria + Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- TOPICO 1: Feature Blueprint -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">📐 Feature Blueprint (Plan Mode Approach)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O Feature Blueprint e a evolucao do Plan Mode para <strong class="text-amber-400">features especificas</strong>. Enquanto o Plan Mode generico pede um plano geral, o Blueprint vai mais fundo: identifica todos os arquivos que precisam mudar, detalha a abordagem passo a passo, e mapeia riscos especificos da feature.
+      </p>
+
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">I want to add [feature].</div>
+          <br>
+          <div class="text-amber-400">Enter plan mode:</div>
+          <div class="text-amber-400">1. Identify affected files</div>
+          <div class="text-amber-400">2. Outline approach</div>
+          <div class="text-amber-400">3. Flag risks</div>
+          <div class="text-amber-400">4. Wait for approval</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Arquivos afetados:</strong> O Claude navega o codebase e lista exatamente quais arquivos precisam ser criados, modificados ou deletados. Isso evita surpresas no meio do build</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Abordagem detalhada:</strong> Nao e "adicionar autenticacao". E "1. Criar middleware de auth em src/middleware/auth.ts, 2. Adicionar schema de user em prisma/schema.prisma, 3. Criar rota POST /auth/login..." - cada passo e concreto</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Riscos sinalizados:</strong> "Esta feature requer alteracao na tabela users que pode afetar queries existentes" - esse tipo de aviso previne desastres</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Antes de aprovar o blueprint, faca perguntas: <strong class="text-white">"E se o usuario estiver deslogado?"</strong>, <strong class="text-white">"Como isso afeta mobile?"</strong>, <strong class="text-white">"Precisa de migration?"</strong>. Quanto mais voce questiona o plano, melhor ele fica. O custo de ajustar um plano e zero. O custo de refazer codigo e alto.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 2: Build With Tests -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">🧪 Build With Tests (TDD Prompt)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O Build With Tests e o prompt que implementa <strong class="text-amber-400">Test-Driven Development com Claude Code</strong>. Em vez de construir a feature e depois escrever testes (que quase nunca acontece), voce forca o Claude a escrever o teste primeiro, implementar, rodar, e so entao avancar para o proximo pedaco.
+      </p>
+
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">Build [feature].</div>
+          <br>
+          <div class="text-amber-400">For each piece:</div>
+          <div class="text-amber-400">1. Write test first</div>
+          <div class="text-amber-400">2. Write implementation</div>
+          <div class="text-amber-400">3. Run tests</div>
+          <div class="text-amber-400">4. Move to next piece</div>
+          <br>
+          <div class="text-amber-400">Do not batch tests.</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Teste primeiro:</strong> O Claude escreve o teste que define o comportamento esperado. Depois escreve o codigo que faz o teste passar. Isso garante que cada pedaco funciona antes de avancar</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Execucao real:</strong> O Claude roda os testes no terminal. Se falha, corrige antes de continuar. Voce ve o ciclo red-green acontecendo em tempo real</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">"Do not batch tests":</strong> Sem essa instrucao, o Claude tende a escrever todos os testes de uma vez e depois toda a implementacao. Isso anula o beneficio do TDD</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Certifique-se de que seu projeto ja tem um framework de testes configurado (Jest, Vitest, pytest, etc.) antes de usar este prompt. O Claude precisa poder <strong class="text-white">executar os testes realmente</strong>. Se nao ha test runner, peca primeiro para configurar um.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 3: Incremental Building -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🧱 Incremental Building (Step-by-Step)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Nem toda feature precisa de TDD formal. O Incremental Building e a versao <strong class="text-amber-400">pragmatica de construcao passo-a-passo</strong>. O Claude constroi uma peca, verifica que funciona, e so entao avanca para a proxima. Sem testes automatizados, mas com validacao a cada passo.
+      </p>
+
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O Incremental Building funciona com um prompt que forca pausas entre etapas:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">Build [feature] incrementally.</div>
+          <br>
+          <div class="text-amber-400">After each step:</div>
+          <div class="text-amber-400">1. Show what was built</div>
+          <div class="text-amber-400">2. Verify it works</div>
+          <div class="text-amber-400">3. Wait for my OK before continuing</div>
+          <br>
+          <div class="text-amber-400">Start with the smallest working version.</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Smallest working version:</strong> Comeca com o minimo viavel. Um endpoint que retorna hello world. Um componente que renderiza um div. Depois evolui incrementalmente</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Checkpoints manuais:</strong> A cada passo voce valida visualmente ou com um teste manual. So apos seu OK o Claude continua. Isso evita que ele construa 500 linhas de codigo que nao compilam</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Ideal para UI:</strong> Construir interfaces incrementalmente permite que voce veja o resultado visual a cada passo e peca ajustes antes de adicionar mais complexidade</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Combine Incremental Building com <strong class="text-white">git commits a cada checkpoint</strong>. Depois de cada "OK", peca ao Claude para commitar. Assim, se algo der errado num passo futuro, voce pode voltar para o ultimo ponto estavel sem perder tudo.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 4: Component Building -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🎨 Component Building (UI Component Prompt)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Construir componentes de UI requer um tipo especifico de prompt. O Component Building prompt define <strong class="text-amber-400">props, estados, variantes e acessibilidade</strong> de forma estruturada, garantindo componentes completos e reutilizaveis desde a primeira versao.
+      </p>
+
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">Build a [component name] component.</div>
+          <br>
+          <div class="text-amber-400">Requirements:</div>
+          <div class="text-amber-400">- Props: [list expected props]</div>
+          <div class="text-amber-400">- States: [default, hover, active, disabled, loading]</div>
+          <div class="text-amber-400">- Variants: [primary, secondary, ghost]</div>
+          <div class="text-amber-400">- Accessibility: keyboard nav, aria labels, screen reader</div>
+          <br>
+          <div class="text-amber-400">Follow existing component patterns in the codebase.</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Props explicitas:</strong> Listar as props evita que o Claude invente interfaces que nao fazem sentido para seu design system</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Todos os estados:</strong> Hover, active, disabled, loading. Sem isso, o Claude constroi so o estado default e voce descobre os outros no QA</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">"Follow existing patterns":</strong> O Claude le os componentes ja existentes e replica o mesmo estilo, convencoes de naming e estrutura de arquivos</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Se voce usa Storybook ou similar, adicione ao prompt: <strong class="text-white">"Also create a Storybook story showing all variants and states."</strong> O Claude gera o componente e a documentacao visual de uma vez.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 5: API Endpoint Building -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🔌 API Endpoint Building (Backend Prompt)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Endpoints de API tem requisitos especificos: validacao de input, tratamento de erros, autorizacao, paginacao. O API Endpoint prompt garante que <strong class="text-amber-400">nenhum desses aspectos seja esquecido</strong>, produzindo endpoints production-ready desde o inicio.
+      </p>
+
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">Build a [METHOD] /api/[resource] endpoint.</div>
+          <br>
+          <div class="text-amber-400">Requirements:</div>
+          <div class="text-amber-400">- Input validation with error messages</div>
+          <div class="text-amber-400">- Proper HTTP status codes</div>
+          <div class="text-amber-400">- Error handling (try/catch, custom errors)</div>
+          <div class="text-amber-400">- Authentication/authorization check</div>
+          <div class="text-amber-400">- Rate limiting considerations</div>
+          <br>
+          <div class="text-amber-400">Follow existing API patterns in this codebase.</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Validacao com mensagens:</strong> Nao basta validar. O usuario precisa saber o que errou. "email is required" e melhor que "validation error"</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Status codes corretos:</strong> 201 para criacao, 404 para nao encontrado, 422 para validacao. O Claude conhece todos os status codes HTTP e usa corretamente quando instruido</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Auth/authz:</strong> Especificar que o endpoint precisa de autenticacao evita o erro classico de endpoints publicos que deveriam ser protegidos</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Para APIs RESTful completas, construa um endpoint CRUD completo de uma vez com o prompt: <strong class="text-white">"Build full CRUD for [resource]: GET list (with pagination), GET by id, POST, PUT, DELETE. Follow REST conventions and existing patterns."</strong> O Claude gera todos os endpoints consistentes entre si.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 6: Full-stack Feature Workflow -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🔗 Full-Stack Feature Workflow</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A maioria das features do mundo real e full-stack: banco de dados + backend + frontend. O workflow completo combina todos os prompts deste modulo numa <strong class="text-amber-400">sequencia end-to-end</strong> que produz features completas com qualidade de producao.
+      </p>
+
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O workflow full-stack segue esta sequencia:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Passo 1 - Feature Blueprint:</strong> Planejar a feature completa: schema, API, componentes, testes</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Passo 2 - Database/Schema:</strong> Criar ou modificar o schema do banco. Migrations se necessario</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Passo 3 - API Endpoints:</strong> Construir os endpoints com validacao, auth e error handling</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Passo 4 - UI Components:</strong> Construir os componentes que consomem a API</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Passo 5 - Integration:</strong> Conectar tudo e testar o fluxo end-to-end</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Passo 6 - Brutal Audit:</strong> Auditar a feature completa antes de considerar pronta</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Para features grandes, <strong class="text-white">use sessoes separadas para cada camada</strong> (database, API, UI). Isso mantem o contexto limpo e evita que o Claude misture preocupacoes de backend com frontend. Referencie os arquivos criados nas etapas anteriores explicitamente em cada nova sessao.
+        </p>
+      </div>
+    </section>
+
+    <!-- EXERCICIO -->
+    <section id="exercicio" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">&#9998;</span>
+        <h2 class="text-2xl font-bold">Exercicio Pratico</h2>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Construir feature usando Build With Tests prompt</h3>
+        <p class="text-neutral-300 mb-4">
+          Escolha uma feature simples (ex: funcao de validacao de email, endpoint de criacao de usuario, componente de formulario) e construa usando TDD:
+        </p>
+        <ol class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">1.</span>
+            <span>Descreva a feature e use o <strong class="text-white">Feature Blueprint</strong> para planejar</span>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">2.</span>
+            <span>Use o <strong class="text-white">Build With Tests</strong> para implementar com TDD. Observe o ciclo red-green</span>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">3.</span>
+            <span>Verifique que todos os testes passam ao final</span>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">4.</span>
+            <span>Rode um <strong class="text-white">Brutal Audit</strong> no resultado e corrija issues encontrados</span>
+          </li>
+        </ol>
+      </div>
+
+      <div class="bg-amber-900/20 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">Feature Blueprint gerado e aprovado</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">Testes escritos antes da implementacao</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">Todos os testes passando ao final</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">Brutal Audit rodado e issues corrigidos</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-amber-900/40 via-dark-800 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Feature Blueprint planeja antes de codar</strong>
+              <span class="text-neutral-400"> - Arquivos afetados, abordagem detalhada e riscos sinalizados antes de tocar no codigo.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Build With Tests implementa TDD real</strong>
+              <span class="text-neutral-400"> - Teste primeiro, implementacao depois, execucao real. Ciclo red-green automatizado.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Incremental Building e TDD pragmatico</strong>
+              <span class="text-neutral-400"> - Checkpoints manuais a cada passo. Ideal para UI e prototipagem rapida.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Component Building cobre todos os estados</strong>
+              <span class="text-neutral-400"> - Props, estados, variantes e acessibilidade definidos no prompt.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">API Endpoints production-ready desde o inicio</strong>
+              <span class="text-neutral-400"> - Validacao, status codes, auth, error handling no prompt base.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Full-stack workflow une todas as camadas</strong>
+              <span class="text-neutral-400"> - Schema → API → UI → Integration → Audit. Pipeline completo.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-amber-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">4.4 - Prompts de Debugging e Log Analysis</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-4-2.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Modulo Anterior
+          </a>
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha
+          </a>
+          <a href="modulo-4-4.html" class="flex-1 text-center px-6 py-3 bg-amber-600/40 text-amber-100 rounded-lg font-semibold hover:bg-amber-600/60 transition-colors">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>6 Pilares do Claude Code Full - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

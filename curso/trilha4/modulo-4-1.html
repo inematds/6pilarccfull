@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 4.1 - Os 5 Prompts Diarios | 6 Pilares CC Full</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🧠</span>
+            <span class="font-bold text-lg hidden sm:inline">6 Pilares CC Full</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Atalhos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">CLAUDE.md</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Workflows</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-400 bg-amber-500/10">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Prompts</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Skills</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">MCPs</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-amber-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-amber-400">Trilha 4</a>
+      <span>/</span>
+      <span class="text-amber-400">Modulo 4.1</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 4.1
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🎯 Os 5 Prompts Diarios (Daily Drivers)</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Estes 5 prompts resolvem 80% do trabalho real com Claude Code. Domine-os e voce ja esta a frente de 90% dos usuarios. Sao os prompts que voce vai usar todo dia, em todo projeto.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">30</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">Essencial</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">Teoria + Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 1: 95% Confidence -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🔍 95% Confidence (Ask Clarifying Questions)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Este e o prompt mais importante de toda a trilha. Ele transforma qualquer tarefa vaga em uma tarefa precisa. Em vez de deixar o Claude adivinhar o que voce quer, voce forca ele a <strong class="text-amber-400">perguntar antes de agir</strong>. O resultado? Menos retrabalho, menos codigo errado, menos frustacao.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O prompt "95% Confidence" e elegantemente simples mas brutalmente eficaz. Voce diz ao Claude: <strong class="text-white">"Me faca perguntas esclarecedoras, uma de cada vez, ate voce estar 95% confiante de que pode completar a tarefa com sucesso."</strong>
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <span class="text-amber-400">Ask me clarifying questions one at a time until you're 95% confident you can complete the task successfully.</span>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Previne blind-spot coding:</strong> O Claude nao assume nada. Ele pergunta sobre edge cases, requisitos nao mencionados, integracoes e convencoes do projeto</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Uma pergunta por vez:</strong> Isso e crucial. Se voce nao especificar "one at a time", o Claude despeja 15 perguntas de uma vez e voce ignora a maioria</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">95% nao e 100%:</strong> O numero 95 e intencional. 100% seria impossivel e travaria o processo. 95% da margem para incerteza razoavel</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Use para tudo:</strong> Features novas, migracoes, refactoring, configuracoes complexas. Qualquer tarefa que nao seja trivial merece esse prompt</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Use o 95% Confidence como <strong class="text-white">primeiro prompt de qualquer sessao complexa</strong>. Abra o Claude Code, descreva a tarefa em uma frase e adicione o prompt. Responda cada pergunta honestamente. Quando o Claude disser "estou confiante", voce sabe que o resultado vai ser muito melhor do que se tivesse ido direto.
+        </p>
+        <p class="text-neutral-300">
+          Dica avancada: voce pode combinar com contexto. Exemplo: "Quero implementar autenticacao JWT neste projeto. Ask me clarifying questions one at a time until you're 95% confident you can complete the task successfully."
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 2: Plan Mode Blueprint -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">📋 Plan Mode Blueprint (Think Before Building)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O segundo Daily Driver e o prompt que forca o Claude a <strong class="text-amber-400">pensar antes de codar</strong>. Em vez de ir direto para a implementacao, ele primeiro identifica todos os arquivos afetados, planeja a abordagem passo a passo e sinaliza riscos. Voce aprova o plano antes de qualquer codigo ser escrito.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O Plan Mode Blueprint segue uma estrutura clara de 4 etapas obrigatorias antes de tocar em codigo:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">I want to add [feature].</div>
+          <br>
+          <div class="text-amber-400">Enter plan mode. Before writing any code:</div>
+          <div class="text-amber-400">1. Identify all files that need to change</div>
+          <div class="text-amber-400">2. Outline the approach step by step</div>
+          <div class="text-amber-400">3. Flag tradeoffs or risks</div>
+          <div class="text-amber-400">4. Wait for my approval</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Mapeia impacto:</strong> Antes de qualquer mudanca, voce sabe exatamente quais arquivos serao afetados e pode avaliar se o escopo esta correto</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Sinaliza riscos:</strong> O Claude avisa sobre breaking changes, dependencias circulares, problemas de performance e outras armadilhas antes de voce cair nelas</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Aprovacao explicita:</strong> O "Wait for my approval" garante que voce tem a ultima palavra. O Claude nao comeca a editar nada ate voce dizer "go"</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          O Plan Mode e especialmente util para features que tocam multiplos arquivos. Se a mudanca e em um unico arquivo simples, voce pode ir direto. Mas se envolve models, controllers, views, testes e migrations, <strong class="text-white">sempre use Plan Mode</strong>.
+        </p>
+        <p class="text-neutral-300">
+          Apos ler o plano, voce pode pedir ajustes: "O plano esta bom, mas adicione validacao no step 3" ou "Remova o step 4, nao preciso disso agora". O Claude ajusta o plano e espera nova aprovacao.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 3: Structured Bug Report -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🐛 Structured Bug Report (Diagnosis Before Fix)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Quando algo quebra, a tendencia natural e pedir "corrige isso". Mas sem contexto estruturado, o Claude chuta. O Structured Bug Report forca um <strong class="text-amber-400">diagnostico antes do patch</strong>, resultando em fixes que resolvem a causa raiz em vez de mascarar sintomas.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O template do Structured Bug Report tem uma estrutura que guia tanto voce quanto o Claude:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">When I do [action], I get [error].</div>
+          <br>
+          <div class="text-amber-400">Expected behavior: [...]</div>
+          <div class="text-amber-400">Actual behavior: [...]</div>
+          <br>
+          <div class="text-amber-400">Here is the stack trace:</div>
+          <div class="text-amber-400">[paste]</div>
+          <br>
+          <div class="text-amber-400">Investigate the root cause before attempting a fix.</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Acao + Erro:</strong> Descreva exatamente o que voce fez e o que aconteceu. "Cliquei no botao de salvar e apareceu erro 500" e melhor que "ta dando erro"</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Expected vs Actual:</strong> Essa distincao ajuda o Claude a entender a natureza do problema. As vezes o codigo esta "funcionando" mas retornando dados errados</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Stack trace:</strong> Sempre inclua. O Claude le stack traces com uma precisao absurda e identifica a linha exata do problema</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">"Investigate root cause first":</strong> Esta ultima linha e a mais importante. Sem ela, o Claude pode ir direto para um patch superficial</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Guarde este template como snippet no seu editor ou crie um alias no terminal. Voce vai usar tanto que precisa ser instintivo. <strong class="text-white">Nunca mais diga "ta quebrando, arruma ai"</strong>. O tempo investido em estruturar o bug report se paga 10x na qualidade do fix.
+        </p>
+        <p class="text-neutral-300">
+          Bonus: apos o Claude diagnosticar, peca para ele explicar a causa raiz antes de aplicar o fix. Isso garante que voce entende o que aconteceu e consegue prevenir no futuro.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 4: Brutal Audit -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🔬 Brutal Audit (Find What You Missed)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O Brutal Audit e o prompt que voce usa <strong class="text-amber-400">depois de construir algo</strong>. Ele pede para o Claude ser brutalmente honesto sobre edge cases, vulnerabilidades de seguranca, gargalos de performance, cenarios de crash e qualquer coisa que um engenheiro senior sinalizaria numa code review.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O Brutal Audit cobre 5 dimensoes criticas de qualidade:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">I just built [X].</div>
+          <br>
+          <div class="text-amber-400">Audit this for:</div>
+          <div class="text-amber-400">1. Edge cases</div>
+          <div class="text-amber-400">2. Security vulnerabilities</div>
+          <div class="text-amber-400">3. Performance bottlenecks</div>
+          <div class="text-amber-400">4. Crash scenarios</div>
+          <div class="text-amber-400">5. Anything a senior engineer would flag</div>
+          <br>
+          <div class="text-amber-400">Be brutally honest.</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Edge cases:</strong> Listas vazias, valores null, unicode, concorrencia, timezone, limites de inteiros. O Claude encontra os cenarios que voce nem pensou</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Seguranca:</strong> SQL injection, XSS, CSRF, exposicao de dados, permissoes incorretas. Ele checa contra as vulnerabilidades mais comuns</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">"Be brutally honest":</strong> Essa frase e essencial. Sem ela, o Claude tende a ser educado e pular problemas menores. Com ela, ele nao poupa nada</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Faca do Brutal Audit um <strong class="text-white">habito obrigatorio</strong>. Depois de cada feature significativa, rode o audit. Nao espere ate o code review ou ate o QA encontrar os bugs. O custo de rodar esse prompt e centavos. O custo de um bug em producao pode ser enorme.
+        </p>
+        <p class="text-neutral-300">
+          Dica: apos receber o audit, peca ao Claude para corrigir os items criticos automaticamente. Ele ja sabe exatamente onde estao os problemas.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 5: Teach Me What You Did -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🎓 Teach Me What You Did (Learn From the AI)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O quinto Daily Driver e o que transforma o Claude Code de ferramenta em <strong class="text-amber-400">amplificador de skills</strong>. Depois que o Claude faz uma correcao, um refactoring ou uma implementacao, voce pede que ele ensine o que fez, por que fez e o que voce deveria observar da proxima vez.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O Teach Me tem 4 dimensoes de aprendizado:
+        </p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm mb-4">
+          <div class="text-amber-400">I just watched you [do X].</div>
+          <br>
+          <div class="text-amber-400">Now teach me:</div>
+          <div class="text-amber-400">1. The root cause or core concept</div>
+          <div class="text-amber-400">2. Why this approach was chosen</div>
+          <div class="text-amber-400">3. What would break if we didn't fix it</div>
+          <div class="text-amber-400">4. What to watch for next time</div>
+          <br>
+          <div class="text-amber-400">Explain it so I could do it myself.</div>
+        </div>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Causa raiz:</strong> Nao so o que foi feito, mas por que o problema existia em primeiro lugar. Isso constroi entendimento profundo</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Por que esta abordagem:</strong> Havia alternativas? Por que esta foi escolhida? Quais trade-offs existem?</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">"So I could do it myself":</strong> Esta frase final garante que a explicacao e pratica, nao teorica. O Claude adapta o nivel para voce conseguir replicar</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Use o Teach Me especialmente quando o Claude faz algo que voce <strong class="text-white">nao entendeu completamente</strong>. Se ele usou um regex complexo, um pattern de design que voce nao conhece, ou uma configuracao obscura, e a hora perfeita para esse prompt.
+        </p>
+        <p class="text-neutral-300">
+          Com o tempo, voce vai notar que precisa do Teach Me cada vez menos para certos tipos de tarefa. Isso significa que o prompt esta funcionando: voce esta aprendendo e retendo o conhecimento.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 6: Combinando os 5 no dia-a-dia -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🔄 Combinando os 5 no Dia-a-Dia</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Os 5 Daily Drivers nao sao prompts isolados. Eles formam um <strong class="text-amber-400">sistema de trabalho completo</strong>. Quando combinados na sequencia certa, eles cobrem todo o ciclo de desenvolvimento: entendimento, planejamento, execucao, validacao e aprendizado.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O workflow completo dos 5 Daily Drivers segue esta sequencia para qualquer tarefa nao-trivial:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Passo 1 - 95% Confidence:</strong> Comece toda tarefa complexa com perguntas esclarecedoras. Isso evita 80% dos problemas futuros</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Passo 2 - Plan Mode:</strong> Com o contexto claro, peca o plano de implementacao. Revise e aprove antes de qualquer codigo</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Passo 3 - Build:</strong> Execute o plano aprovado (veremos prompts especificos de building no modulo 4.3)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Passo 4 - Brutal Audit:</strong> Audite o resultado. Corrija os issues criticos</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-amber-400 mt-1">•</span>
+            <span><strong class="text-white">Passo 5 - Teach Me:</strong> Aprenda com o processo. Especialmente util quando houve bugs ou decisoes de design interessantes</span>
+          </li>
+        </ul>
+        <p class="text-neutral-300 mt-4">
+          <strong class="text-white">E quando ha bugs durante o build?</strong> Use o Structured Bug Report para diagnosticar e corrigir, depois continue com o fluxo normal.
+        </p>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Voce nao precisa usar todos os 5 em toda tarefa. Para um bug simples, use so o Structured Bug Report. Para uma feature rapida, use 95% Confidence + Plan Mode. Reserve o ciclo completo para trabalhos significativos: features grandes, migracoes, refactorings maiores.
+        </p>
+        <p class="text-neutral-300">
+          <strong class="text-white">Regra de ouro:</strong> Se a tarefa vai levar mais de 30 minutos, use o ciclo completo. O investimento de 5 minutos em planejamento economiza 30 em retrabalho.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- EXERCICIO PRATICO -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="exercicio" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">&#9998;</span>
+        <h2 class="text-2xl font-bold">Exercicio Pratico</h2>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Usar cada um dos 5 prompts numa tarefa real</h3>
+        <p class="text-neutral-300 mb-4">
+          Escolha uma tarefa real do seu projeto (ou crie um projeto simples) e aplique cada Daily Driver:
+        </p>
+        <ol class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">1.</span>
+            <span>Abra o Claude Code num projeto real e descreva uma feature que voce quer implementar. Use o <strong class="text-white">95% Confidence</strong> e responda todas as perguntas</span>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">2.</span>
+            <span>Com o contexto claro, use o <strong class="text-white">Plan Mode Blueprint</strong> para gerar o plano. Revise e aprove</span>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">3.</span>
+            <span>Implemente a feature. Se encontrar um bug, use o <strong class="text-white">Structured Bug Report</strong> para diagnostica-lo</span>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">4.</span>
+            <span>Apos a implementacao, rode o <strong class="text-white">Brutal Audit</strong> e corrija pelo menos um issue encontrado</span>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">5.</span>
+            <span>Use o <strong class="text-white">Teach Me</strong> para entender algo que o Claude fez que voce nao teria feito sozinho</span>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Criterios de Sucesso -->
+      <div class="bg-amber-900/20 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">Usou 95% Confidence e respondeu todas as perguntas</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">Gerou e revisou plano com Plan Mode</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">Usou Structured Bug Report em pelo menos 1 bug</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">Rodou Brutal Audit e corrigiu issues</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-amber-400">☐</span>
+            <span class="text-neutral-300">Usou Teach Me e aprendeu algo novo</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESUMO FINAL -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-amber-900/40 via-dark-800 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">95% Confidence previne blind-spot coding</strong>
+              <span class="text-neutral-400"> - Forca perguntas antes de acoes. Use como primeiro prompt de qualquer tarefa complexa.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Plan Mode Blueprint forca pensar antes de codar</strong>
+              <span class="text-neutral-400"> - Mapeia arquivos, planeja abordagem, sinaliza riscos. Aprovacao antes de execucao.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Structured Bug Report garante diagnostico antes de patch</strong>
+              <span class="text-neutral-400"> - Template estruturado com acao, erro, expected/actual e stack trace.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Brutal Audit encontra o que voce nao viu</strong>
+              <span class="text-neutral-400"> - 5 dimensoes de auditoria: edge cases, seguranca, performance, crashes, review senior.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Teach Me transforma o Claude em professor</strong>
+              <span class="text-neutral-400"> - Causa raiz, por que essa abordagem, o que quebraria, e o que observar. Aprendizado continuo.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Os 5 formam um sistema completo de trabalho</strong>
+              <span class="text-neutral-400"> - Entendimento → Planejamento → Execucao → Validacao → Aprendizado.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-amber-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">4.2 - Prompts de Getting Started e Kickoff</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <span class="flex-1 text-center px-6 py-3 bg-dark-700/50 text-neutral-500 rounded-lg font-semibold cursor-not-allowed">
+            ← Modulo Anterior
+          </span>
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha
+          </a>
+          <a href="modulo-4-2.html" class="flex-1 text-center px-6 py-3 bg-amber-600/40 text-amber-100 rounded-lg font-semibold hover:bg-amber-600/60 transition-colors">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>6 Pilares do Claude Code Full - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
